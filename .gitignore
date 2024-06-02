@@ -1,5 +1,5 @@
 # Ignore node modules
-node_modules/
+js-script/node_modules/
 
 # Ignore Python libraries
 *.pyc

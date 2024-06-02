@@ -1,0 +1,12 @@
+# Ignore node modules
+node_modules/
+
+# Ignore Python libraries
+*.pyc
+__pycache__/
+
+# Ignore other files and directories
+*.log
+*~
+*.swp
+.DS_Store

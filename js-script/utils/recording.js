@@ -3,7 +3,7 @@ const startRecording = async (obs) => {
 		console.log('Start the recording');
 		const start = await obs.call('StartRecord');
 	} catch (err) {
-		console.log('Failde to start recording');
+		console.log('Failed to start recording');
 		console.log(err);
 	}
 };
@@ -12,7 +12,7 @@ const pauseRecording = async (obs) => {
 		console.log('Pause the recording');
 		const pause = obs.call('PauseRecord');
 	} catch (err) {
-		console.log('Failde to pause recording');
+		console.log('Failed to pause recording');
 		console.log(err);
 	}
 };
@@ -30,7 +30,7 @@ const stopRecording = async (obs) => {
 		console.log('Stop the recording');
 		const stop = obs.call('StopRecord');
 	} catch (err) {
-		console.log('Failde to stop recording');
+		console.log('Failed to stop recording');
 		console.log(err);
 	}
 };

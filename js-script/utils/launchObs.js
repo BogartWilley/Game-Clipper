@@ -6,8 +6,7 @@ const launchObs = () => {
 	const obsProcess = spawn(path.join(obsDir, 'obs64.exe'), [], {
 		cwd: obsDir, // Set the current working directory to OBS directory
 	});
-	console.log("OBS's process started,this is it's ID: ");
-	console.log(obsProcess.pid);
+	console.log(`OBS's process started,this is it's ID: ${obsProcess.pid}`);
 	return obsProcess;
 };
 

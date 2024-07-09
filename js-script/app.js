@@ -3,16 +3,16 @@ const obs = new OBSWebSocket();
 const { getSceneName, createNewScene } = require('./utils/scene.js');
 const connectWs = require('./utils/connect.js');
 const launchObs = require('./utils/launchObs.js');
+const { audioSetup, videoSetup } = require('./utils/captureSetup.js');
 const {
 	startRecording,
 	pauseRecording,
 	resumeRecording,
 	stopRecording,
 } = require('./utils/recording.js');
-const audioSetup = require('./utils/audioSetup.js');
+const waitKeyPress = require('./utils/waitKeyPress.js');
 
-// Connecting to OBS's websocket
-connectWs(obs);
+const isGameRunning = true; // TODO - Close OBS and the script on game close
 
 // Starts OBS process
 
@@ -26,42 +26,41 @@ setTimeout(() => {
 // Launching the main app
 
 const main = async () => {
-	const isConnected = await connectWs();
+	const isConnected = await connectWs(obs);
 	if (!isConnected) {
-		// Wait for OBS to start and connect to the WebSocket
-		setTimeout(() => {
-			const reconnect = async () => {
-				try {
-					await obs.connect('ws://127.0.0.1:4455', 'super-sekret', {
-						rpcVersion: 1,
-					});
-					console.log('Connected to OBS WebSocket');
-					await createNewScene(obs);
-				} catch (error) {
-					console.error(
-						'Failed to connect to OBS WebSocket',
-						error.code,
-						error.message
-					);
-					// Reconnect after 5 seconds
-					setTimeout(reconnect, 5000);
-				}
-			};
-			reconnect();
+		setTimeout(async () => {
+			try {
+				console.log('Reconnecting...');
+				await main(); // Await the recursive call to prevent overlapping
+			} catch (err) {
+				console.log(err);
+			}
 		}, 5000);
-	} else {
-		await createNewScene(obs);
+		return;
 	}
+	await createNewScene(obs);
+	await audioSetup(obs);
+	await videoSetup(obs);
+	await startRecord(obs);
+	console.log('Should run if connected');
 };
 
 main();
 
 // TESTING RECORD FEATURE  :
 
-setTimeout(() => {
+async function startRecord() {
+	setTimeout(() => {
+		startRecording(obs);
+		setTimeout(() => {
+			stopRecording(obs);
+		}, 3000);
+	}, 5000);
+}
+/* setTimeout(() => {
 	audioSetup(obs);
 	startRecording(obs);
 	setTimeout(() => {
 		stopRecording(obs);
 	}, 5000);
-}, 10000);
+}, 6700); */

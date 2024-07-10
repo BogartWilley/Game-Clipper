@@ -16,8 +16,8 @@ const audioSetup = async (obs, game) => {
 			inputName: 'KOF XIII Audio Capture',
 			inputKind: 'wasapi_process_output_capture',
 			inputSettings: {
-				window: 'The King Of Fighters XIII',
-				device_id: '[explorer.exe]: Immagini', // Specify the correct device_id here
+				window:
+					'The King of Fighters XIII:F9D96469-6208-4609-AA55-1192042585C3:kofxiii.exe',
 			},
 			sceneItemEnabled: true,
 		});
@@ -33,17 +33,36 @@ const videoSetup = async (obs, game) => {
 			inputName: 'KOF XIII Video Capture',
 			inputKind: 'game_capture',
 			inputSettings: {
-				mode: 'window',
-				window: 'kofxiii.exe',
-				window_priority: 0, // Optional: Window priority (0 = Normal, 1 = Above normal, -1 = Below normal)
+				capture_mode: 'window',
+				window:
+					'The King of Fighters XIII:F9D96469-6208-4609-AA55-1192042585C3:kofxiii.exe', // TODO - fetch and embeed OBS's window uuid
 				window_match_priority: true,
+				window_priority: 0,
 			},
 			sceneItemEnabled: true,
 		});
+
 		console.log(video);
 	} catch (error) {
 		console.error('Error creating game capture input:', error);
 	}
 };
 
-module.exports = { audioSetup, videoSetup };
+//  ---------- TESTING FUNCTIONS ----------
+const logSettings = async (obs, type) => {
+	if (type === 'video') {
+		const video = await obs.call('GetInputSettings', {
+			inputName: 'KOF XIII Video Capture',
+		});
+		console.log(video);
+		return;
+	}
+	if (type === 'audio') {
+		const audio = await obs.call('GetInputSettings', {
+			inputName: 'KOF XIII Audio Capture',
+		});
+		console.log(audio);
+	}
+};
+
+module.exports = { audioSetup, videoSetup, logSettings };

@@ -3,7 +3,11 @@ const obs = new OBSWebSocket();
 const { getSceneName, createNewScene } = require('./utils/scene.js');
 const connectWs = require('./utils/connect.js');
 const launchObs = require('./utils/launchObs.js');
-const { audioSetup, videoSetup } = require('./utils/captureSetup.js');
+const {
+	audioSetup,
+	videoSetup,
+	logSettings,
+} = require('./utils/captureSetup.js');
 const {
 	startRecording,
 	pauseRecording,
@@ -41,7 +45,11 @@ const main = async () => {
 	await createNewScene(obs);
 	await audioSetup(obs);
 	await videoSetup(obs);
-	await startRecord(obs);
+	console.log('LOGGING AUDIO SETTINGS');
+	logSettings(obs, 'audio');
+	console.log('LOGGING VIDEO SETTINGS');
+	logSettings(obs, 'video');
+	// await startRecord(obs);
 	console.log('Should run if connected');
 };
 

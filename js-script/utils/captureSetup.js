@@ -1,13 +1,3 @@
-/* 
-LIST ALL POSSIBLE inputKind
-const audioSetup = async (obs) => {
-	const audio = await obs.call('GetInputKindList', {
-		unversioned: false,
-	});
-	console.log(audio);
-}; 
-*/
-
 const audioSetup = async (obs, game) => {
 	try {
 		// Replace 'kofxiii.exe' and 'The King Of Fighters XIII' with your actual values

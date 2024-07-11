@@ -5,7 +5,7 @@ const {
 	isSourcePresent,
 	audioSetup,
 	videoSetup,
-} = require('../utils/scene-setup/captureSetup.js');
+} = require('../utils/scene-setup/capture.js');
 
 obs.on('ExitStarted', () => {
 	console.log('Now exiting...');

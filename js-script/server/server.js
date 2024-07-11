@@ -13,7 +13,7 @@ const {
 	audioSetup,
 	videoSetup,
 	isSourcePresent,
-} = require('../utils/scene-setup/captureSetup.js');
+} = require('../utils/scene-setup/capture.js');
 // Action imports
 const {
 	startRecording,

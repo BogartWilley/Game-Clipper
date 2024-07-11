@@ -21,7 +21,7 @@ const {
 	resumeRecording,
 	stopRecording,
 } = require('../utils/actions/recording.js');
-const waitKeyPress = require('./waitKeyPress.js');
+const waitKeyPress = require('../utils/actions/waitKeyPress.js');
 
 const authenticate = (req, res, next) => {
 	/* 	const token = req.headers['authorization'];

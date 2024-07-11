@@ -4,6 +4,7 @@ import pyautogui
 import pygetwindow as gw
 import sys
 import time
+import requests
 run = True
 
 def find_match() :
@@ -43,6 +44,7 @@ def find_match() :
     if max_val > 0.89:
         print("Match found at location", max_loc)
         print("This is the max val ", max_val)
+        requests.get("http://localhost:3000/start-recording")
         cv2.rectangle(img_source, max_loc, (max_loc[0] + w , max_loc[1] + h ), (122,255,255), 5 )
         run = False
         cv2.imshow("Result",img_source)
@@ -55,5 +57,4 @@ def find_match() :
         
 
 while (run == True):
-    # find_match()
     find_match()

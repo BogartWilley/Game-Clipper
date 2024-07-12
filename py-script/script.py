@@ -5,12 +5,17 @@ import pygetwindow as gw
 import sys
 import time
 import requests
-run = True
 
-def find_match() :
+run = True
+selectedGame = ""
+kofxiii_start = "images/win-screen-bezel.png"
+kofxiii_end = "images/win-screen-bezel.png"
+
+def find_match(image) :
     global run
+    global selectedGame
 # Get the window coordinates
-    window = gw.getWindowsWithTitle('The King Of Fighters XIII')
+    window = gw.getWindowsWithTitle('The King Of Fighters XIII') 
     if not (window):
         print("Couldn't find the game's instances...Is it running?")
         sys.exit()
@@ -32,7 +37,8 @@ def find_match() :
     img_source = cv2.resize(img_source, (2560, 1440))
 
 
-    img_test = cv2.imread('images/win-screen-bezel.png')
+    # img_test = cv2.imread('images/win-screen-bezel.png')
+    img_test = cv2.imread(image)
     img_test = cv2.cvtColor(img_test, cv2.COLOR_RGB2GRAY)
 
     result = cv2.matchTemplate(img_source,img_test, cv2.TM_CCOEFF_NORMED)
@@ -44,7 +50,8 @@ def find_match() :
     if max_val > 0.89:
         print("Match found at location", max_loc)
         print("This is the max val ", max_val)
-        requests.get("http://localhost:3000/start-recording")
+        # requests.get("http://localhost:3000/start-recording")
+        sendAction("start","KOF XIII")
         cv2.rectangle(img_source, max_loc, (max_loc[0] + w , max_loc[1] + h ), (122,255,255), 5 )
         run = False
         cv2.imshow("Result",img_source)
@@ -55,6 +62,13 @@ def find_match() :
     else:
         print("No match found", max_val)
         
+def sendAction(action,game):
+    url = f"http://localhost:4609/{action}-recording"
+    headers = {
+        "game": game
+    }
+    response = requests.get(url, headers=headers)
+    return response
 
 while (run == True):
     find_match()

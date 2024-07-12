@@ -1,0 +1,10 @@
+FIRING createNewScene()
+C:\Users\salim\Desktop\Projects\Game-Clipper\js-script\utils\handleErrors.js:15
+                                createNewScene();
+
+TypeError: createNewScene is not a function
+    at Timeout._onTimeout (C:\Users\salim\Desktop\Projects\Game-Clipper\js-script\utils\handleErrors.js:15:5)
+    at listOnTimeout (node:internal/timers:573:17)
+    at process.processTimers (node:internal/timers:514:7)
+
+Node.js v22.3.0

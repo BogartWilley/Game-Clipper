@@ -1,6 +1,8 @@
 # Ignore node modules
 js-script/node_modules/
 js-script/.env
+ERRORS.txt
+
 # Ignore Python libraries
 *.pyc
 __pycache__/

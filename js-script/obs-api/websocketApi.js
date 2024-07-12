@@ -1,36 +1,41 @@
 const { obs } = require('../app.js');
 const { createNewScene } = require('../utils/scene-setup/scene.js');
-const { app } = require('../server/server.js');
 const {
 	isSourcePresent,
 	audioSetup,
 	videoSetup,
 } = require('../utils/scene-setup/capture.js');
+const handleErrors = require('../utils/handleErrors.js');
 
 obs.on('ExitStarted', () => {
 	console.log('Now exiting...');
-	process.exit();
-});
-
-obs.on('Identified', async () => {
-	console.log('Connected to OBS WebSocket');
-	await createNewScene('KOF XIII');
-
-	const sources = await isSourcePresent();
-
-	if (!sources) {
-		console.log('Creating Input Sources...');
-		await audioSetup('KOF XIII');
-		await videoSetup('KOF XIII');
+	try {
+		process.exit();
+	} catch (err) {
+		handleErrors(err);
 	}
 });
 
-obs.on('ConnectionOpened', () => {
-	app.listen(4609, () => {
-		console.log(`Server listening on port 4609`);
-		// TODO: Import the app object from server.js somehow,so that
-		// you can start the server once obs's connection has been established
-	});
+obs.on('Identified', async () => {
+	try {
+		console.log('Connected to OBS WebSocket');
+		await createNewScene('KOF XIII');
+		const sources = await isSourcePresent();
+		if (!sources) {
+			console.log('Creating Input Sources...');
+			await audioSetup('KOF XIII');
+			await videoSetup('KOF XIII');
+		}
+	} catch (err) {
+		handleErrors(err);
+	}
+});
+
+obs.on('MediaInputActionTriggered', () => {
+	const divider = '_';
+	const dividerLine = divider * 50;
+	console.log(dividerLine);
+	console.log('Replay saved');
 });
 
 module.exports = { obs };

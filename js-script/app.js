@@ -2,6 +2,7 @@ const { default: OBSWebSocket } = require('obs-websocket-js');
 const obs = new OBSWebSocket();
 const connectWs = require('./utils/connection/connect.js');
 const launchObs = require('./utils/connection/launchObs.js');
+require('dotenv').config();
 
 const isGameRunning = true; // TODO - Close OBS and the script on game close
 

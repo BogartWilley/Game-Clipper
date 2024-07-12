@@ -1,41 +1,42 @@
 const { obs } = require('../../app');
-
+const handleErrors = require('../handleErrors');
 const startRecording = async () => {
 	try {
-		console.log('Start the recording');
 		const start = await obs.call('StartRecord');
+		console.log('Start the recording');
 	} catch (err) {
 		console.log('Failed to start recording');
-		console.log(err);
+		handleErrors(err);
 	}
 };
 const pauseRecording = async () => {
 	try {
+		const pause = await obs.call('PauseRecord');
 		console.log('Pause the recording');
-		const pause = obs.call('PauseRecord');
 	} catch (err) {
 		console.log('Failed to pause recording');
-		console.log(err);
+		handleErrors(err);
 	}
 };
 const resumeRecording = async () => {
 	try {
-		console.log('Resume the recording');
 		const resume = await obs.call('ResumeRecord');
+		console.log('Resume the recording');
 	} catch (err) {
 		console.log('Failed to resume recording');
-		console.log(err);
+		handleErrors(err);
 	}
 };
 const stopRecording = async () => {
 	try {
+		const stop = await obs.call('StopRecord');
 		console.log('Stop the recording');
-		const stop = obs.call('StopRecord');
 	} catch (err) {
 		console.log('Failed to stop recording');
-		console.log(err);
+		handleErrors(err);
 	}
 };
+
 module.exports = {
 	startRecording,
 	pauseRecording,

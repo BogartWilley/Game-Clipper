@@ -1,61 +1,42 @@
-// Web Server imports
 const { obs } = require('../obs-api/websocketApi.js');
 const express = require('express');
 const app = express();
-const dotenv = require('dotenv').config();
 const PORT = 4609;
-// Setup imports
-const {
-	getSceneName,
-	createNewScene,
-} = require('../utils/scene-setup/scene.js');
-const {
-	audioSetup,
-	videoSetup,
-	isSourcePresent,
-} = require('../utils/scene-setup/capture.js');
+const recordingRoutes = require('./routes/routes.js');
 // Action imports
-const {
-	startRecording,
-	pauseRecording,
-	resumeRecording,
-	stopRecording,
-} = require('../utils/actions/recording.js');
+
 const waitKeyPress = require('../utils/actions/waitKeyPress.js');
+const handleErrors = require('../utils/handleErrors.js');
 
-const authenticate = (req, res, next) => {
-	/* 	const token = req.headers['authorization'];
-	if (token === `Bearer ${AUTH_TOKEN}`) {
-		next();
-	} else {
-		res.status(403).json({ error: 'Invalid Request' });
-	} */
-};
+app.use(express.json());
+app.use('/', recordingRoutes);
 
-app.get('/start-recording', authenticate, async (req, res) => {
-	try {
-		await startRecording();
-		console.log('Recording started');
-		res.status(200).send({ message: 'Recording started' });
-	} catch (err) {
-		console.log('Failed to start the recording');
-		console.log(error);
+app.get('/test', (req, res) => {
+	res.status(200).send({
+		message: `env variable set correctly ${process.env.SELECTED_GAME}`,
+	});
+});
+obs.on('RecordStateChanged', (data) => {
+	console.log('Record state changed:', data);
+	if (!data.outputActive && data.outputPath !== null) {
+		console.log('Recording has finished converting.');
+		// Perform actions after recording has finished converting
 	}
 });
 
-app.get('/stop-recording', authenticate, async (req, res) => {
+// Starts the web server once connected to the websocket
+obs.on('ConnectionOpened', async () => {
 	try {
-		await stopRecording();
-		console.log('Recording stopped');
-		res.status(200).send({ message: 'Recording stopped' });
+		app.listen(4609, () => {
+			console.log(`Server listening on port 4609`);
+			// TODO: Move it to websocketApi.js
+		});
 	} catch (err) {
-		console.log('Failed to stop the recording');
-		console.log(error);
+		handleErrors(err);
 	}
 });
-app.get('/test', (req, res) =>
-	res.status(200).send({ message: 'Get Request Recieved' })
-);
+
+// Exit the process on keypress
 async function exit() {
 	console.log("Press 'Q' to exit...");
 	await waitKeyPress('q');

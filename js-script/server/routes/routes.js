@@ -23,6 +23,9 @@ router.get('/start-recording', authenticate, async (req, res) => {
 
 router.get('/stop-recording', async (req, res) => {
 	try {
+		console.log(process.env.SELECTED_GAME);
+		res.status(200).send({ message: process.env.SELECTED_GAME });
+		return;
 		await stopRecording();
 		console.log('Recording stopped');
 		res.status(200).send({ message: 'Recording stopped' });

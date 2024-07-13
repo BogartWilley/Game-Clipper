@@ -6,7 +6,8 @@ const authenticate = (req, res, next) => {
 		res.status(404).send({ message: 'Invalid game parameter.' }); // TODO: Send a more generic error message
 		return;
 	}
-	if (process.env.SELECTED_GAME !== req.header['game'])
+	console.log(process.env.SELECTED_GAME);
+	if (process.env.SELECTED_GAME !== req.headers['game'])
 		process.env.SELECTED_GAME = req.headers['game'];
 	next();
 	/* 

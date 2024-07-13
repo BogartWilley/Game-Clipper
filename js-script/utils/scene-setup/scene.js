@@ -1,6 +1,5 @@
 const { obs } = require('../../app.js');
 const handleErrors = require('../handleErrors.js');
-console.log(process.env.SELECTED_GAME);
 const getSceneName = async () => {
 	try {
 		const currentScene = await obs.call('GetCurrentProgramScene');
@@ -12,7 +11,6 @@ const getSceneName = async () => {
 	}
 };
 
-console.log(process.env.SELECTED_GAME);
 const createNewScene = async (game) => {
 	let sceneTitle;
 	if (game === 'KOF XIII') sceneTitle = 'The King Of Fighters XIII Replay';

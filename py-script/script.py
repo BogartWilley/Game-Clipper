@@ -5,15 +5,22 @@ import pygetwindow as gw
 import sys
 import time
 import requests
+import os
+from dotenv import load_dotenv
+load_dotenv(dotenv_path='../.env')
 
 run = True
-selectedGame = ""
+
 kofxiii_start = "images/win-screen-bezel.png"
 kofxiii_end = "images/win-screen-bezel.png"
 
 def find_match(image) :
     global run
     global selectedGame
+    game_env_var = os.getenv("SELECTED_GAME")
+    print(game_env_var)
+    run = False
+    return 
 # Get the window coordinates
     window = gw.getWindowsWithTitle('The King Of Fighters XIII') 
     if not (window):
@@ -71,4 +78,4 @@ def sendAction(action,game):
     return response
 
 while (run == True):
-    find_match()
+    find_match("selectedGame")

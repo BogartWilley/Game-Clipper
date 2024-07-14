@@ -1,6 +1,5 @@
-const { createNewScene } = require('./scene-setup/scene');
-
-function handleErrors(err) {
+const selectedGame = process.env.SELECTED_GAME;
+function handleErrors(err, cb) {
 	// Adds colored error messages
 	console.log(`\x1b[31m--- ERROR: \x1b[33m${err.code}\x1b[31m ---\x1b[0m`);
 	function printError(message) {
@@ -12,7 +11,7 @@ function handleErrors(err) {
 			console.log('Retrying...');
 			setTimeout(() => {
 				console.log('FIRING createNewScene()');
-				createNewScene();
+				cb;
 			}, 500);
 			break;
 		}

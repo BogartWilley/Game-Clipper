@@ -12,9 +12,7 @@ app.use(express.json());
 app.use('/', recordingRoutes);
 
 app.get('/test', (req, res) => {
-	process.env.SELECTED_GAME = 'asjido';
 	console.log(process.env.SELECTED_GAME);
-
 	res.status(200).send({
 		message: `env variable set correctly ${process.env.SELECTED_GAME}`,
 	});

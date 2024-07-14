@@ -16,16 +16,22 @@ obs.on('ExitStarted', () => {
 	}
 });
 
-obs.on('Identified', async () => {
+obs.on('Identified', () => {
 	try {
-		console.log('Connected to OBS WebSocket');
-		await createNewScene('KOF XIII');
-		const sources = await isSourcePresent();
-		if (!sources) {
-			console.log('Creating Input Sources...');
-			await audioSetup('KOF XIII');
-			await videoSetup('KOF XIII');
-		}
+		// Assures that the program is ready to process requests
+		setTimeout(async () => {
+			console.log('Connected to OBS WebSocket');
+			await createNewScene('KOF XIII');
+			const sources = await isSourcePresent();
+			if (!sources) {
+				console.log('Creating Input Sources...');
+				await audioSetup('KOF XIII');
+				await videoSetup('KOF XIII');
+			}
+			const alertServer = fetch('http://localhost:4609/obs-ready', {
+				method: 'GET',
+			});
+		}, 1000);
 	} catch (err) {
 		handleErrors(err);
 	}

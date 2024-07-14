@@ -1,3 +1,4 @@
+const fs = require('fs');
 const authenticate = (req, res, next) => {
 	// Header Verification
 	// TODO : check if this game is supported
@@ -9,6 +10,11 @@ const authenticate = (req, res, next) => {
 	console.log(process.env.SELECTED_GAME);
 	if (process.env.SELECTED_GAME !== req.headers['game'])
 		process.env.SELECTED_GAME = req.headers['game'];
+	fs.writeFileSync(
+		'.env',
+		`SELECTED_GAME=${process.env.SELECTED_GAME}`,
+		'utf8'
+	);
 	next();
 	/* 
 	// Token Verification

@@ -24,7 +24,7 @@ const createNewScene = async (game) => {
 			sceneName: sceneTitle,
 		});
 	} catch (err) {
-		handleErrors(err);
+		handleErrors(err, createNewScene);
 	}
 };
 

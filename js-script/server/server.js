@@ -11,12 +11,6 @@ const handleErrors = require('../utils/handleErrors.js');
 app.use(express.json());
 app.use('/', recordingRoutes);
 
-app.get('/test', (req, res) => {
-	console.log(process.env.SELECTED_GAME);
-	res.status(200).send({
-		message: `env variable set correctly ${process.env.SELECTED_GAME}`,
-	});
-});
 obs.on('RecordStateChanged', (data) => {
 	console.log('Record state changed:', data);
 	if (!data.outputActive && data.outputPath !== null) {

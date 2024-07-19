@@ -1,0 +1,46 @@
+[33m5aaab16[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: reset: moving to 5aaab16
+[33m3a08cb0[m HEAD@{1}: reset: moving to 3a08cb0
+[33m70f8bb2[m HEAD@{2}: checkout: moving from main to main
+[33m70f8bb2[m HEAD@{3}: pull: Merge made by the 'ort' strategy.
+[33mf1f6137[m HEAD@{4}: checkout: moving from main to main
+[33mf1f6137[m HEAD@{5}: rebase (finish): returning to refs/heads/main
+[33mf1f6137[m HEAD@{6}: rebase (start): checkout e17aedfc8e96809b4a5183b0e833588f02973d88
+[33mf1f6137[m HEAD@{7}: rebase (finish): returning to refs/heads/main
+[33mf1f6137[m HEAD@{8}: rebase (pick): add electron-app
+[33m4a94dc5[m HEAD@{9}: rebase (pick): improve logic for template matching function
+[33m77ca8fd[m HEAD@{10}: rebase (pick): improve endpoints error handling + add setTimeout to ensure obs started
+[33m47462da[m HEAD@{11}: rebase (pick): fix headers typo
+[33ma9f848d[m HEAD@{12}: rebase (pick): add initial python get request
+[33m2c009cc[m HEAD@{13}: rebase (pick): Send inital python get request
+[33me17aedf[m HEAD@{14}: rebase (start): checkout e17aedfc8e96809b4a5183b0e833588f02973d88
+[33m7aa49fa[m HEAD@{15}: rebase (finish): returning to refs/heads/main
+[33m7aa49fa[m HEAD@{16}: rebase (start): checkout 2105426
+[33m7aa49fa[m HEAD@{17}: rebase (finish): returning to refs/heads/main
+[33m7aa49fa[m HEAD@{18}: rebase (pick): add electron-app
+[33ma45ec41[m HEAD@{19}: rebase (pick): improve logic for template matching function
+[33m6bf4f11[m HEAD@{20}: rebase (pick): improve endpoints error handling + add setTimeout to ensure obs started
+[33mae892cc[m HEAD@{21}: rebase (pick): fix headers typo
+[33m699036d[m HEAD@{22}: rebase (pick): add initial python get request
+[33md299f80[m HEAD@{23}: rebase (pick): Send inital python get request
+[33m2105426[m HEAD@{24}: rebase (start): checkout 2105426
+[33m3a08cb0[m HEAD@{25}: commit: add electron-app
+[33m5aaab16[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{26}: commit: improve logic for template matching function
+[33m813ab94[m HEAD@{27}: commit: improve endpoints error handling + add setTimeout to ensure obs started
+[33m56cdece[m HEAD@{28}: commit: fix headers typo
+[33m586d693[m HEAD@{29}: pull: Fast-forward
+[33mb3e09f2[m HEAD@{30}: commit: created auth middleware,read/write game's name as env variable,move routes into separated file
+[33m0fdf6ac[m HEAD@{31}: commit: change directory path
+[33mf1e3fe0[m HEAD@{32}: commit (merge): change directory name
+[33m7adc1eb[m HEAD@{33}: commit: change directory name
+[33m35fddca[m HEAD@{34}: commit: create webserver to recieve request from pyscript
+[33mf7eab5f[m HEAD@{35}: pull: Merge made by the 'ort' strategy.
+[33m8007c44[m HEAD@{36}: commit: capture correct game window and audio source
+[33m7a45b89[m HEAD@{37}: commit: capture correct game window and audio source
+[33m73ee276[m HEAD@{38}: commit: create obs scenes for audio and video
+[33m9fadf05[m HEAD@{39}: commit: Added a template picture for testing
+[33mb41afe3[m[33m ([m[1;31morigin/Dev-Branch[m[33m)[m HEAD@{40}: commit: Changed .gitignore
+[33m754958f[m HEAD@{41}: pull: Merge made by the 'ort' strategy.
+[33mdc119ad[m HEAD@{42}: commit: Changed .gitignore
+[33mf233d42[m HEAD@{43}: commit: Initial Commit
+[33mda9e33b[m HEAD@{44}: Branch: renamed refs/heads/main to refs/heads/main
+[33mda9e33b[m HEAD@{46}: commit (initial): first commit

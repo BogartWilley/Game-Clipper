@@ -9,10 +9,20 @@ from utils.send_action import send_action
 
 load_dotenv(dotenv_path='../.env')
 
-selected_game = os.getenv("SELECTED_GAME")
 
+
+# selected_game = os.getenv("SELECTED_GAME")
+selected_game = "KOF XIII"
+
+
+
+print("Selected game:", selected_game)
+
+# Base directory for images
+# Update the path to match the actual location of your images
 kofxiii_start = "images/test-image.png"
 kofxiii_end = "images/win-screen-bezel.png"
+
 
 def find_match(game, action):
     image = ""

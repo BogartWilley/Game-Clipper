@@ -1,11 +1,21 @@
-# Ignore node modules
+# JS ignores
 js-script/node_modules/
 js-script/.env
 ERRORS.txt
 
-# Ignore Python libraries
+# Python ignores
 *.pyc
 __pycache__/
+py-script/dist
+py-script/build
+py-script/*.exe
+py-script/*.spec
+
+# Electron Ignores
+
+electron.app/Game-Clipper-App
+
+
 
 # Ignore other files and directories
 *.log

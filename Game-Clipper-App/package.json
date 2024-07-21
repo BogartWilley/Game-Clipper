@@ -2,7 +2,7 @@
   "name": "game-clipper-app",
   "version": "1.0.0",
   "description": "An Electron application with React",
-  "main": "./out/main/index.js",
+  "main": "./dist/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
   "scripts": {
@@ -20,6 +20,7 @@
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.1",
     "@electron-toolkit/utils": "^3.0.0",
+    "asar": "^3.2.0",
     "electron-updater": "^6.1.7"
   },
   "devDependencies": {
@@ -35,5 +36,31 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite": "^5.3.1"
+  },
+  "build": {
+    "appId": "345",
+    "productName": "GameClipper",
+    "files": [
+      "dist/**/*",
+      {
+        "from": "compiled-scripts",
+        "to": "resources/compiled-scripts",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ],
+    "directories": {
+      "buildResources": "resources"
+    },
+    "extraResources": [
+      {
+        "from": "compiled-scripts",
+        "to": "compiled-scripts",
+        "filter": [
+          "**/*"
+        ]
+      }
+    ]
   }
 }

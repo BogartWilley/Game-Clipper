@@ -2,7 +2,7 @@
   "name": "game-clipper-app",
   "version": "1.0.0",
   "description": "An Electron application with React",
-  "main": "./out/main/index.js",
+  "main": "./dist/main/index.js",
   "author": "example.com",
   "homepage": "https://electron-vite.org",
   "scripts": {
@@ -35,5 +35,8 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "vite": "^5.3.1"
+  },
+  "build": {
+    "files": ["out/**/*", "compiled-scripts/*"]
   }
 }

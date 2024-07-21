@@ -73,24 +73,37 @@ app.on('window-all-closed', () => {
 })
 // IPC handler for running the Python script
 ipcMain.on('run-python-script', (event) => {
-  const pyScriptPath = path.join(__dirname, '..', '..', '..', '..', 'py-script', 'script.py')
+  try {
+    const exePath = path.join(
+      __dirname,
+      '..',
+      '..',
+      '..',
 
-  const py = spawn('python', [pyScriptPath])
+      'compiled-scripts',
+      'script.exe'
+    )
+    console.log('Logging the path now')
+    console.log(exePath)
+    const py = spawn(exePath)
 
-  py.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`)
-    event.reply('python-script-output', data.toString())
-  })
+    py.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`)
+      event.reply('python-script-output', data.toString())
+    })
 
-  py.stderr.on('data', (data) => {
-    console.error(`stderr: ${data}`)
-    event.reply('python-script-error', data.toString())
-  })
+    py.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`)
+      event.reply('python-script-error', data.toString())
+    })
 
-  py.on('close', (code) => {
-    console.log(`child process exited with code ${code}`)
-    event.reply('python-script-close', code)
-  })
+    py.on('close', (code) => {
+      console.log(`child process exited with code ${code}`)
+      event.reply('python-script-close', code)
+    })
+  } catch (err) {
+    console.log(err)
+  }
 })
 
 // In this file you can include the rest of your app"s specific main process

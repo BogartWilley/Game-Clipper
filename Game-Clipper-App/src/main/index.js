@@ -4,7 +4,6 @@ import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { spawn } from 'node:child_process'
 import path from 'path'
 import icon from '../../resources/icon.png?asset'
-
 function createWindow() {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -54,6 +53,25 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
+  // Launching webserver
+
+  // Start the server.js
+  // Start the server.js
+  const serverPath = path.join(__dirname, '..', '..', 'obs-webserver', 'server', 'server.js')
+  const server = spawn('node', [serverPath])
+
+  server.stdout.on('data', (data) => {
+    console.log(`server.js stdout: ${data}`)
+  })
+
+  server.stderr.on('data', (data) => {
+    console.error(`server.js stderr: ${data}`)
+  })
+
+  server.on('close', (code) => {
+    console.log(`server.js process exited with code ${code}`)
+  })
+
   createWindow()
 
   app.on('activate', function () {
@@ -78,7 +96,7 @@ ipcMain.on('run-python-script', (event) => {
       __dirname,
       '..',
       '..',
-      '..',
+      // '..',  removes one path for running the app using pnpm dev
 
       'compiled-scripts',
       'script.exe'

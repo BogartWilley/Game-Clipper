@@ -2,6 +2,7 @@ import { app, shell, BrowserWindow, ipcMain } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import { spawn } from 'node:child_process'
+import { existsSync } from 'fs'
 import path from 'path'
 import icon from '../../resources/icon.png?asset'
 function createWindow() {
@@ -26,6 +27,13 @@ function createWindow() {
     shell.openExternal(details.url)
     return { action: 'deny' }
   })
+
+  console.log('Current path')
+  console.log(path.join(process.resourcesPath)) // go up one directory
+
+  console.log('Up one path')
+
+  console.log(path.join(process.resourcesPath, '..')) // go up one directory
 
   // HMR for renderer base on electron-vite cli.
   // Load the remote URL for development or the local html file for production.
@@ -53,25 +61,6 @@ app.whenReady().then(() => {
   // IPC test
   ipcMain.on('ping', () => console.log('pong'))
 
-  // Launching webserver
-
-  // Start the server.js
-  // Start the server.js
-  const serverPath = path.join(__dirname, '..', '..', 'obs-webserver', 'server', 'server.js')
-  const server = spawn('node', [serverPath])
-
-  server.stdout.on('data', (data) => {
-    console.log(`server.js stdout: ${data}`)
-  })
-
-  server.stderr.on('data', (data) => {
-    console.error(`server.js stderr: ${data}`)
-  })
-
-  server.on('close', (code) => {
-    console.log(`server.js process exited with code ${code}`)
-  })
-
   createWindow()
 
   app.on('activate', function () {
@@ -96,10 +85,11 @@ ipcMain.on('run-python-script', (event) => {
       __dirname,
       '..',
       '..',
+      '..',
       // '..',  removes one path for running the app using pnpm dev
 
       'compiled-scripts',
-      'script.exe'
+      'py-script.exe'
     )
     console.log('Logging the path now')
     console.log(exePath)
@@ -118,6 +108,41 @@ ipcMain.on('run-python-script', (event) => {
     py.on('close', (code) => {
       console.log(`child process exited with code ${code}`)
       event.reply('python-script-close', code)
+    })
+  } catch (err) {
+    console.log(err)
+  }
+})
+
+ipcMain.on('run-node-script', (event) => {
+  try {
+    const exePath = path.join(
+      __dirname,
+      '..',
+      '..',
+      '..',
+      // '..',  removes one path for running the app using pnpm dev
+
+      'compiled-scripts',
+      'node-script.exe'
+    )
+    console.log('Logging the path now')
+    console.log(exePath)
+    const node = spawn(exePath)
+
+    node.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`)
+      event.reply('node-script-output', data.toString())
+    })
+
+    node.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`)
+      event.reply('node-script-error', data.toString())
+    })
+
+    node.on('close', (code) => {
+      console.log(`child process exited with code ${code}`)
+      event.reply('node-script-close', code)
     })
   } catch (err) {
     console.log(err)

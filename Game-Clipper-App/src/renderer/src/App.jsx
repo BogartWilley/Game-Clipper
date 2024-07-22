@@ -4,9 +4,9 @@ import Versions from './components/Versions'
 import electronLogo from './assets/electron.svg'
 
 function App() {
-  const ipcHandle = () => window.electron.ipcRenderer.send('ping')
-  const pyIpcHandle = () => {
-    window.electron.ipcRenderer.send('run-python-script')
+  const pongHandle = () => window.electron.ipcRenderer.send('ping')
+  const ipcHandle = (type) => {
+    window.electron.ipcRenderer.send(`run-${type}-script`)
   }
 
   React.useEffect(() => {
@@ -39,13 +39,30 @@ function App() {
           </a>
         </div>
         <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={ipcHandle}>
+          <a target="_blank" rel="noreferrer" onClick={pongHandle}>
             Send IPC
           </a>
         </div>
         <div className="action">
-          <a target="_blank" rel="noreferrer" onClick={pyIpcHandle}>
+          <a
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => {
+              ipcHandle('python')
+            }}
+          >
             Start py script
+          </a>
+        </div>
+        <div className="action">
+          <a
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => {
+              ipcHandle('node')
+            }}
+          >
+            Start node server
           </a>
         </div>
       </div>

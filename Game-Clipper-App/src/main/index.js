@@ -50,7 +50,7 @@ function createWindow() {
 app.whenReady().then(() => {
   // Set app user model id for windows
   electronApp.setAppUserModelId('com.electron')
-
+  startNodeScript()
   // Default open or close DevTools by F12 in development
   // and ignore CommandOrControl + R in production.
   // see https://github.com/alex8088/electron-toolkit/tree/master/packages/utils
@@ -85,7 +85,6 @@ ipcMain.on('run-python-script', (event) => {
       __dirname,
       '..',
       '..',
-      '..',
       // '..',  removes one path for running the app using pnpm dev
 
       'compiled-scripts',
@@ -114,11 +113,10 @@ ipcMain.on('run-python-script', (event) => {
   }
 })
 
-ipcMain.on('run-node-script', (event) => {
+function startNodeScript() {
   try {
     const exePath = path.join(
       __dirname,
-      '..',
       '..',
       '..',
       // '..',  removes one path for running the app using pnpm dev
@@ -132,22 +130,18 @@ ipcMain.on('run-node-script', (event) => {
 
     node.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`)
-      event.reply('node-script-output', data.toString())
     })
 
     node.stderr.on('data', (data) => {
       console.error(`stderr: ${data}`)
-      event.reply('node-script-error', data.toString())
     })
 
     node.on('close', (code) => {
       console.log(`child process exited with code ${code}`)
-      event.reply('node-script-close', code)
     })
   } catch (err) {
     console.log(err)
   }
-})
-
+}
 // In this file you can include the rest of your app"s specific main process
 // code. You can also put them in separate files and require them here.

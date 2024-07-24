@@ -1,0 +1,43 @@
+{
+	"name": "your-app-name",
+	"version": "1.0.0",
+	"main": "src/main.js",
+	"scripts": {
+		"start": "electron .",
+		"build": "electron-builder"
+	},
+	"devDependencies": {
+		"electron": "^31.2.1",
+		"electron-builder": "24.13.0"
+	},
+	"build": {
+		"appId": "com.yourapp.id",
+		"productName": "YourAppName",
+		"files": [
+			"src/**/*",
+			"index.html",
+			"node_modules/**/*",
+			"src/js-script/node-modules/**/*"
+		],
+		"directories": {
+			"output": "dist"
+		},
+		"win": {
+			"target": [
+				"nsis"
+			]
+		}
+	},
+	"dependencies": {
+		"@electron-toolkit/utils": "^3.0.0",
+		"debug": "^4.3.5",
+		"electron-toolkit": "^1.0.24",
+		"eventemitter3": "^5.0.1",
+		"ms": "^2.1.3",
+		"ws": "^8.18.0",
+		"dotenv": "^16.4.5",
+		"express": "^4.19.2",
+		"node-windows": "1.0.0-beta.8",
+		"obs-websocket-js": "^5.0.5"
+	}
+}

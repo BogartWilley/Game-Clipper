@@ -1,9 +1,10 @@
+const express = require('express');
 const { obs } = require('./obs-api/websocketApi.js');
 const { connectWs } = require('./utils/connection/connect.js');
 const launchObs = require('./utils/connection/launchObs.js');
-const express = require('express');
+
 const app = express();
-const PORT = 4609;
+const PORT = process.env.PORT || 4609;
 const recordingRoutes = require('./server/routes/routes.js');
 
 const handleErrors = require('./utils/handleErrors.js');
@@ -12,11 +13,12 @@ app.use(express.json());
 app.use('/', recordingRoutes);
 
 require('dotenv').config({ path: '../../.env' }); // Reads .env from root
-const isGameRunning = true; // TODO - Close OBS and the script on game close
+
+// const isGameRunning = true;  TODO - Close OBS and the script on process kill
 
 // Starts OBS process
 
-const obsProcess = launchObs();
+launchObs();
 
 // Launching the startScript app
 
@@ -31,13 +33,12 @@ const startObs = async () => {
         console.log(err);
       }
     }, 3000);
-    return;
   }
 };
 
 obs.on('ConnectionOpened', async () => {
   try {
-    app.listen(4609, () => {
+    app.listen(PORT, () => {
       console.log(`Server listening on port 4609`);
       // TODO: Move it to websocketApi.js
     });

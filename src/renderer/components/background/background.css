@@ -1,0 +1,12 @@
+.background-image {
+  display: block;
+  position: fixed; /* Make it fixed to stay in place */
+  top: 0;
+  left: 0;
+  width: 100%; /* Cover the full width */
+  height: 100%; /* Cover the full height */
+  background-image: url('./background-images/maxresdefault.jpg'); /* Set the background image */
+  background-size: cover; /* Ensure the image covers the entire div */
+  background-position: center; /* Center the image */
+  z-index: -1; /* Behind other elements */
+}

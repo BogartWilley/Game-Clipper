@@ -6,8 +6,8 @@ export default function Bubble(props: any) {
   return (
     <div>
       <img
-        id="bubble"
         className="bubble"
+        id="bubble"
         src={image}
         onClick={() => {
           window.open(props.URL);

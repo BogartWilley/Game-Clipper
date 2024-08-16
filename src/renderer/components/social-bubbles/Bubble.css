@@ -1,0 +1,8 @@
+.bubble-container {
+  display: inline-block;
+  position: relative;
+  margin: 0;
+  width: 400px;
+  height: 70px;
+  background-color: red;
+}

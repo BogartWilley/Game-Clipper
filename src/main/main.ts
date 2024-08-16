@@ -17,6 +17,8 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { spawn } from 'child_process';
 
+// Figure out how to handle env variables in an electron-app
+
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';

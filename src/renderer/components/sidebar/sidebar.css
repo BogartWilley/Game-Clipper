@@ -9,3 +9,17 @@
   opacity: 0.8;
   background-color: gray;
 }
+.sidebar-toggle:hover {
+  transition: 0.2s;
+  filter: brightness(150%) drop-shadow(0px 0px 10px rgba(255, 255, 255, 0.8));
+}
+.sidebar-toggle:active {
+  filter: brightness(220%) drop-shadow(0px 0px 9px rgba(255, 255, 255, 0.479));
+  transition: all 0.15s ease-in-out;
+}
+
+/* Styling the sidebar's background */
+.MuiDrawer-content.css-16k4q1o-JoyDrawer-content,
+.MuiDrawer-content.css-1jw7p1f-JoyDrawer-content {
+  background-color: rgba(255, 255, 255, 0.671);
+}

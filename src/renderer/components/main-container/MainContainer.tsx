@@ -1,5 +1,5 @@
 import Background from '../background/Background';
-import SideBar from '../sidebar/Drawer';
+import SideBar from '../sidebar/Sidebar';
 import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
 
@@ -7,7 +7,7 @@ export default function MainContainer(props: any) {
   return (
     <div>
       <Background>
-        <SideBar></SideBar>
+        <SideBar style={{ backgroundColor: 'red' }}></SideBar>
         <BubbleContainer>
           {' '}
           <Bubble

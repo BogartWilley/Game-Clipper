@@ -17,7 +17,7 @@ import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { spawn } from 'child_process';
 
-// Figure out how to handle env variables in an electron-app
+const currentGame = process.env.CURRENT_GAME;
 
 class AppUpdater {
   constructor() {
@@ -39,7 +39,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
   }, 2000);
 });
 
-ipcMain.on('run-python-script', (event) => {
+ipcMain.on('run-python-script', (event, game) => {
   try {
     const exePath = path.join(
       __dirname,
@@ -51,10 +51,16 @@ ipcMain.on('run-python-script', (event) => {
       'compiled-scripts',
       'py-script.exe',
     );
-    console.log('Logging the path now');
-    console.log(exePath);
-    const py = spawn(exePath);
+    if (isDebug) {
+      console.log('Logging the path now');
+      console.log(exePath);
+    }
 
+    process.env.CURRENT_GAME = game;
+
+    const py = spawn(exePath, {
+      env: { ...process.env }, // pass env variables to the Python script
+    });
     py.stdout.on('data', (data) => {
       console.log(`stdout: ${data}`);
       event.reply('python-script-output', data.toString());
@@ -74,6 +80,44 @@ ipcMain.on('run-python-script', (event) => {
   }
 });
 
+//
+ipcMain.on('send-env', (event) => {
+  try {
+    const exePath = path.join(
+      __dirname,
+      '..',
+      '..',
+      // '..',
+      // '..',  removes one path for running the app using pnpm dev
+
+      'compiled-scripts',
+      'env_test.exe',
+    );
+
+    const py = spawn(exePath, {
+      env: { ...process.env }, // pass env variables to the Python script
+    });
+    py.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+      event.reply('send-env-output', data.toString());
+    });
+
+    py.stderr.on('data', (data) => {
+      console.error(`stderr: ${data}`);
+      event.reply('send-env-error', data.toString());
+    });
+
+    py.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+      event.reply('send-env-close', code);
+    });
+  } catch (err) {
+    console.log(err);
+  }
+});
+ipcMain.on('change-game', (event, game) => {
+  process.env.CURRENT_GAME = game;
+});
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

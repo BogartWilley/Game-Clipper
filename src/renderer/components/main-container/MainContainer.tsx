@@ -1,7 +1,9 @@
+import { ipcMain } from 'electron';
 import Background from '../background/Background';
 import SideBar from '../sidebar/Sidebar';
 import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
+import { changeGame } from '../../utils/changeGame';
 
 export default function MainContainer(props: any) {
   return (
@@ -31,6 +33,27 @@ export default function MainContainer(props: any) {
             imageSource={require('../social-bubbles/bubble-icons/github-icon.png')}
           ></Bubble>
         </BubbleContainer>
+        <center style={{ marginTop: '250px' }}>
+          <button
+            style={{ width: '140px', height: '60px' }}
+            onClick={() => {
+              window.electron.ipcRenderer.sendMessage('send-env', [
+                'possible arguments',
+              ]);
+            }}
+          >
+            Log Game Variable
+          </button>
+          <button
+            style={{ width: '140px', height: '60px' }}
+            onClick={() => {
+              changeGame('KOF XIII');
+            }}
+            // TODO - CREATE A BUTTON TO START THE PYTHON SCRIPT AND CHANGE ENV VARIABLES
+          >
+            Change Game Variable
+          </button>
+        </center>
       </Background>
     </div>
   );

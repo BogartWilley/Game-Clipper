@@ -9,60 +9,64 @@ from utils.send_action import send_action
 
 load_dotenv(dotenv_path='../.env')
 
+# Utility function to get the path for a bundled resource
+def resource_path(relative_path):
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except AttributeError:
+        base_path = os.path.abspath(".")
+    return os.path.join(base_path, relative_path)
 
 
-# selected_game = os.getenv("CURRENT_GAME")
-selected_game = "KOF XIII"
+# selected_game = "KOF XIII"
+if os.getenv("CURRENT_GAME") is None:
+    os.environ["CURRENT_GAME"] = "KOF XIII"
 
 
-
+selected_game = os.getenv("CURRENT_GAME")
 print("Selected game:", selected_game)
 
 # Base directory for images
-
-
-# Update the path to match the actual location of your images
-kofxiii_start = "images/test-image.png"
-kofxiii_end = "images/win-screen-bezel.png"
 games = {
     "KOF XIII": {
         "window_name": "The King Of Fighters XIII",
-        "start_image": "images/KOF_XIII/test-image.png",
+        "start_image": resource_path("images/KOF_XIII/start-image.png"),
         "stop_images": [
-            "images/KOF_XIII/win-screen-bezel.png",  
-            "images/KOF_XIII/disconnected-screen.png",  
-            "images/KOF_XIII/error-screen-1.png",
-            "images/KOF_XIII/error-screen-2.png"  
+            resource_path("images/KOF_XIII/win-screen-bezel.png"),  
+            resource_path("images/KOF_XIII/disconnected-screen.png"),  
+            resource_path("images/KOF_XIII/error-screen-1.png"),
+            resource_path("images/KOF_XIII/error-screen-2.png")
         ]
     },
     "USF4": {
         "window_name": "Ultra Street Fighter IV",
-        "start_image": "images/USF4/start-image.png",
+        "start_image": resource_path("images/USF4/start-image.png"),
         "stop_images": [
-            "images/USF4/win-screen-bezel.png",  
-            "images/USF4//disconnect-screen.png", 
-            "images/USF4/error-screen1.png",  
-            "images/USF4/error-screen2.png" 
+            resource_path("images/USF4/win-screen-bezel.png"),
+            resource_path("images/USF4/disconnected-screen.png"),
+            resource_path("images/USF4/error-screen-1.png"),
+            resource_path("images/USF4/error-screen-2.png")
         ]
     },
     "GUILTY GEAR STRIVE": {
         "window_name": "Guilty Gear Strive",
-        "start_image": "images/GUILTY_GEAR_STRIVE/start-image.png",
+        "start_image": resource_path("images/GUILTY_GEAR_STRIVE/start-image.png"),
         "stop_images": [
-            "images/GUILTY_GEAR_STRIVE/win-screen-bezel.png",  
-            "images/GUILTY_GEAR_STRIVE/disconnect-screen.png", 
-            "images/GUILTY_GEAR_STRIVE/error-screen1.png",  
-            "images/GUILTY_GEAR_STRIVE/error-screen2.png" 
-        ]    
+            resource_path("images/GUILTY_GEAR_STRIVE/win-screen-bezel.png"),
+            resource_path("images/GUILTY_GEAR_STRIVE/disconnected-screen.png"),
+            resource_path("images/GUILTY_GEAR_STRIVE/error-screen-1.png"),
+            resource_path("images/GUILTY_GEAR_STRIVE/error-screen-2.png")
+        ]
     },
     "TEKKEN 8": {
         "window_name": "Tekken 8",
-        "start_image": "images/TEKKEN_8/start-image.png",
+        "start_image": resource_path("images/TEKKEN_8/start-image.png"),
         "stop_images": [
-            "images/TEKKEN_8/win-screen-bezel.png",  
-            "images/TEKKEN_8/disconnect-screen.png", 
-            "images/TEKKEN_8/error-screen1.png",  
-            "images/TEKKEN_8/error-screen2.png" 
+            resource_path("images/TEKKEN_8/win-screen-bezel.png"),
+            resource_path("images/TEKKEN_8/disconnected-screen.png"),
+            resource_path("images/TEKKEN_8/error-screen-1.png"),
+            resource_path("images/TEKKEN_8/error-screen-2.png")
         ]
     }
 }
@@ -92,8 +96,7 @@ def find_match(game, action):
     img_source = cv2.cvtColor(img_source, cv2.COLOR_BGR2GRAY)
     img_source = cv2.resize(img_source, (2560, 1440))
 
-    for image in images:
-
+    for image in images: 
         img_test = cv2.imread(image)
         img_test = cv2.cvtColor(img_test, cv2.COLOR_RGB2GRAY)
 
@@ -123,3 +126,5 @@ while True:
     elif state == "end":
         if find_match(selected_game, "stop"):
             state = "start"
+
+

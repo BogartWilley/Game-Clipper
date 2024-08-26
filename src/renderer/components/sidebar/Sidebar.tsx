@@ -25,6 +25,7 @@ import {
   Radio,
   RadioGroup,
 } from '@mui/joy';
+import { changeGame } from '../../utils/changeGame';
 export default function Sidebar(props: any) {
   const [open, setOpen] = React.useState(false);
   const [type, setType] = React.useState('Guesthouse');
@@ -121,7 +122,8 @@ export default function Sidebar(props: any) {
             >
               {[
                 {
-                  name: '                 House',
+                  name: '                 KOF XIII',
+                  id: 'KOF XIII',
                   icon: (
                     <img
                       src={KOF_ICON}
@@ -131,16 +133,38 @@ export default function Sidebar(props: any) {
                   ),
                 },
                 {
-                  name: 'Apartment',
-                  icon: <ArrowForward />,
+                  name: '                 USF4',
+                  id: 'USF4',
+                  icon: (
+                    <img
+                      src={KOF_ICON}
+                      width="50px"
+                      style={{ margin: 'auto' }}
+                    ></img>
+                  ),
                 },
                 {
-                  name: 'Guesthouse',
-                  icon: <ArrowForward />,
+                  name: '                 GUILTY GEAR STRIVE',
+                  id: 'GUILTY GEAR STRIVE',
+                  icon: (
+                    <img
+                      src={KOF_ICON}
+                      width="50px"
+                      style={{ margin: 'auto' }}
+                    ></img>
+                  ),
                 },
                 {
-                  name: 'Hotel',
-                  icon: <ArrowForward />,
+                  name: '                 TEKKEN 8',
+                  id: 'TEKKEN 8',
+                  icon: (
+                    <img
+                      src={KOF_ICON}
+                      id="TEKKEN 8"
+                      width="50px"
+                      style={{ margin: 'auto' }}
+                    ></img>
+                  ),
                 },
               ].map((item) => (
                 <Card
@@ -148,6 +172,9 @@ export default function Sidebar(props: any) {
                   sx={{
                     boxShadow: 'none',
                     '&:hover': { bgcolor: 'background.level1' },
+                  }}
+                  onClick={() => {
+                    changeGame(item.id);
                   }}
                 >
                   <CardContent>

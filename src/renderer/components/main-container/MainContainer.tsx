@@ -4,8 +4,10 @@ import SideBar from '../sidebar/Sidebar';
 import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
 import { changeGame } from '../../utils/changeGame';
+import { useState } from 'react';
 
 export default function MainContainer(props: any) {
+  const [processRunning, setProcessRunning] = useState(false);
   return (
     <div>
       <Background>
@@ -37,12 +39,17 @@ export default function MainContainer(props: any) {
           <button
             style={{ width: '140px', height: '60px' }}
             onClick={() => {
-              window.electron.ipcRenderer.sendMessage('send-env', [
-                'possible arguments',
-              ]);
+              if (processRunning) {
+                const userConfirmed = window.confirm(
+                  'The process is already running. Do you want to start it again?',
+                );
+                if (!userConfirmed) return;
+              }
+              window.electron.ipcRenderer.sendMessage('run-python-script', []);
+              setProcessRunning(true);
             }}
           >
-            Log Game Variable
+            Start Recording
           </button>
           <button
             style={{ width: '140px', height: '60px' }}

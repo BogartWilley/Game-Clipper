@@ -39,7 +39,7 @@ ipcMain.on('ipc-example', async (event, arg) => {
   }, 2000);
 });
 
-ipcMain.on('run-python-script', (event, game) => {
+ipcMain.on('run-python-script', (event) => {
   try {
     const exePath = path.join(
       __dirname,
@@ -56,8 +56,6 @@ ipcMain.on('run-python-script', (event, game) => {
       console.log(exePath);
     }
 
-    process.env.CURRENT_GAME = game;
-
     const py = spawn(exePath, {
       env: { ...process.env }, // pass env variables to the Python script
     });
@@ -73,6 +71,7 @@ ipcMain.on('run-python-script', (event, game) => {
 
     py.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
+      console.log('Python script exited');
       event.reply('python-script-close', code);
     });
   } catch (err) {
@@ -80,44 +79,22 @@ ipcMain.on('run-python-script', (event, game) => {
   }
 });
 
-//
-ipcMain.on('send-env', (event) => {
+ipcMain.on('change-game', async (event, game) => {
   try {
-    const exePath = path.join(
-      __dirname,
-      '..',
-      '..',
-      // '..',
-      // '..',  removes one path for running the app using pnpm dev
+    // Set the environment variable
+    process.env.CURRENT_GAME = game;
+    const response = await fetch('http://localhost:4609/change-game');
 
-      'compiled-scripts',
-      'env_test.exe',
-    );
-
-    const py = spawn(exePath, {
-      env: { ...process.env }, // pass env variables to the Python script
-    });
-    py.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
-      event.reply('send-env-output', data.toString());
-    });
-
-    py.stderr.on('data', (data) => {
-      console.error(`stderr: ${data}`);
-      event.reply('send-env-error', data.toString());
-    });
-
-    py.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
-      event.reply('send-env-close', code);
-    });
-  } catch (err) {
-    console.log(err);
+    if (!response.ok) {
+      console.log('Failed to change the game');
+    } else {
+      console.log(`Game changed to ${game}`);
+    }
+  } catch (error) {
+    console.error('Error occurred while changing the game:', error);
   }
 });
-ipcMain.on('change-game', (event, game) => {
-  process.env.CURRENT_GAME = game;
-});
+
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();

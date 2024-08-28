@@ -16,7 +16,6 @@ const audioSetup = async () => {
     });
     console.log(audio);
   } catch (err) {
-    console.log(err);
     handleErrors(err);
   }
 };
@@ -39,7 +38,6 @@ const videoSetup = async () => {
 
     console.log(video);
   } catch (err) {
-    console.log(err);
     handleErrors(err);
   }
 };
@@ -50,14 +48,14 @@ const logSettings = async (type) => {
     updateSelectedGame();
     if (type === 'video') {
       const video = await obs.call('GetInputSettings', {
-        inputName: `${selectedGame.name} Video Capture`,
+        inputName: `GUILTY GEAR STRIVE Video Capture`,
       });
       console.log(video);
       return;
     }
     if (type === 'audio') {
       const audio = await obs.call('GetInputSettings', {
-        inputName: `${selectedGame.name} Audio Capture`,
+        inputName: `GUILTY GEAR STRIVE Audio Capture`,
       });
       console.log(audio);
     }

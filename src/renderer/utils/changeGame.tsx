@@ -8,6 +8,7 @@ const possibleGames: Array<string> = [
 let selectedGame: string = possibleGames[0]; // defaults to the first possible game
 function changeGame(game: string) {
   try {
+    if (!game) return;
     if (selectedGame === game) return;
     if (possibleGames.includes(game)) {
       window.electron.ipcRenderer.sendMessage('change-game', [game]);

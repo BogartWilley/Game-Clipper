@@ -4,6 +4,7 @@ const {
   isSourcePresent,
   audioSetup,
   videoSetup,
+  logSettings,
 } = require('../utils/scene-setup/capture.js');
 const handleErrors = require('../utils/handleErrors.js');
 const { updateSelectedGame } = require('../utils/selectedGame.js');
@@ -48,7 +49,11 @@ obs.on('ReplayBufferSaved', (buff) => {
   console.log('This is the replay buffer : ');
   console.log(buff);
 });
+
 obs.on('InputCreated', () => {
+  logSettings('video');
+  logSettings('audio');
   console.log('input created ');
 });
+
 module.exports = { obs };

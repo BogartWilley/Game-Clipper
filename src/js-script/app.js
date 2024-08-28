@@ -47,16 +47,16 @@ obs.on('ConnectionOpened', async () => {
   }
 });
 
-// // Only use this when you run the script using node
+/* // Only use this when you run the script using node
 
-// const waitKeyPress = require('./utils/actions/waitKeyPress.js');
-// async function exit() {
-//   console.log("Press 'Q' to exit...");
-//   await waitKeyPress('q');
-//   process.exit();
-// }
-// exit();
+const waitKeyPress = require('./utils/actions/waitKeyPress.js');
+async function exit() {
+  console.log("Press 'Q' to exit...");
+  await waitKeyPress('q');
+  process.exit();
+}
+exit();
 
-// startObs();
+startObs(); */
 
 module.exports = { obs, startObs };

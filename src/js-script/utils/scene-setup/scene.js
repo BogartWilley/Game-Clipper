@@ -15,8 +15,6 @@ const getSceneName = async () => {
 const createNewScene = async () => {
   try {
     const selectedGame = updateSelectedGame();
-    console.log('THIS IS THE SELECT GAME OBJ');
-    console.log(selectedGame);
     await obs.call('CreateScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });

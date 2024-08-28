@@ -26,9 +26,11 @@ import {
   RadioGroup,
 } from '@mui/joy';
 import { changeGame } from '../../utils/changeGame';
+import { StyledListItemButton } from '@mui/joy/ListItemButton/ListItemButton';
 export default function Sidebar(props: any) {
   const [open, setOpen] = React.useState(false);
   const [type, setType] = React.useState('Guesthouse');
+  const [currentGame, setCurrentGame] = React.useState('');
   return (
     <React.Fragment>
       <AnimatePresence>
@@ -104,8 +106,8 @@ export default function Sidebar(props: any) {
           <ModalClose id="close-icon" sx={{ position: 'initial' }} />
         </Box>
         <FormControl>
-          <FormLabel sx={{ typography: 'title-md', fontWeight: 'bold' }}>
-            Property type
+          <FormLabel sx={{ typography: 'title-lg', fontWeight: 'bold' }}>
+            Available Games
           </FormLabel>
           <RadioGroup
             value={type || ''}
@@ -174,7 +176,7 @@ export default function Sidebar(props: any) {
                     '&:hover': { bgcolor: 'background.level1' },
                   }}
                   onClick={() => {
-                    changeGame(item.id);
+                    setCurrentGame(item.id);
                   }}
                 >
                   <CardContent>
@@ -218,10 +220,20 @@ export default function Sidebar(props: any) {
             '& > div': { justifyContent: 'center' },
           }}
         >
-          <ListItemButton>Available Games</ListItemButton>
-          <ListItemButton>Studio</ListItemButton>
-          <ListItemButton>Contact</ListItemButton>
+          <ListItemButton style={{ userSelect: 'none' }}>Studio</ListItemButton>
+          <ListItemButton
+            style={{ userSelect: 'none' }}
+            color="success"
+            onClick={() => {
+              currentGame
+                ? changeGame(currentGame)
+                : alert('Please select a game before proceeding');
+            }}
+          >
+            Contact
+          </ListItemButton>
         </List>
+        <button style={{ width: '40px' }}></button>
       </Drawer>
     </React.Fragment>
   );

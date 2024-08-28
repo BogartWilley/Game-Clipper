@@ -24,15 +24,15 @@ router.get('/process-kill', (req, res) => {
   res.status(200).send({ message: 'Process was killed' });
 });
 
-router.get('/change-game', (req, res) => {
+router.get('/change-game', async (req, res) => {
   try {
     const selectedGame = updateSelectedGame();
 
     // CHECK IF THERE'S ALREADY A SCENE, IF NOT THEN CREATE AND SETUP ONE
 
-    createNewScene();
-    audioSetup();
-    videoSetup();
+    await createNewScene();
+    await audioSetup();
+    await videoSetup();
 
     console.log(
       `Current game changed successfully,it is now ${selectedGame.name}`,

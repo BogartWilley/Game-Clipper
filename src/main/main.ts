@@ -16,6 +16,7 @@ import log from 'electron-log';
 import MenuBuilder from './menu';
 import { resolveHtmlPath } from './util';
 import { spawn } from 'child_process';
+import { Notification } from 'electron';
 
 const currentGame = process.env.CURRENT_GAME;
 
@@ -36,6 +37,10 @@ ipcMain.on('ipc-example', async (event, arg) => {
   setTimeout(() => {
     console.log('Running JS script');
     startObs();
+    new Notification({
+      title: 'OBS process started!',
+      body: 'Select a game and confirm to start!',
+    }).show();
   }, 2000);
 });
 
@@ -77,6 +82,19 @@ ipcMain.on('run-python-script', (event) => {
   } catch (err) {
     console.log(err);
   }
+});
+
+ipcMain.on('display-notification', async (event, message) => {
+  // Function to show a notification
+  function showNotification() {
+    new Notification({
+      title: 'Error encountered!',
+      body: `${message}`,
+    }).show();
+  }
+
+  // Call the function to show the notification
+  showNotification();
 });
 
 ipcMain.on('change-game', async (event, game) => {

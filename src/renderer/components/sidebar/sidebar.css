@@ -23,3 +23,16 @@
 .MuiDrawer-content.css-1jw7p1f-JoyDrawer-content {
   background-color: rgba(255, 255, 255, 0.671);
 }
+
+.settings-button {
+  margin-top: '185px';
+  user-select: 'none';
+  background-color: rgb(245, 255, 109, 0.549);
+}
+.settings-button:hover {
+  filter: brightness(132%);
+}
+.settings-button:active {
+  background-color: rgb(245, 255, 109, 0.249);
+  filter: brightness(100%);
+}

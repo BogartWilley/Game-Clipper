@@ -55,11 +55,3 @@ a:hover {
   opacity: 1;
   text-decoration: none;
 }
-.alert {
-  background-color: #f44336; /* Red */
-  color: white;
-  padding: 20px;
-  border-radius: 4px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-}

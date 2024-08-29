@@ -3,6 +3,9 @@
 // Importing Icons
 import ArrowForward from '@mui/icons-material/DoubleArrowTwoTone';
 import KOF_ICON from '../../assets/icons/KOF_XIII.png';
+import USF4_ICON from '../../assets/icons/USF4.png';
+import GGS_ICON from '../../assets/icons/GUILTY_GEAR_STRIVE.png';
+import PH_ICON from '../../assets/icons/PH.png';
 
 // Importing Stles
 import './sidebar.css';
@@ -16,7 +19,7 @@ import List from '@mui/joy/List';
 import ListItemButton from '@mui/joy/ListItemButton';
 import Typography from '@mui/joy/Typography';
 import ModalClose from '@mui/joy/ModalClose';
-import { motion, AnimatePresence, color } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Card,
   CardContent,
@@ -124,7 +127,7 @@ export default function Sidebar(props: any) {
             >
               {[
                 {
-                  name: '                 KOF XIII',
+                  name: 'KOF XIII',
                   id: 'KOF XIII',
                   icon: (
                     <img
@@ -135,33 +138,33 @@ export default function Sidebar(props: any) {
                   ),
                 },
                 {
-                  name: '                 USF4',
+                  name: 'USF4',
                   id: 'USF4',
                   icon: (
                     <img
-                      src={KOF_ICON}
-                      width="50px"
+                      src={USF4_ICON}
+                      width="70px"
                       style={{ margin: 'auto' }}
                     ></img>
                   ),
                 },
                 {
-                  name: '                 GUILTY GEAR STRIVE',
+                  name: 'GUILTY GEAR STRIVE',
                   id: 'GUILTY GEAR STRIVE',
                   icon: (
                     <img
-                      src={KOF_ICON}
+                      src={GGS_ICON}
                       width="50px"
                       style={{ margin: 'auto' }}
                     ></img>
                   ),
                 },
                 {
-                  name: '                 TEKKEN 8',
+                  name: 'TEKKEN 8',
                   id: 'TEKKEN 8',
                   icon: (
                     <img
-                      src={KOF_ICON}
+                      src={PH_ICON}
                       id="TEKKEN 8"
                       width="50px"
                       style={{ margin: 'auto' }}
@@ -181,7 +184,13 @@ export default function Sidebar(props: any) {
                 >
                   <CardContent>
                     {item.icon}
-                    <Typography level="title-md">{item.name}</Typography>
+                    <Typography
+                      level="title-lg"
+                      alignSelf={'center'}
+                      textAlign={'center'}
+                    >
+                      {item.name}
+                    </Typography>
                   </CardContent>
                   <Radio
                     disableIcon
@@ -232,8 +241,8 @@ export default function Sidebar(props: any) {
           >
             Contact
           </ListItemButton>
+          <ListItemButton className="settings-button">Settings</ListItemButton>
         </List>
-        <button style={{ width: '40px' }}></button>
       </Drawer>
     </React.Fragment>
   );

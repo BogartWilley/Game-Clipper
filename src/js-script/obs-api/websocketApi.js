@@ -6,8 +6,8 @@ const {
   videoSetup,
   logSettings,
 } = require('../utils/scene-setup/capture.js');
-const handleErrors = require('../utils/handleErrors.js');
-const { updateSelectedGame } = require('../utils/selectedGame.js');
+const handleErrors = require('../utils/actions/handleErrors.js');
+const { updateSelectedGame } = require('../utils/actions/selectGame.js');
 obs.on('ExitStarted', () => {
   console.log('Now exiting...');
   try {
@@ -39,9 +39,25 @@ obs.on('Identified', () => {
   }
 });
 
-obs.on('RecordStateChanged', (state) => {
+setInterval(async () => {
+  try {
+  } catch (err) {
+    handleErrors(err);
+  }
+}, 500);
+obs.on('RecordStateChanged', async (state) => {
   if (state.outputActive == false && state.outputPath != null) {
     console.log(state);
+    const outputSize = await obs.call('GetRecordStatus');
+    if (outputSize) console.log(outputSize);
+    const response = await fetch('http://localhost:4609/get-output-file', {
+      method: 'POST',
+      body: { path: state.outputPath },
+    });
+    if (response.ok)
+      console.log(`Recording saved successfully in ${state.outputPath}`);
+  } else {
+    console.log('Encountered an error');
   }
   // Saved replay conversion initated, alert IPC
 });

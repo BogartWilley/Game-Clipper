@@ -7,9 +7,9 @@ const {
   stopRecording,
   recordingAction,
 } = require('../../utils/actions/recording');
-const handleErrors = require('../../utils/handleErrors');
+const handleErrors = require('../../utils/actions/handleErrors');
 const authenticate = require('../middlewares/authenticate');
-const { updateSelectedGame } = require('../../utils/selectedGame');
+const { updateSelectedGame } = require('../../utils/actions/selectGame');
 const { createNewScene } = require('../../utils/scene-setup/scene');
 const { audioSetup, videoSetup } = require('../../utils/scene-setup/capture');
 // Process Action
@@ -81,7 +81,4 @@ router.get('/resume-recording', async (req, res) => {
   }
 });
 
-router.all('*', (req, res) => {
-  res.status(400).send({ message: 'Bad Request' });
-});
 module.exports = router;

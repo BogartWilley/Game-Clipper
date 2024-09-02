@@ -1,19 +1,21 @@
 const express = require('express');
+const app = express();
 const { obs } = require('./obs-api/websocketApi.js');
 const { connectWs } = require('./utils/connection/connect.js');
 const launchObs = require('./utils/connection/launchObs.js');
-
-const app = express();
+require('dotenv').config({ path: '../../.env' }); // Reads .env from root
 const PORT = process.env.PORT || 4609;
-const recordingRoutes = require('./server/routes/routes.js');
-
-const handleErrors = require('./utils/handleErrors.js');
+const handleErrors = require('./utils/actions/handleErrors.js');
 
 app.use(express.json());
+
+const recordingRoutes = require('./server/routes/routes.js');
+const uploadRoutes = require('./server/routes/uploadRoutes.js');
 app.use('/', recordingRoutes);
-
-require('dotenv').config({ path: '../../.env' }); // Reads .env from root
-
+app.use('/', uploadRoutes);
+app.all('*', (req, res) => {
+  res.status(400).send({ message: 'Bad Request' });
+});
 // const isGameRunning = true;  TODO - Close OBS and the script on process kill
 
 // Starts OBS process

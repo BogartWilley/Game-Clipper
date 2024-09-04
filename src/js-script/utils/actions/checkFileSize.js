@@ -30,5 +30,4 @@ function setFileOnWatch(filepath) {
     }
   }, 4000);
 }
-setFileOnWatch(filePath);
 module.exports = { getFileSizeInBytes, setFileOnWatch };

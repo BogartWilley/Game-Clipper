@@ -5,6 +5,7 @@ import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
 import { changeGame } from '../../utils/changeGame';
 import { useState } from 'react';
+import { motion, transform } from 'framer-motion';
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
@@ -34,6 +35,14 @@ export default function MainContainer(props: any) {
             URL="https://github.com/SalimOfShadow"
             imageSource={require('../social-bubbles/bubble-icons/github-icon.png')}
           ></Bubble>
+          <motion.div
+            whileHover={{ rotate: 180 }} // Rotate 180 degrees on hover
+          >
+            <Bubble
+              className="setting-button"
+              imageSource={require('../social-bubbles/bubble-icons/setting-icon.png')}
+            ></Bubble>
+          </motion.div>
         </BubbleContainer>
         <center style={{ marginTop: '250px' }}>
           <button

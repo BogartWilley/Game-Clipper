@@ -6,7 +6,7 @@ export default function Bubble(props: any) {
   return (
     <div>
       <img
-        className="bubble"
+        className={`bubble ${props.className}`}
         id="bubble"
         src={image}
         onClick={() => {

@@ -11,14 +11,6 @@ export const setupIpcRoutes = () => {
     const msgTemplate = (pingPong: string) => `IPC test: ${pingPong}`;
     console.log(msgTemplate(arg));
     event.reply('ipc-example', msgTemplate('pong'));
-    setTimeout(() => {
-      console.log('Running JS script');
-      startObs();
-      new Notification({
-        title: 'OBS process started!',
-        body: 'Select a game and confirm to start!',
-      }).show();
-    }, 2000);
   });
 
   ipcMain.on('run-python-script', (event) => {
@@ -75,6 +67,7 @@ export const setupIpcRoutes = () => {
   ipcMain.on('change-game', async (event, game) => {
     try {
       // Set the environment variable
+      console.log(`Game changed to ${game}`);
       process.env.CURRENT_GAME = game;
       const response = await fetch('http://localhost:4609/change-game');
 
@@ -95,5 +88,13 @@ export const setupIpcRoutes = () => {
     var path = dialog.showOpenDialog({
       properties: ['openDirectory'],
     });
+  });
+
+  // Handler from MainContainer.tsx to send env variables
+  ipcMain.handle('get-env-vars', () => {
+    console.log('get-env-variables route called');
+    console.log(process.env.CURRENT_GAME);
+
+    return process.env.CURRENT_GAME;
   });
 };

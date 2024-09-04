@@ -29,4 +29,7 @@ const electronHandler = {
 
 contextBridge.exposeInMainWorld('electron', electronHandler);
 
+contextBridge.exposeInMainWorld('EnvVariables', {
+  products: () => ipcRenderer.invoke('get-env-vars').then((result) => result),
+});
 export type ElectronHandler = typeof electronHandler;

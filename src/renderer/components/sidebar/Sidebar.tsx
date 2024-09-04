@@ -180,6 +180,7 @@ export default function Sidebar(props: any) {
                   }}
                   onClick={() => {
                     setCurrentGame(item.id);
+                    changeGame(item.id);
                   }}
                 >
                   <CardContent>

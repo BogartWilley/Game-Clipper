@@ -6,21 +6,34 @@ import BubbleContainer from '../social-bubbles/BubbleContainer';
 import { changeGame } from '../../utils/changeGame';
 import { useState, useEffect } from 'react';
 import { motion, transform } from 'framer-motion';
-import KOF_XIII_IMAGE from '../background/background-images/d77fb981df1478f7f95ba53da20bbfc865f6cc23.jpg';
-import KOF_XIII_IMAGE2 from '../background/background-images/maxresdefault.jpg';
+import KOF_XIII_IMAGE from '../background/background-images/KOFXIII-Background.png';
+import USF4 from '../background/background-images/USF4-Background.jpg';
+
+declare global {
+  interface Window {
+    EnvVariables: {
+      products: () => Promise<any>;
+    };
+  }
+}
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
-  const [backgroundImage, setBackgroundImage] =
-    useState<string>(KOF_XIII_IMAGE);
-  // useEffect(() => {
-  //   ipcRenderer.on('change-background', () => {
-  //     setBackgroundImage(KOF_XIII_IMAGE2);
-  //   });
-  // }, []);
+  const [backgroundImage, setBackgroundImage] = useState<string>('');
+  const [currentGame, setCurrentGame] = useState<string>('');
+  const getEnvVariables = () => {
+    window.EnvVariables.products().then((result) => {
+      const parsedString = `${result.replace(/\s+/g, '')}-Background.png`;
+      console.log('PARSED STRING' + parsedString);
+      setCurrentGame('result');
+      setBackgroundImage(parsedString);
+    });
+  };
   return (
     <div>
-      <Background picture={backgroundImage}>
+      <Background
+        picture={require(`../background/background-images/${backgroundImage}`)}
+      >
         <SideBar style={{ backgroundColor: 'red' }}></SideBar>
         <BubbleContainer>
           {' '}
@@ -75,12 +88,12 @@ export default function MainContainer(props: any) {
           <button
             style={{ width: '140px', height: '60px' }}
             onClick={() => {
-              changeGame('KOF XIII');
+              getEnvVariables();
             }}
-            // TODO - CREATE A BUTTON TO START THE PYTHON SCRIPT AND CHANGE ENV VARIABLES
           >
             Change Game Variable
           </button>
+          {/* TODO : CHANGE THE BACKGROUND EACH TIME A GAME IT'S CHANGED */}
         </center>
       </Background>
     </div>

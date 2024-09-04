@@ -31,12 +31,19 @@ class AppUpdater {
 
 let mainWindow: BrowserWindow | null = null;
 
-setupIpcRoutes()
-
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
+
+setTimeout(() => {
+  console.log('Running JS script');
+  startObs();
+  new Notification({
+    title: 'OBS process started!',
+    body: 'Select a game and confirm to start!',
+  }).show();
+}, 2000);
 
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
@@ -87,6 +94,7 @@ const createWindow = async () => {
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   mainWindow.on('ready-to-show', () => {
+    setupIpcRoutes();
     if (!mainWindow) {
       throw new Error('"mainWindow" is not defined');
     }

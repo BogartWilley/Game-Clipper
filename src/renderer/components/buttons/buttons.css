@@ -2,7 +2,3 @@
   width: 200px;
   height: 60px;
 }
-.bubble.setting-button:hover {
-  transform: scale(100%);
-  background-color: blue;
-}

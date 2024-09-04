@@ -1,17 +1,26 @@
-import { ipcMain } from 'electron';
+import { ipcRenderer } from 'electron';
 import Background from '../background/Background';
 import SideBar from '../sidebar/Sidebar';
 import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
 import { changeGame } from '../../utils/changeGame';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, transform } from 'framer-motion';
+import KOF_XIII_IMAGE from '../background/background-images/d77fb981df1478f7f95ba53da20bbfc865f6cc23.jpg';
+import KOF_XIII_IMAGE2 from '../background/background-images/maxresdefault.jpg';
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
+  const [backgroundImage, setBackgroundImage] =
+    useState<string>(KOF_XIII_IMAGE);
+  // useEffect(() => {
+  //   ipcRenderer.on('change-background', () => {
+  //     setBackgroundImage(KOF_XIII_IMAGE2);
+  //   });
+  // }, []);
   return (
     <div>
-      <Background>
+      <Background picture={backgroundImage}>
         <SideBar style={{ backgroundColor: 'red' }}></SideBar>
         <BubbleContainer>
           {' '}
@@ -36,7 +45,10 @@ export default function MainContainer(props: any) {
             imageSource={require('../social-bubbles/bubble-icons/github-icon.png')}
           ></Bubble>
           <motion.div
-            whileHover={{ rotate: 180 }} // Rotate 180 degrees on hover
+            initial={{ x: 0, y: 0 }}
+            transition={{ duration: 0.3 }}
+            whileHover={{ rotate: 180 }}
+            style={{ width: 50, height: 50 }}
           >
             <Bubble
               className="setting-button"

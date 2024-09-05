@@ -20,73 +20,72 @@ export default function MainContainer(props: any) {
   const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
   return (
     <div>
+      <SideBar></SideBar>
       <Background
         picture={require(
           `../background/background-images/${parsedCurrentGame}`,
         )}
-      >
-        <SideBar style={{ backgroundColor: 'red' }}></SideBar>
-        <BubbleContainer>
-          {' '}
+        style={{ backgroundColor: 'black' }}
+      ></Background>
+      <BubbleContainer>
+        {' '}
+        <Bubble
+          URL="https://obsproject.com/download"
+          imageSource={require('../social-bubbles/bubble-icons/obs-icon.png')}
+        ></Bubble>
+        <Bubble
+          URL="https://www.youtube.com/@SalimOfShadow"
+          imageSource={require('../social-bubbles/bubble-icons/youtube-icon.png')}
+        ></Bubble>
+        <Bubble
+          URL="https://discord.gg/9KapPHD6jc"
+          imageSource={require('../social-bubbles/bubble-icons/discord-icon.png')}
+        ></Bubble>
+        <Bubble
+          URL="https://steamcommunity.com/id/salimofshadow/"
+          imageSource={require('../social-bubbles/bubble-icons/steam-icon.png')}
+        ></Bubble>
+        <Bubble
+          URL="https://github.com/SalimOfShadow"
+          imageSource={require('../social-bubbles/bubble-icons/github-icon.png')}
+        ></Bubble>
+        <motion.div
+          initial={{ x: 0, y: 0 }}
+          transition={{ duration: 0.3 }}
+          whileHover={{ rotate: 180 }}
+          style={{ width: 50, height: 50 }}
+        >
           <Bubble
-            URL="https://obsproject.com/download"
-            imageSource={require('../social-bubbles/bubble-icons/obs-icon.png')}
+            className="setting-button"
+            imageSource={require('../social-bubbles/bubble-icons/setting-icon.png')}
           ></Bubble>
-          <Bubble
-            URL="https://www.youtube.com/@SalimOfShadow"
-            imageSource={require('../social-bubbles/bubble-icons/youtube-icon.png')}
-          ></Bubble>
-          <Bubble
-            URL="https://discord.gg/9KapPHD6jc"
-            imageSource={require('../social-bubbles/bubble-icons/discord-icon.png')}
-          ></Bubble>
-          <Bubble
-            URL="https://steamcommunity.com/id/salimofshadow/"
-            imageSource={require('../social-bubbles/bubble-icons/steam-icon.png')}
-          ></Bubble>
-          <Bubble
-            URL="https://github.com/SalimOfShadow"
-            imageSource={require('../social-bubbles/bubble-icons/github-icon.png')}
-          ></Bubble>
-          <motion.div
-            initial={{ x: 0, y: 0 }}
-            transition={{ duration: 0.3 }}
-            whileHover={{ rotate: 180 }}
-            style={{ width: 50, height: 50 }}
-          >
-            <Bubble
-              className="setting-button"
-              imageSource={require('../social-bubbles/bubble-icons/setting-icon.png')}
-            ></Bubble>
-          </motion.div>
-        </BubbleContainer>
-        <center style={{ marginTop: '250px' }}>
-          <button
-            style={{ width: '140px', height: '60px' }}
-            onClick={() => {
-              if (processRunning) {
-                const userConfirmed = window.confirm(
-                  'The process is already running. Do you want to start it again?',
-                );
-                if (!userConfirmed) return;
-              }
-              window.electron.ipcRenderer.sendMessage('run-python-script', []);
-              setProcessRunning(true);
-            }}
-          >
-            Start Recording
-          </button>
-          <button
-            style={{ width: '140px', height: '60px' }}
-            onClick={() => {
-              console.log(`This is the game context : ${currentGame}`);
-            }}
-          >
-            Change Game Variable
-          </button>
-          {/* TODO : CHANGE THE BACKGROUND EACH TIME A GAME IT'S CHANGED */}
-        </center>
-      </Background>
+        </motion.div>
+      </BubbleContainer>
+      <center style={{ marginTop: '250px' }}>
+        <button
+          style={{ width: '140px', height: '60px' }}
+          onClick={() => {
+            if (processRunning) {
+              const userConfirmed = window.confirm(
+                'The process is already running. Do you want to start it again?',
+              );
+              if (!userConfirmed) return;
+            }
+            window.electron.ipcRenderer.sendMessage('run-python-script', []);
+            setProcessRunning(true);
+          }}
+        >
+          Start Recording
+        </button>
+        <button
+          style={{ width: '140px', height: '60px' }}
+          onClick={() => {
+            console.log(`This is the game context : ${currentGame}`);
+          }}
+        >
+          Change Game Variable
+        </button>
+      </center>
     </div>
   );
 }

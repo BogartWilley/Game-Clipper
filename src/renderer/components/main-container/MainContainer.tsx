@@ -9,6 +9,7 @@ import { motion, transform } from 'framer-motion';
 import KOF_XIII_IMAGE from '../background/background-images/KOFXIII-Background.png';
 import USF4 from '../background/background-images/USF4-Background.jpg';
 import { useGameContext } from '../../contexts/GameContext';
+import BoxSystemProps from '../settings-container/SettingsContainer';
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
@@ -20,6 +21,7 @@ export default function MainContainer(props: any) {
   const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
   return (
     <div>
+      <BoxSystemProps></BoxSystemProps>
       <SideBar></SideBar>
       <Background
         picture={require(

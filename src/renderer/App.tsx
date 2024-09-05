@@ -1,6 +1,7 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import MainContainer from './components/main-container/MainContainer';
 import Background from './components/background/Background';
+import { GameProvider } from './contexts/GameContext';
 export default function App() {
   return (
     <Router>
@@ -8,9 +9,11 @@ export default function App() {
         <Route
           path="/"
           element={
-            <MainContainer>
-              <Background></Background>
-            </MainContainer>
+            <GameProvider>
+              <MainContainer>
+                <Background></Background>
+              </MainContainer>
+            </GameProvider>
           }
         />
       </Routes>

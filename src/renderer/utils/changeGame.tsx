@@ -11,7 +11,6 @@ function changeGame(game: string) {
     if (!game) return;
     if (selectedGame === game) return;
     if (possibleGames.includes(game)) {
-      window.electron.ipcRenderer.sendMessage('change-game', [game]);
       selectedGame = game;
     } else {
       console.log('Invalid game');

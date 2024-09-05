@@ -27,13 +27,43 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
+  useColorScheme,
 } from '@mui/joy';
 import { changeGame } from '../../utils/changeGame';
 import { StyledListItemButton } from '@mui/joy/ListItemButton/ListItemButton';
+import { PossibleGames, useGameContext } from '../../contexts/GameContext';
 export default function Sidebar(props: any) {
   const [open, setOpen] = React.useState(false);
   const [type, setType] = React.useState('Guesthouse');
-  const [currentGame, setCurrentGame] = React.useState('');
+  const { currentGame, setCurrentGame } = useGameContext();
+
+  const games: Array<{
+    name: string;
+    id: keyof PossibleGames;
+    icon: JSX.Element;
+  }> = [
+    {
+      name: 'KOF XIII',
+      id: 'KOF_XIII',
+      icon: <img src={KOF_ICON} width="50px" style={{ margin: 'auto' }} />,
+    },
+    {
+      name: 'USF4',
+      id: 'USF4',
+      icon: <img src={USF4_ICON} width="70px" style={{ margin: 'auto' }} />,
+    },
+    {
+      name: 'GUILTY GEAR STRIVE',
+      id: 'GUILTY_GEAR_STRIVE',
+      icon: <img src={GGS_ICON} width="50px" style={{ margin: 'auto' }} />,
+    },
+    {
+      name: 'TEKKEN 8',
+      id: 'TEKKEN_8',
+      icon: <img src={PH_ICON} width="50px" style={{ margin: 'auto' }} />,
+    },
+  ];
+
   return (
     <React.Fragment>
       <AnimatePresence>
@@ -125,62 +155,15 @@ export default function Sidebar(props: any) {
                 gap: 1.5,
               }}
             >
-              {[
-                {
-                  name: 'KOF XIII',
-                  id: 'KOF XIII',
-                  icon: (
-                    <img
-                      src={KOF_ICON}
-                      width="50px"
-                      style={{ margin: 'auto' }}
-                    ></img>
-                  ),
-                },
-                {
-                  name: 'USF4',
-                  id: 'USF4',
-                  icon: (
-                    <img
-                      src={USF4_ICON}
-                      width="70px"
-                      style={{ margin: 'auto' }}
-                    ></img>
-                  ),
-                },
-                {
-                  name: 'GUILTY GEAR STRIVE',
-                  id: 'GUILTY GEAR STRIVE',
-                  icon: (
-                    <img
-                      src={GGS_ICON}
-                      width="50px"
-                      style={{ margin: 'auto' }}
-                    ></img>
-                  ),
-                },
-                {
-                  name: 'TEKKEN 8',
-                  id: 'TEKKEN 8',
-                  icon: (
-                    <img
-                      src={PH_ICON}
-                      id="TEKKEN 8"
-                      width="50px"
-                      style={{ margin: 'auto' }}
-                    ></img>
-                  ),
-                },
-              ].map((item) => (
+              {games.map((item) => (
                 <Card
-                  key={item.name}
+                  key={item.id} // Using id is cleaner
                   sx={{
                     boxShadow: 'none',
                     '&:hover': { bgcolor: 'background.level1' },
                   }}
                   onClick={() => {
-                    setCurrentGame(item.id);
-                    changeGame(item.id);
+                    setCurrentGame(item.id); // Works fine without TS errors
                   }}
                 >
                   <CardContent>
@@ -235,9 +218,9 @@ export default function Sidebar(props: any) {
             style={{ userSelect: 'none' }}
             color="success"
             onClick={() => {
-              currentGame
-                ? changeGame(currentGame)
-                : alert('Please select a game before proceeding');
+              if (currentGame === 'USF4') {
+                alert('Please select a game before proceeding!');
+              }
             }}
           >
             Contact

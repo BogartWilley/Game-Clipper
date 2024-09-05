@@ -89,12 +89,4 @@ export const setupIpcRoutes = () => {
       properties: ['openDirectory'],
     });
   });
-
-  // Handler from MainContainer.tsx to send env variables
-  ipcMain.handle('get-env-vars', () => {
-    console.log('get-env-variables route called');
-    console.log(process.env.CURRENT_GAME);
-
-    return process.env.CURRENT_GAME;
-  });
 };

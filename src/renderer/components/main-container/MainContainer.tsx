@@ -8,31 +8,22 @@ import { useState, useEffect } from 'react';
 import { motion, transform } from 'framer-motion';
 import KOF_XIII_IMAGE from '../background/background-images/KOFXIII-Background.png';
 import USF4 from '../background/background-images/USF4-Background.jpg';
-
-declare global {
-  interface Window {
-    EnvVariables: {
-      products: () => Promise<any>;
-    };
-  }
-}
+import { useGameContext } from '../../contexts/GameContext';
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
-  const [backgroundImage, setBackgroundImage] = useState<string>('');
-  const [currentGame, setCurrentGame] = useState<string>('');
-  const getEnvVariables = () => {
-    window.EnvVariables.products().then((result) => {
-      const parsedString = `${result.replace(/\s+/g, '')}-Background.png`;
-      console.log('PARSED STRING' + parsedString);
-      setCurrentGame('result');
-      setBackgroundImage(parsedString);
-    });
-  };
+  const [backgroundImage, setBackgroundImage] = useState<string>(
+    'KOFXIII-Background.png',
+  );
+
+  const { currentGame } = useGameContext();
+  const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
   return (
     <div>
       <Background
-        picture={require(`../background/background-images/${backgroundImage}`)}
+        picture={require(
+          `../background/background-images/${parsedCurrentGame}`,
+        )}
       >
         <SideBar style={{ backgroundColor: 'red' }}></SideBar>
         <BubbleContainer>
@@ -88,7 +79,7 @@ export default function MainContainer(props: any) {
           <button
             style={{ width: '140px', height: '60px' }}
             onClick={() => {
-              getEnvVariables();
+              console.log(`This is the game context : ${currentGame}`);
             }}
           >
             Change Game Variable

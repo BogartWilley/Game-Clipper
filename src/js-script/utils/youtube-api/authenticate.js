@@ -1,7 +1,7 @@
 const { google } = require('googleapis');
 
 // Replace with your own API key
-const API_KEY = 'AIzaSyBi0tvBwaneUzHuRSPNlT1391nao8n5kDY';
+const API_KEY = 'AIzaSyBi0tvBwaneUzHuRSPNlT1391nao8n5kDY'; // Dummy API KEY,don't even try
 
 // Replace with the video ID you want to fetch details for
 const VIDEO_ID = 'OmZLC2bf5-w';

@@ -1,4 +1,4 @@
-# Game Replay Capture App
+# Game Replay Capture App (WIP)
 
 ## Overview
 
@@ -13,14 +13,20 @@ This Electron application is designed specifically for gamers who want to effort
   
 - **OBS Integration**: Uses OBS WebSocket (ws) to precisely find and capture video and audio from the game window only, ensuring that no other applications or windows are recorded.
   
-- **Replay Management**: Once a replay is saved and uploaded to either the VPS or YouTube,the recorded file can optionally be delete from your PC to save storage space.
+- **Replay Management**: Once a replay is saved and uploaded to either the VPS or YouTube,the recorded file can optionally be delete from your PC to save up storage space.
 
 ## How It Works
 
-1. **Game Selection**: Choose from a list of supported games within the app. The program will handle the setup and configuration for the selected game.
+1. **Game Selection**: Choose from a list of supported games within the app. The program will handle the setup and configuration for the selected game on it's own.
    
 2. **Detection**: The app uses OpenCV template matching to detect when a match starts and ends.
    
 3. **Recording**: It communicates with OBS via WebSocket to start and stop recording based on the detected match times.
    
 4. **Seamless Experience**: Enjoy uninterrupted recording of your game sessions with minimal setup.
+
+## - POSSIBLE FUTURE FEATURES -
+
+- **Upload your own image templates to adjust the replay detection and timings to your preferences.**
+- **Signup on your own YouTube channel using OAuth,and manage your replays from there**
+  

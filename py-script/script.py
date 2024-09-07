@@ -4,10 +4,8 @@ import pyautogui
 import pygetwindow as gw
 import sys
 import os
-from dotenv import load_dotenv
 from utils.send_action import send_action
 
-load_dotenv(dotenv_path='../.env')
 
 # Utility function to get the path for a bundled resource
 def resource_path(relative_path):

@@ -1,5 +1,28 @@
+<<<<<<< HEAD
 # Logs
 logs
+=======
+# JS ignores
+js-script/node_modules/
+js-script/.env
+ERRORS.txt
+
+# Python ignores
+*.pyc
+__pycache__/
+py-script/dist
+py-script/build
+py-script/*.exe
+py-script/*.spec
+
+# Electron Ignores
+
+electron.app/Game-Clipper-App
+
+
+
+# Ignore other files and directories
+>>>>>>> main
 *.log
 
 # Runtime data
@@ -17,6 +40,7 @@ node_modules
 
 # OSX
 .DS_Store
+<<<<<<< HEAD
 
 release/app/dist
 release/build
@@ -36,3 +60,7 @@ README.md
 personal-notes/*
 
 
+=======
+notes.txt
+*.exe
+>>>>>>> main

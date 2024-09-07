@@ -7,6 +7,12 @@ import os
 from utils.send_action import send_action
 
 
+
+# Build by running : 
+# pyinstaller --name py-script --onefile --add-data "images;images" script.py
+
+
+
 # Utility function to get the path for a bundled resource
 def resource_path(relative_path):
     try:

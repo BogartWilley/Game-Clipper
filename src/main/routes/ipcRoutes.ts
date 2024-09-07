@@ -19,6 +19,7 @@ export const setupIpcRoutes = () => {
         __dirname,
         '..',
         '..',
+        '..',
         // '..',
         // '..',  removes one path for running the app using pnpm dev
 

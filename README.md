@@ -1,4 +1,4 @@
-# Game Replay Capture App (WIP)
+# Game Replay Capture App (WIP) - By Salim Of Shadow
 
 ## Overview
 

@@ -42,7 +42,6 @@ obs.on('ConnectionOpened', async () => {
   try {
     app.listen(PORT, () => {
       console.log(`Server listening on port 4609`);
-      // TODO: Move it to websocketApi.js
     });
   } catch (err) {
     handleErrors(err);

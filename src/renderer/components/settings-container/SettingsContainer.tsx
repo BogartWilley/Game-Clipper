@@ -1,26 +1,71 @@
-import * as React from 'react';
-import Box from '@mui/joy/Box';
-import { motion } from 'framer-motion';
-import './setting-container.css';
-export default function BoxSystemProps() {
-  // May change into this : https://mui.com/material-ui/react-container/
+import React from 'react';
+import {
+  Box,
+  Typography,
+  TextField,
+  Switch,
+  FormControlLabel,
+  Button,
+  Grid,
+} from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+// Create a theme for custom styling (optional)
+const theme = createTheme({
+  typography: {
+    h4: {
+      fontWeight: 'bold',
+    },
+  },
+});
+
+const SettingsContainer = () => {
   return (
-    <motion.div className="settings-container">
+    <ThemeProvider theme={theme}>
       <Box
+        position="fixed"
+        top="50%"
+        left="50%"
         sx={{
-          height: 480,
-          width: 650,
-          my: 4,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 4,
-          p: 2,
-          border: '2px solid rgb(85, 85, 85)',
-          backgroundColor: 'rgba(156, 156, 156, 0.859)',
+          transform: 'translate(-50%, -50%)',
+          width: '70%',
+          height: '65%',
+          bgcolor: 'white',
+          boxShadow: 3,
+          borderRadius: 2,
+          p: 4,
+          opacity: 1,
         }}
       >
-        This Box uses MUI System props for quick customization.
+        <Typography variant="h4" align="center" gutterBottom>
+          Settings
+        </Typography>
+        <Grid container spacing={3}>
+          {/* Add your setting inputs here */}
+          <Grid item xs={12}>
+            <TextField fullWidth label="Username" variant="outlined" />
+          </Grid>
+
+          <Grid item xs={12}>
+            <TextField fullWidth label="Email" variant="outlined" />
+          </Grid>
+
+          <Grid item xs={12}>
+            <FormControlLabel
+              control={<Switch />}
+              label="Enable Notifications"
+            />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Button fullWidth variant="contained" color="primary">
+              Save Changes
+            </Button>
+          </Grid>
+        </Grid>
       </Box>
-    </motion.div>
+    </ThemeProvider>
   );
-}
+};
+
+export default SettingsContainer;

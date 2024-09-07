@@ -29,7 +29,7 @@ const videoSetup = async () => {
       inputKind: 'game_capture',
       inputSettings: {
         capture_mode: 'window',
-        window: selectedGame.windowId, // TODO - find USFIV's one
+        window: selectedGame.windowId,
         window_match_priority: true,
         window_priority: 0,
       },

@@ -102,7 +102,10 @@ export default function Sidebar(props: any) {
                 borderWidth: '2px',
                 opacity: 0.95,
               }}
-              onClick={() => setOpen(true)}
+              onClick={() => {
+                setOpen(true);
+                props.closeSettings();
+              }}
             >
               <ArrowForward />
             </IconButton>

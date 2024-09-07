@@ -10,8 +10,15 @@ export default function Bubble(props: any) {
         id="bubble"
         src={image}
         onClick={() => {
-          window.open(props.URL);
+          if (props.URL && !props.grayed) window.open(props.URL);
         }}
+        style={
+          props.grayed
+            ? {
+                userSelect: 'none',
+              }
+            : {}
+        }
       ></img>
     </div>
   );

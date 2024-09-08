@@ -10,6 +10,7 @@ import USF4 from '../background/background-images/USF4-Background.jpg';
 import { useGameContext } from '../../contexts/GameContext';
 import SettingsContainer from '../settings-container/SettingsContainer'; // Assuming this is your settings component
 import './main-container.css';
+import { Button } from '@mui/material';
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
@@ -104,31 +105,39 @@ export default function MainContainer(props: any) {
           />
         </motion.div>
       </BubbleContainer>
-      <center style={{ marginTop: '250px' }}>
-        <button
-          style={{ width: '140px', height: '60px' }}
-          onClick={() => {
-            if (processRunning) {
-              const userConfirmed = window.confirm(
-                'The process is already running. Do you want to start it again?',
-              );
-              if (!userConfirmed) return;
-            }
-            window.electron.ipcRenderer.sendMessage('run-python-script', []);
-            setProcessRunning(true);
-          }}
-        >
-          Start Recording
-        </button>
-        <button
-          style={{ width: '140px', height: '60px' }}
-          onClick={() => {
-            console.log(`This is the game context : ${currentGame}`);
-          }}
-        >
-          Change Game Variable
-        </button>
-      </center>
+      {!settingsOpen && (
+        <center style={{ marginTop: '250px' }}>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ mr: 2, width: 140, height: 60 }}
+            onClick={() => {
+              if (processRunning) {
+                const userConfirmed = window.confirm(
+                  'The process is already running. Do you want to start it again?',
+                );
+                if (!userConfirmed) return;
+              }
+              window.electron.ipcRenderer.sendMessage('run-python-script', []);
+              setProcessRunning(true);
+            }}
+          >
+            Start Recording
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            sx={{ width: 140, height: 60, fontSize: 'small' }}
+            onClick={() => {
+              console.log(`This is the game context: ${currentGame}`);
+            }}
+          >
+            Change Game Variable
+          </Button>
+        </center>
+      )}
     </div>
   );
 }

@@ -1,7 +1,6 @@
 import { ipcMain, Notification } from 'electron';
 import path from 'path';
 import { spawn } from 'child_process';
-import { startObs } from '../../js-script/app';
 
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';

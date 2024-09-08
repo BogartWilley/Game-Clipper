@@ -47,6 +47,7 @@ setInterval(async () => {
 }, 500);
 obs.on('RecordStateChanged', async (state) => {
   if (state.outputActive == false && state.outputPath != null) {
+    // The recording has stopped and has finished converting
     console.log(state);
     const outputSize = await obs.call('GetRecordStatus');
     if (outputSize) console.log(outputSize);

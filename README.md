@@ -29,4 +29,5 @@ This Electron application is designed specifically for gamers who want to effort
 
 - **Upload your own image templates to adjust the replay detection and timings to your preferences.**
 - **Signup on your own YouTube channel using OAuth,and manage your replays from there**
+- **Detect players name and characters,to create costum thumbnail**
   

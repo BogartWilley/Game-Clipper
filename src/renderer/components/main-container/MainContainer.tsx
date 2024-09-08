@@ -40,14 +40,18 @@ export default function MainContainer(props: any) {
             key={keyCount}
             transition={{ duration: 0.2 }}
           >
-            <SettingsContainer />
+            <SettingsContainer
+              closeSettings={() => {
+                if (settingsOpen) toggleSettings();
+              }}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
       <SideBar
         closeSettings={() => {
-          if (settingsOpen) setSettingsOpen(false);
+          if (settingsOpen) toggleSettings();
         }}
       />
 

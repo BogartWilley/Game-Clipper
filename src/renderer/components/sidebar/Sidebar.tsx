@@ -1,11 +1,11 @@
 // Refer to https://mui.com/joy-ui/react-drawer/
 
 // Importing Icons
-import ArrowForward from '@mui/icons-material/DoubleArrowTwoTone';
 import KOF_ICON from '../../assets/icons/KOF_XIII.png';
 import USF4_ICON from '../../assets/icons/USF4.png';
 import GGS_ICON from '../../assets/icons/GUILTY_GEAR_STRIVE.png';
 import PH_ICON from '../../assets/icons/PH.png';
+import ArrowForward from '@mui/icons-material/DoubleArrowTwoTone';
 
 // Importing Stles
 import './sidebar.css';
@@ -14,7 +14,6 @@ import * as React from 'react';
 import Box from '@mui/joy/Box';
 import IconButton from '@mui/joy/IconButton';
 import Drawer from '@mui/joy/Drawer';
-import Input from '@mui/joy/Input';
 import List from '@mui/joy/List';
 import ListItemButton from '@mui/joy/ListItemButton';
 import Typography from '@mui/joy/Typography';
@@ -27,10 +26,7 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  useColorScheme,
 } from '@mui/joy';
-import { changeGame } from '../../utils/changeGame';
-import { StyledListItemButton } from '@mui/joy/ListItemButton/ListItemButton';
 import { PossibleGames, useGameContext } from '../../contexts/GameContext';
 export default function Sidebar(props: any) {
   const [open, setOpen] = React.useState(false);

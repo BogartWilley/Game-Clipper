@@ -1,8 +1,6 @@
 import './Bubble.css';
 export default function Bubble(props: any) {
-  const redirectURL = props.URL;
   const image = props.imageSource;
-
   return (
     <div>
       <img
@@ -16,6 +14,7 @@ export default function Bubble(props: any) {
           props.grayed
             ? {
                 userSelect: 'none',
+                pointerEvents: 'none',
               }
             : {}
         }

@@ -9,8 +9,10 @@ from utils.send_action import send_action
 
 
 # Build by running : 
-# pyinstaller --name py-script --onefile --add-data "images;images" script.py
 
+# pyinstaller --name py-script --onefile --add-data "images;images" script.py
+# or  
+# python -m PyInstaller --name py-script --onefile --add-data "images;images" script.py
 
 
 # Utility function to get the path for a bundled resource

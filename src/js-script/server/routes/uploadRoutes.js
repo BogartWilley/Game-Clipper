@@ -7,6 +7,7 @@ const {
   getFileSizeInBytes,
 } = require('../../utils/actions/checkFileSize');
 const handleErrors = require('../../utils/actions/handleErrors');
+const { uploadFile } = require('../../utils/actions/uploadFile');
 
 router.post('/get-output-file', async (req, res) => {
   try {
@@ -16,8 +17,7 @@ router.post('/get-output-file', async (req, res) => {
     console.log(getFileSizeInBytes(filePath));
     console.log(filePath);
     await setFileOnWatch(filePath);
-
-    //UPLOAD TO VPS
+    // uploadFile(); TODO - IMPLEMENT THIS
     res
       .status(200)
       .send({ message: `Checking the file for changes: ${filePath}` });

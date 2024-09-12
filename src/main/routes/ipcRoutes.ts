@@ -14,10 +14,8 @@ export const setupIpcRoutes = () => {
 
   ipcMain.on('run-python-script', (event) => {
     try {
-      console.log(process.versions);
       const exePath = path.join(
         __dirname,
-        '..',
         '..',
         '..',
         // '..',
@@ -82,12 +80,12 @@ export const setupIpcRoutes = () => {
     }
   });
 
-  ipcMain.on('select-download-directory', async (event, message) => {
+  /*   ipcMain.on('select-download-directory', async (event, message) => {
     var remote = require('remote');
     var dialog = remote.require('electron').dialog;
 
     var path = dialog.showOpenDialog({
       properties: ['openDirectory'],
     });
-  });
+  }); */
 };

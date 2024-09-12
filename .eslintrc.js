@@ -30,7 +30,8 @@ module.exports = {
       },
       typescript: {},
     },
-    'import/parsers': {},
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
   },
-  'prettier/prettier': ['error', { endOfLine: 'auto' }],
 };

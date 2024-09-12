@@ -4,6 +4,7 @@ const pathToVideo = 'C:\\Users\\salim\\Videos\\Captures\\test.mp4';
 
 async function uploadFile(filePath) {
   try {
+    console.log(`About to upload a file from this path : ${filePath}`);
     const file = await fs.openAsBlob(filePath);
     const formData = new FormData();
     formData.set('testVideoName', file, 'test.mp4');
@@ -16,5 +17,5 @@ async function uploadFile(filePath) {
   }
 }
 
-uploadFile(pathToVideo);
 module.exports = { uploadFile };
+// ONLY WORKS WHEN HARDCODING THE SAME EXACT PATH

@@ -14,6 +14,7 @@ export const setupIpcRoutes = () => {
 
   ipcMain.on('run-python-script', (event) => {
     try {
+      console.log(process.versions);
       const exePath = path.join(
         __dirname,
         '..',

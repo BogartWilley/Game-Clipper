@@ -14,21 +14,23 @@ let previousTime = Date.now();
 let previousFileSize = 0;
 
 function setFileOnWatch(filepath) {
-  const interval = setInterval(() => {
-    const fileSize = getFileSizeInBytes(filepath);
-    if (previousFileSize != fileSize) {
-      previousFileSize = fileSize;
-      previousTime = Date.now();
-      console.log(`File size changed,it's now : ${fileSize}`);
-    }
+  return new Promise((resolve, reject) => {
+    let interval = setInterval(() => {
+      const fileSize = getFileSizeInBytes(filepath);
+      if (previousFileSize !== fileSize) {
+        previousFileSize = fileSize;
+        previousTime = Date.now();
+        console.log(`File size changed, it's now: ${fileSize}`);
+      }
 
-    if (Date.now() - previousTime > 7000) {
-      previousFileSize = 0;
-      console.log('More than 7 seconds passed');
-      console.log('I should now just exit the interval');
-      clearInterval(interval);
-      return true;
-    }
-  }, 4000);
+      if (Date.now() - previousTime > 7000) {
+        previousFileSize = 0;
+        console.log('More than 7 seconds passed');
+        console.log('Exiting the interval');
+        clearInterval(interval);
+        resolve(true); // Resolve the promise when the condition is met
+      }
+    }, 4000);
+  });
 }
 module.exports = { getFileSizeInBytes, setFileOnWatch };

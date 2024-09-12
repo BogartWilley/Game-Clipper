@@ -14,13 +14,16 @@ router.post('/get-output-file', async (req, res) => {
     console.log('Route called');
     const filePath = req.body.path;
     const fileSize = getFileSizeInBytes(filePath);
-    console.log(getFileSizeInBytes(filePath));
-    console.log(filePath);
-    await setFileOnWatch(filePath);
-    // uploadFile(); TODO - IMPLEMENT THIS
-    res
-      .status(200)
-      .send({ message: `Checking the file for changes: ${filePath}` });
+    const watchResult = await setFileOnWatch(filePath);
+    if (watchResult === true) {
+      await uploadFile(filePath);
+      res.status(200).send({ message: `File is being uploaded: ${filePath}` });
+    } else {
+      // Handle the case where setFileOnWatch fails or returns false
+      res.status(400).send({
+        message: 'Failed to set file on watch. Upload not started.',
+      });
+    }
   } catch (err) {
     handleErrors(err);
     res.status(400).send({

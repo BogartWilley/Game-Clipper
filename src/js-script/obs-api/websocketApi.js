@@ -49,11 +49,16 @@ obs.on('RecordStateChanged', async (state) => {
   if (state.outputActive == false && state.outputPath != null) {
     // The recording has stopped and has finished converting
     console.log(state);
-    const outputSize = await obs.call('GetRecordStatus');
-    if (outputSize) console.log(outputSize);
+    const outputState = await obs.call('GetRecordStatus');
+    if (outputState) console.log(outputState);
     const response = await fetch('http://localhost:4609/get-output-file', {
       method: 'POST',
-      body: { path: state.outputPath },
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        path: state.outputPath,
+      }),
     });
     if (response.ok)
       console.log(`Recording saved successfully in ${state.outputPath}`);

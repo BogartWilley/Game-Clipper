@@ -8,6 +8,7 @@ const {
 } = require('../../utils/actions/checkFileSize');
 const handleErrors = require('../../utils/actions/handleErrors');
 const { uploadFile } = require('../../utils/actions/uploadFile');
+const { deleteFile } = require('../../utils/actions/deleteFile');
 
 router.post('/get-output-file', async (req, res) => {
   try {
@@ -16,10 +17,15 @@ router.post('/get-output-file', async (req, res) => {
     const fileSize = getFileSizeInBytes(filePath);
     const watchResult = await setFileOnWatch(filePath);
     if (watchResult === true) {
-      await uploadFile(filePath);
-      res.status(200).send({ message: `File is being uploaded: ${filePath}` });
+      const uploadResult = await uploadFile(filePath);
+      if (uploadResult === true) {
+        deleteFile(filePath);
+        res
+          .status(200)
+          .send({ message: `File uploaded successfully: ${filePath}` });
+      }
     } else {
-      // Handle the case where setFileOnWatch fails or returns false
+      // Handle the case where setFileOnWatch or uploadResult fails or returns false
       res.status(400).send({
         message: 'Failed to set file on watch. Upload not started.',
       });
@@ -33,10 +39,9 @@ router.post('/get-output-file', async (req, res) => {
   }
 });
 
+// TODO - PRUNE THIS
 router.post('/upload-replay', async (req, res) => {
-  const isDev = true;
-  const VPSURL = isDev ? 'http://localhost:3001' : 'https://salimkof.pro';
-  const videoPath = 'C:\\Users\\salim\\Videos\\test.mp4';
+  const videoPath = 'C:\\Users\\salim\\Videos\\test.mp4'; // TODO - use an env var instead
 
   try {
     // Ensure the video file exists

@@ -164,7 +164,7 @@ export default function Sidebar(props: any) {
                   onClick={() => {
                     setCurrentGame(item.id); // Works fine without TS errors
                     window.electron.ipcRenderer.sendMessage('change-game', [
-                      item.id,
+                      item.name,
                     ]);
                   }}
                 >

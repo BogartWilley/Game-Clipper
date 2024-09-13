@@ -12,9 +12,14 @@ function getFileSizeInBytes(filename) {
 
 let previousTime = Date.now();
 let previousFileSize = 0;
+let watching = false;
 
 function setFileOnWatch(filepath) {
   return new Promise((resolve, reject) => {
+    if (watching) {
+      return reject(new Error('Already watching a file'));
+    }
+    watching = true;
     let interval = setInterval(() => {
       const fileSize = getFileSizeInBytes(filepath);
       if (previousFileSize !== fileSize) {
@@ -27,6 +32,7 @@ function setFileOnWatch(filepath) {
         previousFileSize = 0;
         console.log('More than 7 seconds passed');
         console.log('Exiting the interval');
+        watching = false;
         clearInterval(interval);
         resolve(true); // Resolve the promise when the condition is met
       }

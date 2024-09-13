@@ -45,17 +45,17 @@ const videoSetup = async () => {
 //  ---------- TESTING FUNCTIONS ----------
 const logSettings = async (type) => {
   try {
-    updateSelectedGame();
+    const selectedGame = updateSelectedGame();
     if (type === 'video') {
       const video = await obs.call('GetInputSettings', {
-        inputName: `GUILTY GEAR STRIVE Video Capture`,
+        inputName: `${selectedGame.fullName} Video Capture`,
       });
       console.log(video);
       return;
     }
     if (type === 'audio') {
       const audio = await obs.call('GetInputSettings', {
-        inputName: `GUILTY GEAR STRIVE Audio Capture`,
+        inputName: `${selectedGame.fullName} Audio Capture`,
       });
       console.log(audio);
     }

@@ -26,7 +26,7 @@ router.get('/process-kill', (req, res) => {
 
 router.get('/change-game', async (req, res) => {
   try {
-    const selectedGame = updateSelectedGame();
+    const selectedGame = await updateSelectedGame();
 
     // CHECK IF THERE'S ALREADY A SCENE, IF NOT THEN CREATE AND SETUP ONE
 

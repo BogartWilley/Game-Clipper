@@ -67,6 +67,7 @@ export const setupIpcRoutes = () => {
     try {
       // Set the environment variable
       console.log(`Game changed to ${game}`);
+
       process.env.CURRENT_GAME = game;
       const response = await fetch('http://localhost:4609/change-game');
 

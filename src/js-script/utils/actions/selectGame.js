@@ -29,8 +29,9 @@ const possibleGames = [KOF_XIII, USF4, GGS, TEKKEN_8];
 
 function updateSelectedGame() {
   const selectedGame =
-    possibleGames.find((game) => game.name === process.env.CURRENT_GAME) ||
-    PLACEHOLDER_GAME;
+    possibleGames.find(
+      (game) => game.name.replace(/ /g, '_') === process.env.CURRENT_GAME,
+    ) || PLACEHOLDER_GAME;
   return selectedGame;
 }
 

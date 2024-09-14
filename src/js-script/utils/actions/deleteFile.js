@@ -1,5 +1,5 @@
 const fs = require('fs');
-async function deleteFile(replayPath) {
+function deleteFile(replayPath) {
   fs.unlink(replayPath, (err) => {
     if (err) {
       console.log(err);

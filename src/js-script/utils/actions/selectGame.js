@@ -32,9 +32,8 @@ function updateSelectedGame() {
     `updateSelectedGame fired,this is the env var : ${process.env.CURRENT_GAME}`,
   );
   const selectedGame =
-    possibleGames.find(
-      (game) => game.name.replace(/ /g, '_') === process.env.CURRENT_GAME,
-    ) || PLACEHOLDER_GAME;
+    possibleGames.find((game) => game.name === process.env.CURRENT_GAME) ||
+    PLACEHOLDER_GAME;
   return selectedGame;
 }
 

@@ -14,7 +14,7 @@ const getSceneName = async () => {
 };
 const createNewScene = async () => {
   try {
-    const selectedGame = updateSelectedGame();
+    const selectedGame = await updateSelectedGame();
     await obs.call('CreateScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
@@ -27,7 +27,20 @@ const createNewScene = async () => {
   }
 };
 
+const changeScene = async () => {
+  try {
+    const selectedGame = await updateSelectedGame();
+    await obs.call('SetCurrentProgramScene', {
+      sceneName: `${selectedGame.fullName} Replay`,
+    });
+    console.log(selectedGame);
+  } catch (err) {
+    handleErrors(err);
+  }
+};
+
 module.exports = {
   getSceneName,
   createNewScene,
+  changeScene,
 };

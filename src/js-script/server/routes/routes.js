@@ -10,7 +10,10 @@ const {
 const handleErrors = require('../../utils/actions/handleErrors');
 const authenticate = require('../middlewares/authenticate');
 const { updateSelectedGame } = require('../../utils/actions/selectGame');
-const { createNewScene } = require('../../utils/scene-setup/scene');
+const {
+  createNewScene,
+  changeScene,
+} = require('../../utils/scene-setup/scene');
 const { audioSetup, videoSetup } = require('../../utils/scene-setup/capture');
 // Process Action
 
@@ -33,10 +36,7 @@ router.get('/change-game', async (req, res) => {
     await createNewScene();
     await audioSetup();
     await videoSetup();
-
-    console.log(
-      `Current game changed successfully,it is now ${selectedGame.name}`,
-    );
+    await changeScene();
     res.status(200).send({
       message: `Current game changed successfully,it is now ${selectedGame.name}`,
     });

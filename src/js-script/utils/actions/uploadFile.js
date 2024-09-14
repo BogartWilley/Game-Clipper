@@ -34,6 +34,5 @@ async function uploadFile(filePath) {
     console.log(err);
   }
 }
-uploadFile(pathToVideo);
 module.exports = { uploadFile };
 // ONLY WORKS WHEN HARDCODING THE SAME EXACT PATH

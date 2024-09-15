@@ -9,7 +9,7 @@ const {
 } = require('../../utils/actions/recording');
 const handleErrors = require('../../utils/actions/handleErrors');
 const authenticate = require('../middlewares/authenticate');
-const { updateSelectedGame } = require('../../utils/actions/selectGame');
+const { getSelectedGame } = require('../../utils/actions/selectGame');
 const {
   createNewScene,
   changeScene,
@@ -29,7 +29,7 @@ router.get('/process-kill', (req, res) => {
 
 router.get('/change-game', async (req, res) => {
   try {
-    const selectedGame = await updateSelectedGame();
+    const selectedGame = await getSelectedGame();
 
     // CHECK IF THERE'S ALREADY A SCENE, IF NOT THEN CREATE AND SETUP ONE
 

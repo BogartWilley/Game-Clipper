@@ -27,11 +27,11 @@ const PLACEHOLDER_GAME = {
 
 const possibleGames = [KOF_XIII, USF4, GGS, TEKKEN_8];
 
-function updateSelectedGame() {
+function getSelectedGame() {
   const selectedGame =
     possibleGames.find((game) => game.name === process.env.CURRENT_GAME) ||
     PLACEHOLDER_GAME;
   return selectedGame;
 }
 
-module.exports = { updateSelectedGame };
+module.exports = { getSelectedGame };

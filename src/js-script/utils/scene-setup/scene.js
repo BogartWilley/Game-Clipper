@@ -1,6 +1,6 @@
 const { obs } = require('../connection/connect.js');
 const handleErrors = require('../actions/handleErrors.js');
-const { updateSelectedGame } = require('../actions/selectGame.js');
+const { getSelectedGame } = require('../actions/selectGame.js');
 
 const getSceneName = async () => {
   try {
@@ -14,7 +14,7 @@ const getSceneName = async () => {
 };
 const createNewScene = async () => {
   try {
-    const selectedGame = await updateSelectedGame();
+    const selectedGame = await getSelectedGame();
     await obs.call('CreateScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
@@ -28,7 +28,7 @@ const createNewScene = async () => {
 
 const changeScene = async () => {
   try {
-    const selectedGame = await updateSelectedGame();
+    const selectedGame = await getSelectedGame();
     await obs.call('SetCurrentProgramScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });

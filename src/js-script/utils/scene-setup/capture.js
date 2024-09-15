@@ -1,10 +1,10 @@
 const { obs } = require('../connection/connect.js');
 const handleErrors = require('../actions/handleErrors.js');
-const { updateSelectedGame } = require('../actions/selectGame.js');
+const { getSelectedGame } = require('../actions/selectGame.js');
 
 const audioSetup = async () => {
   try {
-    const selectedGame = updateSelectedGame();
+    const selectedGame = getSelectedGame();
     const audio = await obs.call('CreateInput', {
       sceneName: `${selectedGame.fullName} Replay`,
       inputName: `${selectedGame.name} Audio Capture`,
@@ -20,7 +20,7 @@ const audioSetup = async () => {
 };
 
 const videoSetup = async () => {
-  const selectedGame = updateSelectedGame();
+  const selectedGame = getSelectedGame();
   try {
     const video = await obs.call('CreateInput', {
       sceneName: `${selectedGame.fullName} Replay`,
@@ -33,18 +33,6 @@ const videoSetup = async () => {
         window_priority: 0,
       },
       sceneItemEnabled: true,
-    });
-
-    const getSceneItemId = await obs.call('GetSceneItemId', {
-      sceneName: `${selectedGame.fullName} Replay`,
-      sourceName: `${selectedGame.name} Video Capture`,
-    });
-
-    const scaleFactor = 1080 / 1440; // TODO - RETRIEVE WINDOW'S RESOLUTION AND USE IT HERE
-    const scaleSourceTo1080 = await obs.call('SetSceneItemTransform', {
-      sceneName: `${selectedGame.fullName} Replay`,
-      sceneItemId: getSceneItemId.sceneItemId,
-      sceneItemTransform: { scaleX: scaleFactor, scaleY: scaleFactor },
     });
 
     const setVideoSettings = await obs.call('SetVideoSettings', {
@@ -63,7 +51,7 @@ const videoSetup = async () => {
 //  ---------- TESTING FUNCTIONS ----------
 const logSettings = async (type) => {
   try {
-    const selectedGame = updateSelectedGame();
+    const selectedGame = getSelectedGame();
     if (type === 'video') {
       const video = await obs.call('GetInputSettings', {
         inputName: `${selectedGame.fullName} Video Capture`,

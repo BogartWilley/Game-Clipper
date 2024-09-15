@@ -7,7 +7,7 @@ const {
   logSettings,
 } = require('../utils/scene-setup/capture.js');
 const handleErrors = require('../utils/actions/handleErrors.js');
-const { updateSelectedGame } = require('../utils/actions/selectGame.js');
+const { getSelectedGame } = require('../utils/actions/selectGame.js');
 obs.on('ExitStarted', () => {
   console.log('Now exiting...');
   try {
@@ -21,7 +21,7 @@ obs.on('Identified', () => {
   try {
     // Assures that the program is ready to process requests
     setTimeout(async () => {
-      const selectedGame = updateSelectedGame();
+      const selectedGame = getSelectedGame();
       console.log('Connected to OBS WebSocket');
       await createNewScene();
       const sources = await isSourcePresent();

@@ -18,7 +18,6 @@ const createNewScene = async () => {
     await obs.call('CreateScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
-    console.log('Scene created successfully, setting it as main :');
     await obs.call('SetCurrentProgramScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
@@ -33,7 +32,6 @@ const changeScene = async () => {
     await obs.call('SetCurrentProgramScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
-    console.log(selectedGame);
   } catch (err) {
     handleErrors(err);
   }

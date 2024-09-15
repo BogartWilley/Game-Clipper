@@ -28,9 +28,6 @@ const PLACEHOLDER_GAME = {
 const possibleGames = [KOF_XIII, USF4, GGS, TEKKEN_8];
 
 function updateSelectedGame() {
-  console.log(
-    `updateSelectedGame fired,this is the env var : ${process.env.CURRENT_GAME}`,
-  );
   const selectedGame =
     possibleGames.find((game) => game.name === process.env.CURRENT_GAME) ||
     PLACEHOLDER_GAME;

@@ -47,7 +47,6 @@ setInterval(async () => {
 }, 500);
 obs.on('RecordStateChanged', async (state) => {
   if (state.outputActive == false && state.outputPath != null) {
-    // The recording has stopped and has finished converting
     console.log(state);
     const outputState = await obs.call('GetRecordStatus');
     if (outputState) console.log(outputState);
@@ -72,10 +71,6 @@ obs.on('ReplayBufferSaved', (buff) => {
   console.log(buff);
 });
 
-obs.on('InputCreated', () => {
-  logSettings('video');
-  logSettings('audio');
-  console.log('input created ');
-});
+obs.on('InputCreated', async () => {});
 
 module.exports = { obs };

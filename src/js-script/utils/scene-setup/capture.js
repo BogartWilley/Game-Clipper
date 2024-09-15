@@ -14,7 +14,6 @@ const audioSetup = async () => {
       },
       sceneItemEnabled: true,
     });
-    console.log(audio);
   } catch (err) {
     handleErrors(err);
   }
@@ -36,7 +35,26 @@ const videoSetup = async () => {
       sceneItemEnabled: true,
     });
 
-    console.log(video);
+    const getSceneItemId = await obs.call('GetSceneItemId', {
+      sceneName: `${selectedGame.fullName} Replay`,
+      sourceName: `${selectedGame.name} Video Capture`,
+    });
+
+    const scaleFactor = 1080 / 1440; // TODO - RETRIEVE WINDOW'S RESOLUTION AND USE IT HERE
+    const scaleSourceTo1080 = await obs.call('SetSceneItemTransform', {
+      sceneName: `${selectedGame.fullName} Replay`,
+      sceneItemId: getSceneItemId.sceneItemId,
+      sceneItemTransform: { scaleX: scaleFactor, scaleY: scaleFactor },
+    });
+
+    const setVideoSettings = await obs.call('SetVideoSettings', {
+      baseHeight: 1080,
+      baseWidth: 1920,
+      fpsDenominator: 1,
+      fpsDenominator: 60,
+      outputHeight: 1080,
+      outputWidth: 1920,
+    });
   } catch (err) {
     handleErrors(err);
   }
@@ -60,7 +78,7 @@ const logSettings = async (type) => {
       console.log(audio);
     }
   } catch (err) {
-    console.log(err);
+    handleErrors(err);
   }
 };
 
@@ -74,7 +92,7 @@ const isSourcePresent = async () => {
     });
     return true; // Both sources are present
   } catch (err) {
-    console.log(err.message);
+    handleErrors(err);
     return false;
   }
 };

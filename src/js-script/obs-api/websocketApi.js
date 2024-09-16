@@ -71,6 +71,4 @@ obs.on('ReplayBufferSaved', (buff) => {
   console.log(buff);
 });
 
-obs.on('InputCreated', async () => {});
-
 module.exports = { obs };

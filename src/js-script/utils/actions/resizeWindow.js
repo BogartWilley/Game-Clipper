@@ -8,16 +8,15 @@ async function resizeWindow() {
     sceneName: `${selectedGame.fullName} Replay`,
   });
   const sceneProperties = await obs.call('GetSceneItemTransform', {
-    sceneItemId: sceneId.sceneId,
+    sceneItemId: sceneId.sceneItemId,
     sceneName: `${selectedGame.fullName} Replay`,
   });
 
   console.log(sceneProperties);
-
-  const scaleFactor = 1080 / 1440; // TODO - RETRIEVE WINDOW'S RESOLUTION AND USE IT HERE
+  const scaleFactor = 1080 / sceneProperties.sceneItemTransform.sourceHeight; // TODO - TEST THIS WITH OTHER GAMES AND RESOLUTIONS AS WELL
   const scaleSourceTo1080 = await obs.call('SetSceneItemTransform', {
     sceneName: `${selectedGame.fullName} Replay`,
-    sceneItemId: sceneId.sceneId,
+    sceneItemId: sceneId.sceneItemId,
     sceneItemTransform: { scaleX: scaleFactor, scaleY: scaleFactor }, // "Object containing scene item transform info to update"
   });
 }

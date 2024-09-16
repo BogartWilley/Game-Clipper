@@ -9,6 +9,7 @@ const {
 const handleErrors = require('../../utils/actions/handleErrors');
 const { uploadFile } = require('../../utils/actions/uploadFile');
 const { deleteFile } = require('../../utils/actions/deleteFile');
+const { resizeWindow } = require('../../utils/actions/resizeWindow');
 
 router.post('/get-output-file', async (req, res) => {
   try {
@@ -82,7 +83,7 @@ router.post('/upload-replay', async (req, res) => {
 });
 
 router.get('/ping', (req, res) => {
-  console.log('Pong');
+  resizeWindow();
   res.status(200).send({ message: 'Pong' });
 });
 

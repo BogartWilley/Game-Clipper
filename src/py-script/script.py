@@ -4,6 +4,7 @@ import pyautogui
 import pygetwindow as gw
 import sys
 import os
+import psutil
 from utils.send_action import send_action
 
 
@@ -37,6 +38,7 @@ print("Selected game:", selected_game)
 games = {
     "KOF XIII": {
         "window_name": "The King Of Fighters XIII",
+        "process_name": "kofxiii.exe",
         "start_image": resource_path("images/KOF_XIII/start-image.png"),
         "stop_images": [
             resource_path("images/KOF_XIII/win-screen-bezel.png"),  
@@ -46,7 +48,8 @@ games = {
         ]
     },
     "USF4": {
-        "window_name": "Ultra Street Fighter IV",
+        "window_name": "SSFIVAE",
+        "process_name": "SSFIV.exe",
         "start_image": resource_path("images/USF4/start-image.png"),
         "stop_images": [
             resource_path("images/USF4/win-screen-bezel.png"),
@@ -78,18 +81,43 @@ games = {
 }
 
 
+def check_running_process(process_name):
+    global process_running
+    process_running = False  # Reset the flag before starting the check
+    
+    # Iterate over all running processes
+    for proc in psutil.process_iter(['pid', 'name']):
+        try:
+            # If the process name matches, return True
+            if proc.info['name'].lower() == process_name.lower():
+                print(f"Found the process: {proc.info['name']} with PID: {proc.info['pid']}")
+                process_running = True
+                return True
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return False
+
 def find_match(game, action):
     game_object = games[game]
+    
+    # Check if the process is running
+    process_name = game_object["process_name"]
+    if not process_running: 
+        if not check_running_process(process_name):
+            print(f"Process '{process_name}' is not running. Exiting...")
+            sys.exit()  # Exit if the process is not found
+
     images = []
     if action == "start":
         images = [game_object["start_image"]]
     elif action == "stop":
-            images = game_object["stop_images"]
+        images = game_object["stop_images"]
 
     window = gw.getWindowsWithTitle(game_object["window_name"])
     if not window:
         print("Couldn't find the game's instances...Is it running?")
-        sys.exit()
+        sys.exit()  # Exit if the window is not found
+
     window = window[0]
 
     x = window.left
@@ -123,6 +151,7 @@ def find_match(game, action):
         return False
 
 state = "start"
+process_running = False
 
 while True:
     if state == "start":
@@ -132,5 +161,3 @@ while True:
     elif state == "end":
         if find_match(selected_game, "stop"):
             state = "start"
-
-

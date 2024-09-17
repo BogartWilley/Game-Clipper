@@ -1,6 +1,7 @@
 numpy
 opencv-python
 Pillow
+psutil
 pyautogui
 pygetwindow
 requests

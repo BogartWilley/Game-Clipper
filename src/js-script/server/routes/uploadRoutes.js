@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const fs = require('fs');
 const path = require('path');
+const { obs } = require('../../utils/connection/connect');
 const {
   setFileOnWatch,
   getFileSizeInBytes,
@@ -82,8 +83,7 @@ router.post('/upload-replay', async (req, res) => {
   }
 });
 
-router.get('/ping', (req, res) => {
-  resizeWindow();
+router.get('/ping', async (req, res) => {
   res.status(200).send({ message: 'Pong' });
 });
 

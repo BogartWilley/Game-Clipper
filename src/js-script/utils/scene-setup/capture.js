@@ -1,6 +1,7 @@
 const { obs } = require('../connection/connect.js');
 const handleErrors = require('../actions/handleErrors.js');
 const { getSelectedGame } = require('../actions/selectGame.js');
+const { muteInputs } = require('../actions/muteInputs.js');
 const { resizeWindow } = require('../actions/resizeWindow.js');
 
 const audioSetup = async () => {
@@ -15,6 +16,7 @@ const audioSetup = async () => {
       },
       sceneItemEnabled: true,
     });
+    muteInputs(selectedGame);
   } catch (err) {
     handleErrors(err);
   }
@@ -44,6 +46,7 @@ const videoSetup = async () => {
       outputHeight: 1080,
       outputWidth: 1920,
     });
+    setTimeout(resizeWindow, 500); // otherwise,the sceneItemTransform objects is going to be empty   -- TODO -- Fix this
   } catch (err) {
     handleErrors(err);
   }

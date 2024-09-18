@@ -33,7 +33,6 @@ const changeScene = async () => {
     await obs.call('SetCurrentProgramScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
-    resizeWindow();
   } catch (err) {
     handleErrors(err);
   }

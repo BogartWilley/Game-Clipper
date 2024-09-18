@@ -110,6 +110,7 @@ def find_match(game, action):
     images = []
     if action == "start":
         images = [game_object["start_image"]]
+
     elif action == "stop":
         images = game_object["stop_images"]
 
@@ -128,12 +129,12 @@ def find_match(game, action):
     screenshot = pyautogui.screenshot(region=(x, y, w, h))
     img_source = np.array(screenshot)
     img_source = cv2.cvtColor(img_source, cv2.COLOR_BGR2GRAY)
-    img_source = cv2.resize(img_source, (2560, 1440))   # TODO - FIX THE NON WORKING SOURCE IMAGE FOR USF4
+    # Resizing the image source to 1080p,as the template images were captured at that resolution.
+    img_source = cv2.resize(img_source, (1920, 1080))   # TODO - FIX THE NON WORKING SOURCE IMAGE FOR USF4
 
     for image in images: 
         img_test = cv2.imread(image)
         img_test = cv2.cvtColor(img_test, cv2.COLOR_RGB2GRAY)
-
         result = cv2.matchTemplate(img_source, img_test, cv2.TM_CCOEFF_NORMED)
         min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
 

@@ -1,6 +1,7 @@
 const { obs } = require('../connection/connect.js');
 const handleErrors = require('../actions/handleErrors.js');
 const { getSelectedGame } = require('../actions/selectGame.js');
+const { resizeWindow } = require('../actions/resizeWindow.js');
 
 const getSceneName = async () => {
   try {
@@ -32,6 +33,7 @@ const changeScene = async () => {
     await obs.call('SetCurrentProgramScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
+    resizeWindow();
   } catch (err) {
     handleErrors(err);
   }

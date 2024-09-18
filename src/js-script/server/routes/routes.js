@@ -15,6 +15,7 @@ const {
   changeScene,
 } = require('../../utils/scene-setup/scene');
 const { audioSetup, videoSetup } = require('../../utils/scene-setup/capture');
+const { resizeWindow } = require('../../utils/actions/resizeWindow');
 // Process Action
 
 router.get('/obs-ready', (req, res) => {

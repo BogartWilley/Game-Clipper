@@ -1,6 +1,7 @@
 const { obs } = require('../connection/connect.js');
 const handleErrors = require('../actions/handleErrors.js');
 const { getSelectedGame } = require('../actions/selectGame.js');
+const { resizeWindow } = require('../actions/resizeWindow.js');
 
 const audioSetup = async () => {
   try {

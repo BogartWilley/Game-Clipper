@@ -28,7 +28,7 @@ def resource_path(relative_path):
 
 # selected_game = "KOF XIII"
 if os.getenv("CURRENT_GAME") is None:
-    os.environ["CURRENT_GAME"] = "KOF XIII"
+    os.environ["CURRENT_GAME"] = "USF4"
 
 
 selected_game = os.getenv("CURRENT_GAME")
@@ -41,7 +41,7 @@ games = {
         "process_name": "kofxiii.exe",
         "start_image": resource_path("images/KOF_XIII/start-image.png"),
         "stop_images": [
-            resource_path("images/KOF_XIII/win-screen-bezel.png"),  
+            resource_path("images/KOF_XIII/stop-image.png"),  
             resource_path("images/KOF_XIII/disconnected-screen.png"),  
             resource_path("images/KOF_XIII/error-screen-1.png"),
             resource_path("images/KOF_XIII/error-screen-2.png")
@@ -52,7 +52,7 @@ games = {
         "process_name": "SSFIV.exe",
         "start_image": resource_path("images/USF4/start-image.png"),
         "stop_images": [
-            resource_path("images/USF4/win-screen-bezel.png"),
+            resource_path("images/USF4/stop-image.png"),
             resource_path("images/USF4/disconnected-screen.png"),
             resource_path("images/USF4/error-screen-1.png"),
             resource_path("images/USF4/error-screen-2.png")
@@ -62,7 +62,7 @@ games = {
         "window_name": "Guilty Gear Strive",
         "start_image": resource_path("images/GUILTY_GEAR_STRIVE/start-image.png"),
         "stop_images": [
-            resource_path("images/GUILTY_GEAR_STRIVE/win-screen-bezel.png"),
+            resource_path("images/GUILTY_GEAR_STRIVE/stop-image.png"),
             resource_path("images/GUILTY_GEAR_STRIVE/disconnected-screen.png"),
             resource_path("images/GUILTY_GEAR_STRIVE/error-screen-1.png"),
             resource_path("images/GUILTY_GEAR_STRIVE/error-screen-2.png")
@@ -72,7 +72,7 @@ games = {
         "window_name": "Tekken 8",
         "start_image": resource_path("images/TEKKEN_8/start-image.png"),
         "stop_images": [
-            resource_path("images/TEKKEN_8/win-screen-bezel.png"),
+            resource_path("images/TEKKEN_8/stop-image.png"),
             resource_path("images/TEKKEN_8/disconnected-screen.png"),
             resource_path("images/TEKKEN_8/error-screen-1.png"),
             resource_path("images/TEKKEN_8/error-screen-2.png")
@@ -128,7 +128,7 @@ def find_match(game, action):
     screenshot = pyautogui.screenshot(region=(x, y, w, h))
     img_source = np.array(screenshot)
     img_source = cv2.cvtColor(img_source, cv2.COLOR_BGR2GRAY)
-    img_source = cv2.resize(img_source, (2560, 1440))
+    img_source = cv2.resize(img_source, (2560, 1440))   # TODO - FIX THE NON WORKING SOURCE IMAGE FOR USF4
 
     for image in images: 
         img_test = cv2.imread(image)

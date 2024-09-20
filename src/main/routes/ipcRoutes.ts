@@ -1,7 +1,6 @@
-import { ipcMain, Notification } from 'electron';
+import { ipcMain, Notification, dialog, BrowserWindow } from 'electron';
 import path from 'path';
 import { spawn } from 'child_process';
-
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
@@ -78,12 +77,11 @@ export const setupIpcRoutes = () => {
     }
   });
 
-  /*   ipcMain.on('select-download-directory', async (event, message) => {
-    var remote = require('remote');
-    var dialog = remote.require('electron').dialog;
+  ipcMain.on('select-download-directory', async (event, message) => {
+    let dir;
 
-    var path = dialog.showOpenDialog({
+    dir = dialog.showOpenDialog({
       properties: ['openDirectory'],
     });
-  }); */
+  });
 };

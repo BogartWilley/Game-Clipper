@@ -131,10 +131,13 @@ export default function MainContainer(props: any) {
             size="large"
             sx={{ width: 140, height: 60, fontSize: 'small' }}
             onClick={() => {
-              console.log(`This is the game context: ${currentGame}`);
+              window.electron.ipcRenderer.sendMessage(
+                'select-download-directory',
+                [],
+              );
             }}
           >
-            Change Game Variable
+            Change Replay Directory
           </Button>
         </center>
       )}

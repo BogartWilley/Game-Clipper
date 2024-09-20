@@ -37,7 +37,6 @@ personal-notes/*
 src/py-script/build
 src/py-script/dist
 src/py-script/Instructions.txt
-__pycache__/*
 *.exe
 __pycache__
 

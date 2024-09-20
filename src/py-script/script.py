@@ -28,7 +28,7 @@ def resource_path(relative_path):
 
 # selected_game = "KOF XIII"
 if os.getenv("CURRENT_GAME") is None:
-    os.environ["CURRENT_GAME"] = "USF4"
+    os.environ["CURRENT_GAME"] = "KOF XIII" # TODO - prompt the user to select a game if empty
 
 
 selected_game = os.getenv("CURRENT_GAME")

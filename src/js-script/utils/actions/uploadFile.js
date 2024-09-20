@@ -11,8 +11,7 @@ async function uploadFile(filePath) {
     const endpointURL =
       currentEnv === 'dev'
         ? 'http://localhost:3001'
-        : 'https://salimkof.pro:3001';
-
+        : 'https://salimkof.pro:3001'; */
     console.log(`About to upload a file from this path : ${filePath}`);
     const file = await fs.openAsBlob(filePath);
     const formData = new FormData();

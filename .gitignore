@@ -38,5 +38,5 @@ src/py-script/build
 src/py-script/dist
 src/py-script/Instructions.txt
 *.exe
-__pycache__
+__pycache__/*
 

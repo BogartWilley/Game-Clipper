@@ -17,10 +17,13 @@ import {
 
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
-
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './setting-container.css';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import PasswordSetting from './settings/PasswordSetting';
+import PortSetting from './settings/PortSetting';
+import DirectorySetting from './settings/DirectorySetting';
+import './setting-container.css';
 // TODO : Make the theme a Context, so that the sidebar and other potential elements can inherit the state
 
 // Create themes
@@ -69,7 +72,7 @@ const lightTheme = createTheme({
 const SettingsContainer = (props: any) => {
   const [isDark, setIsDark] = useState<boolean>(true);
   const [wsPassword, setWsPassword] = useState<string>('');
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+
   // Toggle the theme mode
   const toggleTheme = () => {
     setIsDark(!isDark);
@@ -122,65 +125,16 @@ const SettingsContainer = (props: any) => {
           sx={{
             position:
               'relative' /* Set position to absolute for positioning inside container */,
-            left: '33%' /* Move to the center horizontally */,
+            left: '40%' /* Move to the center horizontally */,
             color: 'black',
             userSelect: 'none',
           }}
         >
-          Settings Page
+          Settings
         </Typography>
-        <Box
-          sx={{
-            mt: '30px', // Add margin to the top to separate from other content
-            pt: '10px', // Add padding inside the box
-            pb: '10px', // Add padding inside the box
-            pr: '10px', // Add padding inside the box
-            pl: '10px', // Add padding inside the box
-            border: '1px solid', // Solid border for a square box look
-            borderColor: 'grey.500', // Border color
-            borderRadius: 2, // Rounded corners (use 0 for sharp corners if preferred)
-            boxShadow: 2, // Add a subtle shadow for depth
-            backgroundColor: 'background.default', // Use theme's default background color
-            display: 'flex', // Ensure the hint and input field are side by side
-            alignItems: 'center', // Align the items vertically in the center
-            justifyContent: 'space-between', // Make sure the input doesn't push the hint text away
-          }}
-        >
-          <Typography
-            sx={{
-              fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif', // Clean font
-              fontSize: '16px', // Adjust font size for better readability
-              fontWeight: 'bold', // Bold for emphasis
-              color: 'text.primary', // Adapt to the theme's text color
-              userSelect: 'none', // Disable text selection for the label
-              mr: 2, // Add a little margin to the right of the text for spacing
-            }}
-          >
-            Paste OBS's Websocket Password here:
-          </Typography>
-
-          <FormControl sx={{ width: '25ch', pr: '25px' }} variant="standard">
-            <InputLabel htmlFor="standard-adornment-password">
-              Password
-            </InputLabel>
-            <Input
-              id="standard-adornment-password"
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="toggle password visibility"
-                    onClick={() => {
-                      setShowPassword(!showPassword);
-                    }}
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </Box>
+        <PortSetting />
+        <PasswordSetting />
+        <DirectorySetting />
         <Button
           className="save-button"
           variant="contained"

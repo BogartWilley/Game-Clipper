@@ -1,5 +1,6 @@
-import { ipcMain, Notification, dialog, BrowserWindow } from 'electron';
+import { ipcMain, Notification, dialog } from 'electron';
 import path from 'path';
+import os from 'os';
 import { spawn } from 'child_process';
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
@@ -78,10 +79,13 @@ export const setupIpcRoutes = () => {
   });
 
   ipcMain.on('select-download-directory', async (event, message) => {
-    let dir;
-
-    dir = dialog.showOpenDialog({
+    const defaultPath = path.join(os.homedir(), 'Videos');
+    const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
+      defaultPath,
     });
+    event.returnValue = result.filePaths;
+    console.log(result);
+    os.homedir;
   });
 };

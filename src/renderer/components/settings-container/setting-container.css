@@ -4,3 +4,18 @@
   left: 50%; /* Move right 50% */
   transform: translate(-50%, -50%); /* Adjust positioning to center */
 }
+.save-button {
+  position: relative; /* Set position to absolute for positioning inside container */
+  bottom: 20px; /* Place button at the bottom */
+  left: 50%; /* Move to the center horizontally */
+  top: 50%;
+  transform: translateX(-50%); /* Adjust horizontal centering */
+}
+.options-container {
+  position: relative;
+  margin-top: 20px;
+  height: 98%;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: black;
+}

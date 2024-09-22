@@ -14,17 +14,22 @@ import {
   InputAdornment,
 } from '@mui/material';
 import { useState } from 'react';
-export default function Port(props: any) {
-  const [portNumber, setPortNumber] = useState<string>('');
+
+interface PortSettingProps {
+  port: number;
+  setPort: (n: number) => void;
+}
+
+export default function PortSetting({ port, setPort }: PortSettingProps) {
   const handlePortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value: string = e.target.value;
-    if (value.length > 5) {
+    //  If it's not a number               or it exceeds 5 digits
+    if (!/^\d*$/.test(e.target.value) || e.target.value.length > 5) {
       return;
     }
-    if (/^\d*$/.test(value)) {
-      setPortNumber(value);
-    }
-    console.log(portNumber);
+    const value: number = Number(e.target.value);
+
+    setPort(value);
+    console.log(port);
   };
   return (
     <Box
@@ -61,7 +66,7 @@ export default function Port(props: any) {
         <InputLabel htmlFor="standard-adornment-port">Port Number</InputLabel>
         <Input
           id="standard-adornment-port"
-          value={portNumber}
+          value={port}
           onChange={handlePortChange}
           inputMode="numeric" // Use numeric keyboard on mobile devices
           sx={{ MozAppearance: 'textfield' }} // Remove Firefox's arrows for input type number

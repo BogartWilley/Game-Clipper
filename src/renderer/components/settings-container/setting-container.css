@@ -1,15 +1,15 @@
 .settings-container {
   position: absolute;
-  top: 50%; /* Move down 50% */
-  left: 50%; /* Move right 50% */
-  transform: translate(-50%, -50%); /* Adjust positioning to center */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 .save-button {
-  position: relative; /* Set position to absolute for positioning inside container */
-  bottom: 20px; /* Place button at the bottom */
-  left: 50%; /* Move to the center horizontally */
-  top: 50%;
-  transform: translateX(-50%); /* Adjust horizontal centering */
+  position: relative;
+  bottom: 20px;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
 }
 .options-container {
   position: relative;

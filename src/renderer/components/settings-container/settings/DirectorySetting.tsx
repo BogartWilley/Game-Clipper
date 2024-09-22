@@ -9,9 +9,18 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 
-export default function DirectorySelector(props: any) {
-  const [directory, setDirectory] = useState<string>('');
+interface DirectorySettingProps {
+  directory: string;
+  setDirectory: (dir: string) => void;
+}
+
+export default function DirectorySetting({
+  directory,
+  setDirectory,
+}: DirectorySettingProps) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+  const [isEmpty, setIsEmpty] = useState<boolean>(true);
+
   const handleSelectDirectory = () => {
     if (dialogOpen) return;
     window.electron.ipcRenderer.sendMessage('select-replay-directory', [
@@ -23,8 +32,8 @@ export default function DirectorySelector(props: any) {
     const handleReply = (...args: unknown[]) => {
       const replayPath = args[0] as string;
       setDirectory(replayPath);
+      setIsEmpty(!replayPath || replayPath.trim() === '');
       setDialogOpen(false);
-      console.log(replayPath);
     };
 
     const cleanupEventListener = window.electron.ipcRenderer.on(
@@ -77,6 +86,7 @@ export default function DirectorySelector(props: any) {
           id="directory-input"
           value={directory || ''} // Prevents the value from being null,even though i've used useState<string>("")
           readOnly // It prevents the user from changing the value of the field (not from interacting with the field).
+          error={isEmpty}
           endAdornment={
             <InputAdornment position="end">
               <Button variant="contained" onClick={handleSelectDirectory}>

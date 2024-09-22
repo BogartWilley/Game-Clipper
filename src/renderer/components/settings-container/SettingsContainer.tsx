@@ -13,20 +13,27 @@ import {
   Input,
   InputAdornment,
 } from '@mui/material';
-// Icon imports :
 
+// Icon imports :
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+// Components imports :
 import PasswordSetting from './settings/PasswordSetting';
 import PortSetting from './settings/PortSetting';
 import DirectorySetting from './settings/DirectorySetting';
+import { AlertStatusType, alertUser } from '../../utils/alertUser';
+
+// Styles imports :
 import './setting-container.css';
-// TODO : Make the theme a Context, so that the sidebar and other potential elements can inherit the state
+
+// Context imports :
+import { useSettings } from '../../contexts/SettingsContext';
 
 // Create themes
+// TODO : Make the theme a Context, so that the sidebar and other potential elements can inherit the state
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -71,6 +78,22 @@ const lightTheme = createTheme({
 
 const SettingsContainer = (props: any) => {
   const [isDark, setIsDark] = useState<boolean>(true);
+  const { settings, setSettings } = useSettings();
+  const [wsPort, setWsPort] = useState<number>(settings.WS_PORT);
+  const [wsPassword, setWsPassword] = useState<string>(settings.WS_PASSWORD);
+  const [replayDirectory, setReplayDirectory] = useState<string>(
+    settings.REPLAY_DIRECTORY,
+  );
+
+  const saveChanges = () => {
+    setSettings({
+      WS_PORT: wsPort,
+      WS_PASSWORD: wsPassword,
+      REPLAY_DIRECTORY: replayDirectory,
+    });
+    props.setAlertStatus('error'); // Call the function passed from MainContainer
+    props.setAlertMessage('Encountered an error while saving the changes.'); // Call the function passed from MainContainer
+  };
 
   // Toggle the theme mode
   const toggleTheme = () => {
@@ -131,14 +154,18 @@ const SettingsContainer = (props: any) => {
         >
           Settings
         </Typography>
-        <PortSetting />
-        <PasswordSetting />
-        <DirectorySetting />
+        <PortSetting port={wsPort} setPort={setWsPort} />
+        <PasswordSetting password={wsPassword} setPassword={setWsPassword} />
+        <DirectorySetting
+          directory={replayDirectory}
+          setDirectory={setReplayDirectory}
+        />
         <Button
           className="save-button"
           variant="contained"
           color="success"
           startIcon={<CheckCircleOutlineTwoToneIcon />}
+          onClick={saveChanges}
         >
           Save Changes
         </Button>

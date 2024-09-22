@@ -10,7 +10,8 @@ import USF4 from '../background/background-images/USF4-Background.jpg';
 import { useGameContext } from '../../contexts/GameContext';
 import SettingsContainer from '../settings-container/SettingsContainer'; // Assuming this is your settings component
 import './main-container.css';
-import { Button } from '@mui/material';
+import { Box, Button } from '@mui/material';
+import { alertUser, AlertStatusType } from '../../utils/alertUser';
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
@@ -18,7 +19,8 @@ export default function MainContainer(props: any) {
   const [keyCount, setKeyCount] = useState(0);
   // State to track if settings page is open
   const [settingsOpen, setSettingsOpen] = useState(false);
-
+  const [alertStatus, setAlertStatus] = useState<AlertStatusType | null>(null);
+  const [alertMessage, setAlertMessage] = useState<string>('');
   const { currentGame } = useGameContext();
   const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
 
@@ -45,6 +47,8 @@ export default function MainContainer(props: any) {
               closeSettings={() => {
                 if (settingsOpen) toggleSettings();
               }}
+              setAlertStatus={setAlertStatus}
+              setAlertMessage={setAlertMessage}
             />
           </motion.div>
         )}
@@ -140,6 +144,12 @@ export default function MainContainer(props: any) {
             Change Replay Directory
           </Button>
         </center>
+      )}
+      {/* Render alert if status is set */}
+      {alertStatus && (
+        <Box sx={{ mt: 20, bottom: 0 }}>
+          {alertUser(alertStatus, alertMessage)}
+        </Box>
       )}
     </div>
   );

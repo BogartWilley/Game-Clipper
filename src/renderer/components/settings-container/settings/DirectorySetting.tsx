@@ -11,26 +11,31 @@ import { useState, useEffect } from 'react';
 
 export default function DirectorySelector(props: any) {
   const [directory, setDirectory] = useState<string>('');
-
-  // Handler for selecting download directory
+  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const handleSelectDirectory = () => {
-    window.electron.ipcRenderer.sendMessage('select-download-directory', []);
+    if (dialogOpen) return;
+    window.electron.ipcRenderer.sendMessage('select-replay-directory', [
+      directory,
+    ]);
+    setDialogOpen(true);
   };
-
-  // Listen for the response from the IPC
-  /*   useEffect(() => {
-    window.electron.ipcRenderer.on('selected-directory', (path: string) => {
-      setDirectory(path); // Set the selected directory path
-    });
-
-    // Clean up the listener on component unmount
-    return () => {
-      window.electron.ipcRenderer.removeListener(
-        'selected-directory',
-        () => {},
-      );
+  useEffect(() => {
+    const handleReply = (...args: unknown[]) => {
+      const replayPath = args[0] as string;
+      setDirectory(replayPath);
+      setDialogOpen(false);
+      console.log(replayPath);
     };
-  }, []); */
+
+    const cleanupEventListener = window.electron.ipcRenderer.on(
+      'select-replay-directory-reply',
+      handleReply,
+    );
+
+    return () => {
+      cleanupEventListener(); // This cleans up the event listener,since the .on() method already has .removeEventListener
+    };
+  }, []); // Empty dependency array means this runs on mount/unmount
 
   return (
     <Box
@@ -70,8 +75,8 @@ export default function DirectorySelector(props: any) {
         <InputLabel htmlFor="directory-input">Selected Directory</InputLabel>
         <Input
           id="directory-input"
-          value={directory}
-          readOnly // Make the input read-only since the directory is selected via a button
+          value={directory || ''} // Prevents the value from being null,even though i've used useState<string>("")
+          readOnly // It prevents the user from changing the value of the field (not from interacting with the field).
           endAdornment={
             <InputAdornment position="end">
               <Button variant="contained" onClick={handleSelectDirectory}>

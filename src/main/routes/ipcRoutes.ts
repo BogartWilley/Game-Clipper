@@ -78,13 +78,18 @@ export const setupIpcRoutes = () => {
     }
   });
 
-  ipcMain.on('select-download-directory', async (event, message) => {
+  ipcMain.on('select-replay-directory', async (event, message) => {
     const defaultPath = path.join(os.homedir(), 'Videos');
     const result = await dialog.showOpenDialog({
       properties: ['openDirectory'],
       defaultPath,
     });
     event.returnValue = result.filePaths;
+    if (!result.canceled && result.filePaths.length > 0) {
+      event.sender.send('select-replay-directory-reply', result.filePaths[0]);
+    } else {
+      event.sender.send('select-replay-directory-reply', null); // Send null if canceled
+    }
     console.log(result);
     os.homedir;
   });

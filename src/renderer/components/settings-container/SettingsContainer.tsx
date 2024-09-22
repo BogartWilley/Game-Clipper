@@ -71,7 +71,6 @@ const lightTheme = createTheme({
 
 const SettingsContainer = (props: any) => {
   const [isDark, setIsDark] = useState<boolean>(true);
-  const [wsPassword, setWsPassword] = useState<string>('');
 
   // Toggle the theme mode
   const toggleTheme = () => {

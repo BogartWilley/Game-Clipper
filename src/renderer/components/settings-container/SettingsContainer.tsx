@@ -24,13 +24,13 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import PasswordSetting from './settings/PasswordSetting';
 import PortSetting from './settings/PortSetting';
 import DirectorySetting from './settings/DirectorySetting';
-import { AlertStatusType, alertUser } from '../../utils/alertUser';
 
 // Styles imports :
 import './setting-container.css';
 
 // Context imports :
 import { useSettings } from '../../contexts/SettingsContext';
+import { validateSettings } from '../../utils/validateSettings';
 
 // Create themes
 // TODO : Make the theme a Context, so that the sidebar and other potential elements can inherit the state
@@ -86,13 +86,19 @@ const SettingsContainer = (props: any) => {
   );
 
   const saveChanges = () => {
-    setSettings({
-      WS_PORT: wsPort,
-      WS_PASSWORD: wsPassword,
-      REPLAY_DIRECTORY: replayDirectory,
-    });
-    props.setAlertStatus('error'); // Call the function passed from MainContainer
-    props.setAlertMessage('Encountered an error while saving the changes.'); // Call the function passed from MainContainer
+    const validationResult = validateSettings(
+      wsPort,
+      wsPassword,
+      replayDirectory,
+    );
+    if (validationResult.status === 'success')
+      setSettings({
+        WS_PORT: wsPort,
+        WS_PASSWORD: wsPassword,
+        REPLAY_DIRECTORY: replayDirectory,
+      });
+    props.setAlertStatus(validationResult.status); // Call the function passed from MainContainer
+    props.setAlertMessage(validationResult.message); // Call the function passed from MainContainer
   };
 
   // Toggle the theme mode

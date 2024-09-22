@@ -1,28 +1,25 @@
-import { ipcRenderer } from 'electron';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { Button } from '@mui/material';
+import { AlertStatusType, AlertUser } from '../alert/AlertUser';
 import Background from '../background/Background';
 import SideBar from '../sidebar/Sidebar';
 import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import KOF_XIII_IMAGE from '../background/background-images/KOFXIII-Background.png';
-import USF4 from '../background/background-images/USF4-Background.jpg';
 import { useGameContext } from '../../contexts/GameContext';
-import SettingsContainer from '../settings-container/SettingsContainer'; // Assuming this is your settings component
+import SettingsContainer from '../settings-container/SettingsContainer';
 import './main-container.css';
-import { Box, Button } from '@mui/material';
-import { alertUser, AlertStatusType } from '../../utils/alertUser';
 
 export default function MainContainer(props: any) {
   const [processRunning, setProcessRunning] = useState(false);
   const [buttonsGrayed, setButtonGrayed] = useState(false);
   const [keyCount, setKeyCount] = useState(0);
-  // State to track if settings page is open
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [alertStatus, setAlertStatus] = useState<AlertStatusType | null>(null);
   const [alertMessage, setAlertMessage] = useState<string>('');
   const { currentGame } = useGameContext();
   const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
+  const [closeAlert, setCloseAlert] = useState<boolean>(false);
 
   // Function to toggle settings page visibility
   const toggleSettings = () => {
@@ -31,9 +28,15 @@ export default function MainContainer(props: any) {
     setButtonGrayed(!buttonsGrayed);
   };
 
+  // Function to trigger a new alert
+  const toggleAlert = (status: AlertStatusType, message: string) => {
+    setAlertStatus(status);
+    setAlertMessage(message);
+    setCloseAlert(false); // Reset the closeAlert flag whenever a new alert is triggered
+  };
+
   return (
     <div>
-      {/* Conditionally render the SettingsPage */}
       <AnimatePresence>
         {settingsOpen && (
           <motion.div
@@ -47,7 +50,7 @@ export default function MainContainer(props: any) {
               closeSettings={() => {
                 if (settingsOpen) toggleSettings();
               }}
-              setAlertStatus={setAlertStatus}
+              setAlertStatus={toggleAlert}
               setAlertMessage={setAlertMessage}
             />
           </motion.div>
@@ -68,7 +71,7 @@ export default function MainContainer(props: any) {
       />
 
       <BubbleContainer grayed={buttonsGrayed}>
-        {/* Other social bubbles */}
+        {/* All social bubbles */}
         <Bubble
           URL="https://obsproject.com/download"
           imageSource={require('../social-bubbles/bubble-icons/obs-icon.png')}
@@ -109,6 +112,7 @@ export default function MainContainer(props: any) {
           />
         </motion.div>
       </BubbleContainer>
+
       {!settingsOpen && (
         <center style={{ marginTop: '250px' }}>
           <Button
@@ -145,11 +149,25 @@ export default function MainContainer(props: any) {
           </Button>
         </center>
       )}
-      {/* Render alert if status is set */}
-      {alertStatus && (
-        <Box sx={{ mt: 20, bottom: 0 }}>
-          {alertUser(alertStatus, alertMessage)}
-        </Box>
+
+      {/* Render alert if status is set and alert is not closed */}
+      {alertStatus && !closeAlert && (
+        <AnimatePresence>
+          <motion.div
+            className="alert-box"
+            initial={{ x: +950 }}
+            transition={{ duration: 0.7, type: 'spring', stiffness: 60 }}
+            animate={{ x: 0 }}
+            key={alertStatus}
+            exit={{ x: +950 }}
+          >
+            <AlertUser
+              status={alertStatus}
+              message={alertMessage}
+              setCloseAlert={setCloseAlert}
+            />
+          </motion.div>
+        </AnimatePresence>
       )}
     </div>
   );

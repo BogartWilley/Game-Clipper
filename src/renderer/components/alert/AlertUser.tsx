@@ -18,13 +18,20 @@ export const AlertUser: React.FC<AlertUserProps> = ({
   const [isExiting, setIsExiting] = useState<boolean>(false);
 
   useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsExiting(true);
+    }, 2000);
+    return () => clearTimeout(timer);
+  });
+
+  useEffect(() => {
     if (isExiting) {
       // Delay the closure of the alert in the parent until the animation is done
       const timer = setTimeout(() => {
-        setCloseAlert(true); // Notify the parent to close the alert after exit animation
-      }, 600); // 600ms matches the exit transition duration
+        setCloseAlert(true);
+      }, 600);
 
-      return () => clearTimeout(timer); // Clean up the timer
+      return () => clearTimeout(timer);
     }
   }, [isExiting, setCloseAlert]);
 
@@ -43,7 +50,7 @@ export const AlertUser: React.FC<AlertUserProps> = ({
             severity={status}
             variant="filled"
             sx={{ filter: 'brightness(90%)' }}
-            onClose={() => setIsExiting(true)} // Trigger exit animation on close
+            onClose={() => setIsExiting(true)}
           >
             {message}
           </Alert>

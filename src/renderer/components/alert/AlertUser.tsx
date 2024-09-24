@@ -15,44 +15,40 @@ export const AlertUser: React.FC<AlertUserProps> = ({
   message,
   setCloseAlert,
 }) => {
-  const [closeAlert, setLocalCloseAlert] = useState<boolean>(false);
-  const [key, setKey] = useState<number>(0);
   const [isExiting, setIsExiting] = useState<boolean>(false);
 
   useEffect(() => {
-    if (closeAlert) {
-      // Trigger the parent to handle closure after animation ends
-      const timeout = setTimeout(() => {
-        setCloseAlert(true);
-      }, 700); // Match the exit animation duration (0.7s)
+    if (isExiting) {
+      // Delay the closure of the alert in the parent until the animation is done
+      const timer = setTimeout(() => {
+        setCloseAlert(true); // Notify the parent to close the alert after exit animation
+      }, 600); // 600ms matches the exit transition duration
 
-      return () => clearTimeout(timeout);
+      return () => clearTimeout(timer); // Clean up the timer
     }
-  }, [closeAlert, setCloseAlert]);
+  }, [isExiting, setCloseAlert]);
 
-  const handleClose = () => {
-    setIsExiting(true); // Start exit animation
-    setLocalCloseAlert(true); // Trigger useEffect to eventually unmount
-    setKey(key + 1);
-  };
-
-  return !closeAlert ? (
+  return (
     <AnimatePresence>
-      <motion.div
-        className="alert-box"
-        initial={{ x: +950 }}
-        exit={{ opacity: 0, x: +950 }} // Slide out animation before unmounting
-        transition={{ duration: 0.7, ease: 'easeInOut' }} // Match with timeout delay
-      >
-        <Alert
-          severity={status}
-          variant="filled"
-          sx={{ filter: 'brightness(90%)' }}
-          onClose={handleClose} // Close the alert when clicked
+      {!isExiting && (
+        <motion.div
+          key={`${status}-${message}`}
+          className="alert-box"
+          initial={{ x: +950 }}
+          animate={{ x: 0 }}
+          exit={{ opacity: 0, x: +950 }}
+          transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
-          {message}
-        </Alert>
-      </motion.div>
+          <Alert
+            severity={status}
+            variant="filled"
+            sx={{ filter: 'brightness(90%)' }}
+            onClose={() => setIsExiting(true)} // Trigger exit animation on close
+          >
+            {message}
+          </Alert>
+        </motion.div>
+      )}
     </AnimatePresence>
-  ) : null;
+  );
 };

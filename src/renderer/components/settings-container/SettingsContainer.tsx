@@ -97,8 +97,7 @@ const SettingsContainer = (props: any) => {
         WS_PASSWORD: wsPassword,
         REPLAY_DIRECTORY: replayDirectory,
       });
-    props.setAlertStatus(validationResult.status); // Call the function passed from MainContainer
-    props.setAlertMessage(validationResult.message); // Call the function passed from MainContainer
+    props.toggleAlert(validationResult.status, validationResult.message);
   };
 
   // Toggle the theme mode

@@ -50,8 +50,7 @@ export default function MainContainer(props: any) {
               closeSettings={() => {
                 if (settingsOpen) toggleSettings();
               }}
-              setAlertStatus={toggleAlert}
-              setAlertMessage={setAlertMessage}
+              toggleAlert={toggleAlert}
             />
           </motion.div>
         )}

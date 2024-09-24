@@ -152,22 +152,11 @@ export default function MainContainer(props: any) {
 
       {/* Render alert if status is set and alert is not closed */}
       {alertStatus && !closeAlert && (
-        <AnimatePresence>
-          <motion.div
-            className="alert-box"
-            initial={{ x: +950 }}
-            transition={{ duration: 0.7, type: 'spring', stiffness: 60 }}
-            animate={{ x: 0 }}
-            key={alertStatus}
-            exit={{ x: +950 }}
-          >
-            <AlertUser
-              status={alertStatus}
-              message={alertMessage}
-              setCloseAlert={setCloseAlert}
-            />
-          </motion.div>
-        </AnimatePresence>
+        <AlertUser
+          status={alertStatus}
+          message={alertMessage}
+          setCloseAlert={setCloseAlert}
+        />
       )}
     </div>
   );

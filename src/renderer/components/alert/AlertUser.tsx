@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -16,24 +16,46 @@ export const AlertUser: React.FC<AlertUserProps> = ({
   setCloseAlert,
 }) => {
   const [isExiting, setIsExiting] = useState<boolean>(false);
+  const exitTimer = useRef<NodeJS.Timeout | null>(null);
+  const closeTimer = useRef<NodeJS.Timeout | null>(null);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
+  // Function to reset the exit and close timers
+  const resetTimers = () => {
+    // Clear both timers if they exist
+    if (exitTimer.current) clearTimeout(exitTimer.current);
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+
+    // Reset the exit timer
+    exitTimer.current = setTimeout(() => {
       setIsExiting(true);
     }, 2000);
-    return () => clearTimeout(timer);
-  });
+  };
+
+  useEffect(() => {
+    // Set the initial exit timer when the component mounts
+    resetTimers();
+
+    // Cleanup both timers when component unmounts
+    return () => {
+      if (exitTimer.current) clearTimeout(exitTimer.current);
+      if (closeTimer.current) clearTimeout(closeTimer.current);
+    };
+  }, [message, status]); // Reset timers when `message` or `status` changes
 
   useEffect(() => {
     if (isExiting) {
-      // Delay the closure of the alert in the parent until the animation is done
-      const timer = setTimeout(() => {
+      // Set the close timer when the alert starts exiting
+      closeTimer.current = setTimeout(() => {
         setCloseAlert(true);
       }, 600);
-
-      return () => clearTimeout(timer);
     }
   }, [isExiting, setCloseAlert]);
+
+  // onClose handler to reset timers and trigger exit animation
+  const handleClose = () => {
+    setIsExiting(true); // Start the exit process
+    resetTimers(); // Reset the timers for any new alert or onClose action
+  };
 
   return (
     <AnimatePresence>
@@ -49,8 +71,7 @@ export const AlertUser: React.FC<AlertUserProps> = ({
           <Alert
             severity={status}
             variant="filled"
-            sx={{ filter: 'brightness(90%)' }}
-            onClose={() => setIsExiting(true)}
+            onClose={handleClose} // Use the updated handleClose function
           >
             {message}
           </Alert>

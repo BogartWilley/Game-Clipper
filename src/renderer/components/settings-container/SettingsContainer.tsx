@@ -77,36 +77,42 @@ const lightTheme = createTheme({
 });
 
 const SettingsContainer = (props: any) => {
-  const [isDark, setIsDark] = useState<boolean>(true);
-  const { settings, setSettings } = useSettings();
+  const { settings, setSettings } = useSettings(); // Access the context
   const [wsPort, setWsPort] = useState<number>(settings.WS_PORT);
   const [wsPassword, setWsPassword] = useState<string>(settings.WS_PASSWORD);
   const [replayDirectory, setReplayDirectory] = useState<string>(
     settings.REPLAY_DIRECTORY,
   );
 
+  // Save the changes made in the settings
   const saveChanges = () => {
     const validationResult = validateSettings(
       wsPort,
       wsPassword,
       replayDirectory,
     );
-    if (validationResult.status === 'success')
+    if (validationResult.status === 'success') {
       setSettings({
         WS_PORT: wsPort,
         WS_PASSWORD: wsPassword,
         REPLAY_DIRECTORY: replayDirectory,
+        USERNAME: settings.USERNAME,
+        DARK_MODE: settings.DARK_MODE, // Preserve current theme mode
       });
+    }
     props.toggleAlert(validationResult.status, validationResult.message);
   };
 
   // Toggle the theme mode
   const toggleTheme = () => {
-    setIsDark(!isDark);
+    setSettings({
+      ...settings, // Preserve other settings
+      DARK_MODE: !settings.DARK_MODE, // Toggle the dark mode
+    });
   };
 
   return (
-    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+    <ThemeProvider theme={settings.DARK_MODE ? darkTheme : lightTheme}>
       <Box
         position="fixed"
         top="50%"
@@ -115,17 +121,18 @@ const SettingsContainer = (props: any) => {
           transform: 'translate(-50%, -50%)',
           width: '70%',
           height: '65%',
-          bgcolor: 'background.paper', // Use theme value for background color
+          bgcolor: 'background.paper',
           boxShadow: 3,
           borderRadius: 2,
           p: 4,
           opacity: 1,
         }}
       >
-        {' '}
         <div>
           <FormControlLabel
-            control={<Switch checked={isDark} onChange={toggleTheme} />}
+            control={
+              <Switch checked={settings.DARK_MODE} onChange={toggleTheme} />
+            }
             label="Toggle Dark Mode" // TODO - Change this to be an element
             sx={{
               position: 'absolute',

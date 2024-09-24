@@ -4,6 +4,8 @@ export interface SettingsOptions {
   WS_PORT: number;
   WS_PASSWORD: string;
   REPLAY_DIRECTORY: string;
+  USERNAME: string;
+  DARK_MODE: boolean;
 }
 
 interface SettingsContextType {
@@ -22,6 +24,8 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({
     WS_PORT: 0,
     WS_PASSWORD: '',
     REPLAY_DIRECTORY: '',
+    USERNAME: '',
+    DARK_MODE: true,
   });
 
   return (

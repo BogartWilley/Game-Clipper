@@ -21,8 +21,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // Components imports :
-import PasswordSetting from './settings/PasswordSetting';
+import UsernameSetting from './settings/UsernameSetting';
 import PortSetting from './settings/PortSetting';
+import PasswordSetting from './settings/PasswordSetting';
 import DirectorySetting from './settings/DirectorySetting';
 
 // Styles imports :
@@ -78,6 +79,7 @@ const lightTheme = createTheme({
 
 const SettingsContainer = (props: any) => {
   const { settings, setSettings } = useSettings(); // Access the context
+  const [username, setUsername] = useState<string>(settings.USERNAME);
   const [wsPort, setWsPort] = useState<number>(settings.WS_PORT);
   const [wsPassword, setWsPassword] = useState<string>(settings.WS_PASSWORD);
   const [replayDirectory, setReplayDirectory] = useState<string>(
@@ -166,6 +168,10 @@ const SettingsContainer = (props: any) => {
         >
           Settings
         </Typography>
+        <UsernameSetting
+          username={username}
+          setUsername={setUsername}
+        ></UsernameSetting>
         <PortSetting port={wsPort} setPort={setWsPort} />
         <PasswordSetting password={wsPassword} setPassword={setWsPassword} />
         <DirectorySetting

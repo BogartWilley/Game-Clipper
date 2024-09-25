@@ -24,7 +24,18 @@ export default function PasswordSettings({
   password,
   setPassword,
 }: PasswordSettingProps) {
+  const [error, setError] = useState<boolean>(true);
   const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  function handleSetPassword(passwordField: string) {
+    if (passwordField.length === 0 || passwordField.length <= 6) {
+      setError(true);
+    } else {
+      setError(false);
+    }
+    setPassword(passwordField);
+  }
+
   return (
     <Box
       sx={{
@@ -63,7 +74,7 @@ export default function PasswordSettings({
           type={showPassword ? 'text' : 'password'}
           value={password}
           onChange={(e) => {
-            setPassword(e.target.value);
+            handleSetPassword(e.target.value);
           }}
           endAdornment={
             <InputAdornment position="end">
@@ -77,6 +88,7 @@ export default function PasswordSettings({
               </IconButton>
             </InputAdornment>
           }
+          error={error}
         />
       </FormControl>
     </Box>

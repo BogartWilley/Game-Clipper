@@ -21,12 +21,19 @@ interface PortSettingProps {
 }
 
 export default function PortSetting({ port, setPort }: PortSettingProps) {
-  const handlePortChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [error, setError] = useState<boolean>(true);
+
+  const handlePortChange = (port: string) => {
+    if (port === '') {
+      setError(true);
+    } else {
+      setError(false);
+    }
     //  If it's not a number               or it exceeds 5 digits
-    if (!/^\d*$/.test(e.target.value) || e.target.value.length > 5) {
+    if (!/^\d*$/.test(port) || port.length > 5) {
       return;
     }
-    const value: number = Number(e.target.value);
+    const value: number = Number(port);
 
     setPort(value);
     console.log(port);
@@ -66,11 +73,12 @@ export default function PortSetting({ port, setPort }: PortSettingProps) {
         <InputLabel htmlFor="standard-adornment-port">Port Number</InputLabel>
         <Input
           id="standard-adornment-port"
-          value={port}
-          onChange={handlePortChange}
+          value={port || ''}
+          onChange={(e) => handlePortChange(e.target.value)}
           inputMode="numeric" // Use numeric keyboard on mobile devices
           sx={{ MozAppearance: 'textfield' }} // Remove Firefox's arrows for input type number
           endAdornment={<InputAdornment position="end"> </InputAdornment>}
+          error={error}
         />
       </FormControl>
     </Box>

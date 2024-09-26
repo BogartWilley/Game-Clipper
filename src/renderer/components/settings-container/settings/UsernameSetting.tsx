@@ -26,14 +26,25 @@ export default function UsernameSetting({
   username,
   setUsername,
 }: usernameSettingProps) {
-  const [error, setError] = useState<boolean>(true);
-  function handleUsernameChange(usernameField: string) {
+  const [error, setError] = useState<boolean>(!validateUsername(username));
+
+  function validateUsername(username: string) {
     if (
-      usernameField.length === 0 || // Check if empty
-      usernameField.length > 20 || // Check if exceeds 20 characters
-      !/^[a-zA-Z0-9-_ ]+$/.test(usernameField) // Check for invalid characters
-    ) {
-      setError(true); // Error is true if any of these conditions are met
+      !username ||
+      username.length === 0 ||
+      username.length < 4 ||
+      username.length > 20 ||
+      !/^[a-zA-Z0-9-_ ]+$/.test(username)
+    )
+      return false;
+    else return true;
+  }
+
+  function handleUsernameChange(usernameField: string) {
+    const isUsernameValid = validateUsername(usernameField);
+
+    if (!isUsernameValid) {
+      setError(true);
     } else {
       setError(false);
     }

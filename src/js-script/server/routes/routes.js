@@ -46,6 +46,7 @@ router.get('/change-game', async (req, res) => {
     handleErrors(err);
   }
 });
+
 // Recording Actions
 router.get('/start-recording', async (req, res) => {
   try {

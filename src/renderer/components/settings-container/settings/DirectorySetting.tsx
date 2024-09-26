@@ -6,7 +6,9 @@ import {
   InputLabel,
   Input,
   InputAdornment,
+  IconButton,
 } from '@mui/material';
+import FolderIcon from '@mui/icons-material/Folder';
 import { useState, useEffect } from 'react';
 
 interface DirectorySettingProps {
@@ -19,7 +21,9 @@ export default function DirectorySetting({
   setDirectory,
 }: DirectorySettingProps) {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const [isEmpty, setIsEmpty] = useState<boolean>(true);
+  const [isEmpty, setIsEmpty] = useState<boolean>(
+    () => !directory || directory.length === 0,
+  );
 
   const handleSelectDirectory = () => {
     if (dialogOpen) return;
@@ -78,10 +82,10 @@ export default function DirectorySetting({
       </Typography>
 
       <FormControl
-        sx={{ width: '25ch', pr: '25px', mr: '20px' }}
+        sx={{ width: '25ch', pr: '25px', mr: '0px' }}
         variant="standard"
       >
-        <InputLabel htmlFor="directory-input">Selected Directory</InputLabel>
+        <InputLabel htmlFor="directory-input">Replay Directory</InputLabel>
         <Input
           id="directory-input"
           value={directory || ''} // Prevents the value from being null,even though i've used useState<string>("")
@@ -89,9 +93,14 @@ export default function DirectorySetting({
           error={isEmpty}
           endAdornment={
             <InputAdornment position="end">
-              <Button variant="contained" onClick={handleSelectDirectory}>
-                Browse
-              </Button>
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleSelectDirectory}
+                >
+                  <FolderIcon />
+                </IconButton>
+              </InputAdornment>
             </InputAdornment>
           }
         />

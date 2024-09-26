@@ -62,18 +62,6 @@ export default function MainContainer(props: any) {
               }}
               toggleAlert={toggleAlert}
             />
-            <Button
-              onClick={() => {
-                console.log('This is close alert status');
-
-                console.log(closeAlert);
-
-                console.log('This is alert stauts');
-                console.log(alertStatus);
-              }}
-            >
-              ASJDKPAOSKDPOASDKSAOPDKASOP
-            </Button>
           </motion.div>
         )}
       </AnimatePresence>

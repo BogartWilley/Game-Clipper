@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Typography,
@@ -17,8 +17,10 @@ import {
 // Icon imports :
 import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
 import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
-import { Visibility, VisibilityOff } from '@mui/icons-material';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Scale, Visibility, VisibilityOff } from '@mui/icons-material';
+import { createTheme, duration, ThemeProvider } from '@mui/material/styles';
+import NightlightIcon from '@mui/icons-material/Nightlight';
+import LightModeIcon from '@mui/icons-material/LightMode';
 
 // Components imports :
 import UsernameSetting from './settings/UsernameSetting';
@@ -35,6 +37,7 @@ import { validateSettings } from '../../utils/validateSettings';
 
 // Utils imports :
 import { retrieveConfigs } from '../../utils/retrieveSettings';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Create themes
 const darkTheme = createTheme({
@@ -89,14 +92,15 @@ const SettingsContainer = (props: any) => {
   );
   const [formValid, setFormValid] = useState<boolean>(false);
 
-  async function setInitialConfigs() {
-    try {
-      const retrievedData = await retrieveConfigs();
-      console.log(retrievedData);
-    } catch (err) {
-      console.error('Error fetching configs:', err);
-    }
-  }
+  useEffect(() => {
+    const validationResult = validateSettings(
+      wsPort,
+      wsPassword,
+      replayDirectory,
+      username,
+    );
+    if (validationResult.status === 'success') console.log('success');
+  }, []);
 
   // Save the changes made in the settings
   const saveChanges = async () => {
@@ -148,13 +152,43 @@ const SettingsContainer = (props: any) => {
         <div>
           <FormControlLabel
             control={
-              <Switch checked={settings.DARK_MODE} onChange={toggleTheme} />
+              <AnimatePresence mode="wait">
+                {settings.DARK_MODE ? (
+                  <motion.div
+                    key="light-icon"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.1 }}
+                    onClick={toggleTheme}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <LightModeIcon
+                      sx={{ width: '32px', height: '32px', color: 'white' }}
+                    />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="dark-icon"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    transition={{ duration: 0.1 }}
+                    onClick={toggleTheme}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <NightlightIcon sx={{ width: '32px', height: '32px' }} />
+                  </motion.div>
+                )}
+              </AnimatePresence>
             }
-            label="Toggle Dark Mode" // TODO - Change this to be an element
+            label={''}
             sx={{
               position: 'absolute',
-              top: 8, // Adjust as necessary
-              left: 25, // Adjust as necessary}
+              top: 15, // Adjust as necessary
+              left: 30, // Adjust as necessary}
             }}
           />
           <IconButton

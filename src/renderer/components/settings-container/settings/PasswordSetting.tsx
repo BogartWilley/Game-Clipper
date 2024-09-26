@@ -24,11 +24,13 @@ export default function PasswordSettings({
   password,
   setPassword,
 }: PasswordSettingProps) {
-  const [error, setError] = useState<boolean>(true);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(
+    password.length === 0 || password.length < 6,
+  );
+  const [showPassword, setShowPassword] = useState<boolean>();
 
   function handleSetPassword(passwordField: string) {
-    if (passwordField.length === 0 || passwordField.length <= 6) {
+    if (passwordField.length === 0 || passwordField.length < 6) {
       setError(true);
     } else {
       setError(false);

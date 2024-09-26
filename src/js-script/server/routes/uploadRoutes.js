@@ -41,48 +41,6 @@ router.post('/get-output-file', async (req, res) => {
   }
 });
 
-// TODO - PRUNE THIS
-router.post('/upload-replay', async (req, res) => {
-  const videoPath = 'C:\\Users\\salim\\Videos\\test.mp4'; // TODO - use an env var instead
-
-  try {
-    // Ensure the video file exists
-    if (!fs.existsSync(videoPath)) {
-      return res.status(400).send({ message: 'File not found' });
-    }
-
-    const fileStream = fs.createReadStream(videoPath);
-    const fileName = path.basename(videoPath);
-
-    const response = await fetch(`${VPSURL}/recieve-replay`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'video/mp4',
-        'Content-Disposition': `attachment; filename="${fileName}"`,
-      },
-      body: fileStream,
-      duplex: 'half',
-    });
-
-    if (response.ok) {
-      res
-        .status(200)
-        .send({ message: 'Replay file uploaded to VPS successfully' });
-    } else {
-      const errorDetails = await response.text();
-      res.status(response.status).send({
-        message: 'Failed to upload file to VPS',
-        details: errorDetails,
-      });
-    }
-  } catch (error) {
-    console.error(error);
-    res
-      .status(500)
-      .send({ message: 'Error uploading file to VPS', error: error.message });
-  }
-});
-
 router.get('/ping', async (req, res) => {
   res.status(200).send({ message: 'Pong' });
 });

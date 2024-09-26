@@ -21,7 +21,7 @@ export const setupIpcRoutes = () => {
         '..',
         '..',
         // '..',
-        // '..',  removes one path for running the app using pnpm dev
+        // '..',  Removes one path for running the app using pnpm dev
 
         'compiled-scripts',
         'py-script.exe',
@@ -32,7 +32,7 @@ export const setupIpcRoutes = () => {
       }
 
       const py = spawn(exePath, {
-        env: { ...process.env }, // pass env variables to the Python script
+        env: { ...process.env }, // Pass env variables to the Python script
       });
       py.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
@@ -80,22 +80,40 @@ export const setupIpcRoutes = () => {
     }
   });
 
-  ipcMain.on('save-config-file', async (event, message) => {
-    // TODO - FIND OUT WHY IS THIS ONLY SAVING THE THEME SETTING
-
+  ipcMain.on('save-config-file', async (event, settings) => {
+    // NOTE : PASSWORDS ARE STORED IN PLAIN TEXT IN OBS AS WELL,THERE IS NO NEED TO HASH THEM
     const datasPath = app.getPath('userData');
-    const data = JSON.stringify(message, null, 2);
+    const data = JSON.stringify(settings, null, 2);
     const filePath = path.join(datasPath, 'config.json');
-    fs.writeFileSync(filePath, data);
+    fs.writeFile(filePath, data, (err) => {
+      if (err) console.log(err);
+    });
+
+    // Assigning env variables
+    process.env.WS_PORT = settings.WS_PORT;
+    process.env.WS_PASSWORD = settings.WS_PASSWORD;
+    // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
+    process.env.REPLAY_DIRECTORY = settings.REPLAY_DIRECTORY;
+    process.env.CURRENT_USERNAME = settings.USERNAME;
   });
 
   ipcMain.on('retrieve-config-file', async (event, message) => {
-    const datasPath = app.getPath('userData');
-    const filePath = path.join(datasPath, 'config.json');
-    const configDataString = fs.readFileSync(filePath).toString();
-    const configData = JSON.parse(configDataString);
-    event.sender.send('retrieve-config-file-reply', configData);
-    console.log(configData);
+    try {
+      const datasPath = app.getPath('userData');
+      const filePath = path.join(datasPath, 'config.json');
+      const configDataString = fs.readFileSync(filePath).toString();
+      const settings = JSON.parse(configDataString);
+      event.sender.send('retrieve-config-file-reply', settings);
+      console.log('RETRIEVING DATA');
+      console.log(settings[0]);
+      // TODO - VALIDATE THE CONFIGS BEFORE ASSIGNING ENV VARS
+      process.env.WS_PORT = settings[0].WS_PORT;
+      process.env.WS_PASSWORD = settings[0].WS_PASSWORD;
+      process.env.CURRENT_USERNAME = settings[0].USERNAME;
+      process.env.REPLAY_DIRECTORY = settings[0].REPLAY_DIRECTORY;
+    } catch (err) {
+      console.log(err);
+    }
   });
 
   ipcMain.on('select-replay-directory', async (event, message) => {

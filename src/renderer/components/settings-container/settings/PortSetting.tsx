@@ -21,7 +21,9 @@ interface PortSettingProps {
 }
 
 export default function PortSetting({ port, setPort }: PortSettingProps) {
-  const [error, setError] = useState<boolean>(true);
+  const [error, setError] = useState<boolean>(
+    !/^\d*$/.test(port.toString()) || port.toString().length > 5 || !port,
+  );
 
   const handlePortChange = (port: string) => {
     if (!/^\d*$/.test(port) || port.length > 5) {

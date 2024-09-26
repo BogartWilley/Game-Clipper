@@ -5,7 +5,7 @@ const pathToVideo = 'C:\\Users\\salim\\Videos\\test.mp4';
 async function uploadFile(filePath) {
   try {
     const currentGame = process.env.CURRENT_GAME || 'KOF XIII';
-    const currentUser = process.env.CURRENT_USER || 'SalimOfShadow';
+    const currentUser = process.env.CURRENT_USERNAME || 'SalimOfShadow';
     const fileName = `${currentGame.replace(/_/g, '')} Match Replay | ${currentUser}`;
     const currentEnv = process.env.CURRENT_ENV || 'dev';
     const endpointURL =

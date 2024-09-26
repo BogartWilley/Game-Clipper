@@ -16,7 +16,7 @@ app.use('/', uploadRoutes);
 app.all('*', (req, res) => {
   res.status(400).send({ message: 'Bad Request' });
 });
-// const isGameRunning = true;  TODO - Close OBS and the script on process kill
+// let isGameRunning = true;  TODO - Close OBS and the script on process kill
 
 // Starts OBS process
 
@@ -26,16 +26,12 @@ launchObs();
 
 const startObs = async () => {
   const isConnected = await connectWs();
-  if (!isConnected) {
-    setTimeout(async () => {
-      try {
-        console.log('Reconnecting...');
-        await startObs(); // Await the recursive call to prevent overlapping
-      } catch (err) {
-        console.log(err);
-      }
-    }, 3000);
-  }
+
+  return {
+    connected: isConnected.connected,
+    status: isConnected.status,
+    message: isConnected.message,
+  };
 };
 
 obs.on('ConnectionOpened', async () => {
@@ -48,7 +44,7 @@ obs.on('ConnectionOpened', async () => {
   }
 });
 
-/* // Only use this when you run the script using node
+/* // Only use this when running the script using "node app.js"
 
 const waitKeyPress = require('./utils/actions/waitKeyPress.js');
 async function exit() {

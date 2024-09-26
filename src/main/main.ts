@@ -36,15 +36,27 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-setTimeout(() => {
-  console.log('Running JS script');
-  startObs();
-  new Notification({
-    title: 'OBS process started!',
-    body: 'Select a game and confirm to start!',
-  }).show();
-}, 2000);
+const attemptConnection = async () => {
+  const startObsResult = await startObs();
 
+  // Send the result to the main window and check the connection status
+  mainWindow?.webContents.send('display-alert', startObsResult);
+
+  // If not connected, attempt to reconnect after 2 seconds
+  if (startObsResult?.connected !== true) {
+    console.log('Reconnecting...');
+    setTimeout(attemptConnection, 2000); // Retry after 2 seconds
+  } else {
+    console.log('Connection established!');
+    new Notification({
+      title: 'OBS process started!',
+      body: 'Select a game and confirm to start!',
+    }).show();
+  }
+};
+
+// Start the connection attempt after an initial delay
+setTimeout(attemptConnection, 2000);
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 

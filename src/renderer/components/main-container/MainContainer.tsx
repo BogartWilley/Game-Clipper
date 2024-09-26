@@ -22,6 +22,17 @@ export default function MainContainer(props: any) {
   const [closeAlert, setCloseAlert] = useState<boolean>(false);
 
   // Function to toggle settings page visibility
+  interface MessageObject {
+    connected: boolean;
+    status: string;
+    message: string;
+  }
+
+  window.electron.ipcRenderer.on('display-alert', (message) => {
+    console.log('I will now display the alert object : ');
+    console.log(message);
+  });
+
   const toggleSettings = () => {
     setSettingsOpen(!settingsOpen);
     setKeyCount(keyCount + 1);

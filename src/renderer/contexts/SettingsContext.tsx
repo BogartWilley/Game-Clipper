@@ -37,9 +37,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({
 
   useEffect(() => {
     const loadSettings = async () => {
-      console.log('Console.log loadedSettings from the provider');
       const loadedSettings: SettingsOptions = await retrieveConfigs();
-      console.log(loadedSettings);
       setSettings(loadedSettings); // Store the loaded settings in state
     };
 

@@ -1,4 +1,11 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, {
+  createContext,
+  useState,
+  useContext,
+  ReactNode,
+  useEffect,
+} from 'react';
+import { retrieveConfigs } from '../utils/retrieveSettings';
 
 export interface SettingsOptions {
   WS_PORT: number;
@@ -27,6 +34,17 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({
     USERNAME: '',
     DARK_MODE: true,
   });
+
+  useEffect(() => {
+    const loadSettings = async () => {
+      console.log('Console.log loadedSettings from the provider');
+      const loadedSettings: SettingsOptions = await retrieveConfigs();
+      console.log(loadedSettings);
+      setSettings(loadedSettings); // Store the loaded settings in state
+    };
+
+    loadSettings();
+  }, []);
 
   return (
     <SettingsContext.Provider value={{ settings, setSettings }}>

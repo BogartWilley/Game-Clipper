@@ -35,6 +35,16 @@ export default function MainContainer(props: any) {
     setCloseAlert(false); // Reset the closeAlert flag whenever a new alert is triggered
   };
 
+  useEffect(() => {
+    if (alertStatus && !closeAlert) {
+      const timer = setTimeout(() => {
+        setCloseAlert(true);
+      }, 2600);
+
+      return () => clearTimeout(timer);
+    }
+  }, [alertStatus, closeAlert, alertMessage]);
+
   return (
     <div>
       <AnimatePresence>
@@ -52,6 +62,18 @@ export default function MainContainer(props: any) {
               }}
               toggleAlert={toggleAlert}
             />
+            <Button
+              onClick={() => {
+                console.log('This is close alert status');
+
+                console.log(closeAlert);
+
+                console.log('This is alert stauts');
+                console.log(alertStatus);
+              }}
+            >
+              ASJDKPAOSKDPOASDKSAOPDKASOP
+            </Button>
           </motion.div>
         )}
       </AnimatePresence>

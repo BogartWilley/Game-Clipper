@@ -33,8 +33,10 @@ import './setting-container.css';
 import { useSettings } from '../../contexts/SettingsContext';
 import { validateSettings } from '../../utils/validateSettings';
 
+// Utils imports :
+import { retrieveConfigs } from '../../utils/retrieveSettings';
+
 // Create themes
-// TODO : Make the theme a Context, so that the sidebar and other potential elements can inherit the state
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
@@ -78,30 +80,43 @@ const lightTheme = createTheme({
 });
 
 const SettingsContainer = (props: any) => {
-  const { settings, setSettings } = useSettings(); // Access the context
+  const { settings, setSettings } = useSettings();
   const [username, setUsername] = useState<string>(settings.USERNAME);
   const [wsPort, setWsPort] = useState<number>(settings.WS_PORT);
   const [wsPassword, setWsPassword] = useState<string>(settings.WS_PASSWORD);
   const [replayDirectory, setReplayDirectory] = useState<string>(
     settings.REPLAY_DIRECTORY,
   );
+  const [formValid, setFormValid] = useState<boolean>(false);
+
+  async function setInitialConfigs() {
+    try {
+      const retrievedData = await retrieveConfigs();
+      console.log(retrievedData);
+    } catch (err) {
+      console.error('Error fetching configs:', err);
+    }
+  }
 
   // Save the changes made in the settings
-  const saveChanges = () => {
+  const saveChanges = async () => {
     const validationResult = validateSettings(
       wsPort,
       wsPassword,
       replayDirectory,
+      username,
     );
     if (validationResult.status === 'success') {
       setSettings({
         WS_PORT: wsPort,
         WS_PASSWORD: wsPassword,
         REPLAY_DIRECTORY: replayDirectory,
-        USERNAME: settings.USERNAME,
-        DARK_MODE: settings.DARK_MODE, // Preserve current theme mode
+        USERNAME: username,
+        DARK_MODE: settings.DARK_MODE,
       });
+      window.electron.ipcRenderer.sendMessage('save-config-file', [settings]);
     }
+
     props.toggleAlert(validationResult.status, validationResult.message);
   };
 
@@ -183,7 +198,8 @@ const SettingsContainer = (props: any) => {
           variant="contained"
           color="success"
           startIcon={<CheckCircleOutlineTwoToneIcon />}
-          onClick={saveChanges}
+          // onClick={saveChanges}
+          onClick={setInitialConfigs}
         >
           Save Changes
         </Button>

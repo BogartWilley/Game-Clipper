@@ -148,3 +148,5 @@ app
     });
   })
   .catch(console.log);
+
+export { app };

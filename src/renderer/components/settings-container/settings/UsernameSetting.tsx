@@ -15,45 +15,30 @@ import {
   FormHelperText,
 } from '@mui/material';
 import { color } from 'framer-motion';
-import { useState } from 'react';
 
 interface usernameSettingProps {
   username: string;
   setUsername: (pwd: string) => void;
 }
+import { useState } from 'react';
+
 export default function UsernameSetting({
   username,
   setUsername,
 }: usernameSettingProps) {
-  const [error, setError] = useState<boolean>(false);
-  const [empty, setEmpty] = useState<boolean>(true);
-
-  const handleUsernameChange = (usernameField: string) => {
-    if (usernameField.length === 0) {
-      setEmpty(true);
-      setError(false); // Reset error when input is empty
-      setUsername(usernameField);
-      return;
-    }
-
-    if (usernameField.length >= 20) {
-      return;
-    }
-
-    const isValid = /^[a-zA-Z0-9-_ ]+$/.test(usernameField);
-    setUsername(usernameField);
-
-    if (isValid) {
-      console.log(usernameField);
-      setError(false);
-      setEmpty(false); // Mark as not empty if valid input is provided
+  const [error, setError] = useState<boolean>(true);
+  function handleUsernameChange(usernameField: string) {
+    if (
+      usernameField.length === 0 || // Check if empty
+      usernameField.length > 20 || // Check if exceeds 20 characters
+      !/^[a-zA-Z0-9-_ ]+$/.test(usernameField) // Check for invalid characters
+    ) {
+      setError(true); // Error is true if any of these conditions are met
     } else {
-      console.warn(
-        'Invalid username. Only letters, numbers, "-", "_" are allowed, and max length is 30 characters.',
-      );
-      setError(true);
+      setError(false);
     }
-  };
+    setUsername(usernameField);
+  }
 
   return (
     <Box
@@ -91,10 +76,10 @@ export default function UsernameSetting({
           htmlFor="standard-adornment-username"
           style={{
             textDecoration: 'none',
-            color: error ? 'red' : undefined,
-          }} // Apply 'red' if error is true, otherwise leave it unchanged
+            color: error && username ? 'red' : undefined,
+          }}
         >
-          {error ? 'Invalid Username' : 'Username'}
+          {error && username ? 'Invalid Username' : 'Username'}
         </InputLabel>
         <Input
           id="standard-adornment-username"
@@ -103,7 +88,7 @@ export default function UsernameSetting({
           onChange={(e) => {
             handleUsernameChange(e.target.value);
           }}
-          error={error || empty}
+          error={error}
         />
       </FormControl>
     </Box>

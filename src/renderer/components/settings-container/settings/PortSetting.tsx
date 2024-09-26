@@ -24,15 +24,15 @@ export default function PortSetting({ port, setPort }: PortSettingProps) {
   const [error, setError] = useState<boolean>(true);
 
   const handlePortChange = (port: string) => {
+    if (!/^\d*$/.test(port) || port.length > 5) {
+      return;
+    }
     if (port === '') {
       setError(true);
     } else {
       setError(false);
     }
     //  If it's not a number               or it exceeds 5 digits
-    if (!/^\d*$/.test(port) || port.length > 5) {
-      return;
-    }
     const value: number = Number(port);
 
     setPort(value);

@@ -1,6 +1,8 @@
 import { ipcMain, Notification, dialog } from 'electron';
+import { app } from '../main';
 import path from 'path';
 import os from 'os';
+import fs from 'fs';
 import { spawn } from 'child_process';
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
@@ -76,6 +78,23 @@ export const setupIpcRoutes = () => {
     } catch (error) {
       console.error('Error occurred while changing the game:', error);
     }
+  });
+
+  ipcMain.on('save-config-file', async (event, message) => {
+    const datasPath = app.getPath('userData');
+    const data = JSON.stringify(message, null, 2);
+    const filePath = path.join(datasPath, 'config.json');
+    fs.writeFileSync(filePath, data);
+    console.log(data);
+  });
+
+  ipcMain.on('retrieve-config-file', async (event, message) => {
+    const datasPath = app.getPath('userData');
+    const filePath = path.join(datasPath, 'config.json');
+    const configDataString = fs.readFileSync(filePath).toString();
+    const configData = JSON.parse(configDataString);
+    event.sender.send('retrieve-config-file-reply', configData);
+    console.log(configData);
   });
 
   ipcMain.on('select-replay-directory', async (event, message) => {

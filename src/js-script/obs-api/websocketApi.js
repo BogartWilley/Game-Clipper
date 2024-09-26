@@ -61,10 +61,8 @@ obs.on('RecordStateChanged', async (state) => {
     });
     if (response.ok)
       console.log(`Recording saved successfully in ${state.outputPath}`);
-  } else {
-    console.log('Encountered an error');
+    // Saved replay conversion initated, alert IPC
   }
-  // Saved replay conversion initated, alert IPC
 });
 obs.on('ReplayBufferSaved', (buff) => {
   console.log('This is the replay buffer : ');

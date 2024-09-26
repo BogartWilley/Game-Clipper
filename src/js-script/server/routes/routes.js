@@ -16,36 +16,7 @@ const {
 } = require('../../utils/scene-setup/scene');
 const { audioSetup, videoSetup } = require('../../utils/scene-setup/capture');
 const { resizeWindow } = require('../../utils/actions/resizeWindow');
-// Process Action
-
-router.get('/obs-ready', (req, res) => {
-  console.log('OBS is now ready!');
-  res.status(200).send({ message: 'OBS is now ready!' });
-});
-
-router.get('/process-kill', (req, res) => {
-  console.log('Process was killed,updating the state : ');
-  res.status(200).send({ message: 'Process was killed' });
-});
-
-router.get('/change-game', async (req, res) => {
-  try {
-    const selectedGame = await getSelectedGame();
-
-    // CHECK IF THERE'S ALREADY A SCENE, IF NOT THEN CREATE AND SETUP ONE
-
-    await createNewScene();
-    await audioSetup();
-    await videoSetup();
-    await changeScene();
-    res.status(200).send({
-      message: `Current game changed successfully,it is now ${selectedGame.name}`,
-    });
-  } catch (err) {
-    console.log('Failed to change the game');
-    handleErrors(err);
-  }
-});
+const { changeDirectory } = require('../../utils/actions/changeDirectory');
 
 // Recording Actions
 router.get('/start-recording', async (req, res) => {
@@ -80,6 +51,47 @@ router.get('/resume-recording', async (req, res) => {
   } catch (err) {
     console.log('Failed to resume the recording');
     handleErrors(err);
+  }
+});
+
+// Process Action
+
+router.get('/obs-ready', (req, res) => {
+  console.log('OBS is now ready!');
+  res.status(200).send({ message: 'OBS is now ready!' });
+});
+
+router.get('/process-kill', (req, res) => {
+  console.log('Process was killed,updating the state : ');
+  res.status(200).send({ message: 'Process was killed' });
+});
+
+router.get('/change-game', async (req, res) => {
+  try {
+    const selectedGame = await getSelectedGame();
+
+    // CHECK IF THERE'S ALREADY A SCENE, IF NOT THEN CREATE AND SETUP ONE
+
+    await createNewScene();
+    await audioSetup();
+    await videoSetup();
+    await changeScene();
+    res.status(200).send({
+      message: `Current game changed successfully,it is now ${selectedGame.name}`,
+    });
+  } catch (err) {
+    console.log('Failed to change the game');
+    handleErrors(err);
+  }
+});
+
+router.get('/change-directory', (req, res) => {
+  try {
+    changeDirectory();
+    res.send(200);
+  } catch (err) {
+    console.log(err);
+    res.send(500);
   }
 });
 

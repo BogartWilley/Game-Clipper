@@ -9,10 +9,10 @@ async function recordingAction(action, cb, res) {
       res.status(500).send({ message: `Failed to ${action} the recording` });
       return;
     }
+    console.log(status);
     res.status(200).send({
       message: `OBS successfully was able to successfully ${action} the recording!`,
     });
-    console.log(status);
   } catch (err) {
     console.log(`Failed to ${action} the recording.`);
     res.status(500).send({ message: `Failed to ${action} the recording` });
@@ -22,13 +22,21 @@ async function recordingAction(action, cb, res) {
 const startRecording = async () => {
   try {
     const start = await obs.call('StartRecord');
-    console.log('Start the recording');
-    return true;
+    // Wait 1 second to check if the recording started
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    const status = await obs.call('GetRecordStatus');
+    if (status.outputActive && status.outputDuration !== 0) {
+      console.log('Recording has started');
+      return true;
+    } else {
+      return false;
+    }
   } catch (err) {
-    handleErrors(err);
+    console.error('Error starting recording:', err);
     return false;
   }
 };
+
 const pauseRecording = async () => {
   try {
     const pause = await obs.call('PauseRecord');

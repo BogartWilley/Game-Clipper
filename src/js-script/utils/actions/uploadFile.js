@@ -17,7 +17,7 @@ async function uploadFile(filePath) {
     const formData = new FormData();
     formData.set('currentGame', currentGame);
     formData.set('currentUser', currentUser);
-    formData.set('replay', file, 'TEST'); // FIGURE OUT WHAT'S WRONG
+    formData.set('replay', file, 'TEST'); // TODO - CHANGE TEST & FIGURE OUT WHAT'S WRONG
     const response = await fetch(`${endpointURL}/recieve-video`, {
       method: 'POST',
       body: formData,
@@ -34,4 +34,3 @@ async function uploadFile(filePath) {
   }
 }
 module.exports = { uploadFile };
-// ONLY WORKS WHEN HARDCODING THE SAME EXACT PATH

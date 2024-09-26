@@ -81,20 +81,24 @@ export const setupIpcRoutes = () => {
   });
 
   ipcMain.on('save-config-file', async (event, settings) => {
-    // NOTE : PASSWORDS ARE STORED IN PLAIN TEXT IN OBS AS WELL,THERE IS NO NEED TO HASH THEM
-    const datasPath = app.getPath('userData');
-    const data = JSON.stringify(settings, null, 2);
-    const filePath = path.join(datasPath, 'config.json');
-    fs.writeFile(filePath, data, (err) => {
-      if (err) console.log(err);
-    });
-
-    // Assigning env variables
-    process.env.WS_PORT = settings.WS_PORT;
-    process.env.WS_PASSWORD = settings.WS_PASSWORD;
-    // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
-    process.env.REPLAY_DIRECTORY = settings.REPLAY_DIRECTORY;
-    process.env.CURRENT_USERNAME = settings.USERNAME;
+    try {
+      // NOTE : PASSWORDS ARE STORED IN PLAIN TEXT IN OBS AS WELL,THERE IS NO NEED TO HASH THEM
+      const datasPath = app.getPath('userData');
+      const data = JSON.stringify(settings, null, 2);
+      const filePath = path.join(datasPath, 'config.json');
+      fs.writeFile(filePath, data, (err) => {
+        if (err) console.log(err);
+      });
+      // Assigning env variables
+      process.env.WS_PORT = settings.WS_PORT;
+      process.env.WS_PASSWORD = settings.WS_PASSWORD;
+      // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
+      process.env.REPLAY_DIRECTORY = settings.REPLAY_DIRECTORY;
+      process.env.CURRENT_USERNAME = settings.USERNAME;
+      const response = await fetch('http://localhost:4609/change-directory');
+    } catch (err) {
+      console.log(err);
+    }
   });
 
   ipcMain.on('retrieve-config-file', async (event, message) => {

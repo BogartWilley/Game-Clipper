@@ -23,8 +23,18 @@ const connectWs = async () => {
     // TODO - NOTIFY THE FRONTEND
     return true; // Connection successful
   } catch (error) {
-    console.error('Failed to connect', error.code, error.message);
-    return false; // Connection failed
+    const port = error.message.substr(error.message.length - 4);
+    if (error.code === 4009) {
+      console.error(
+        "Invalid credentials! Make sure your password matches the one in OBS's settings.",
+      );
+    }
+    if (error.code === -1) {
+      console.error(
+        `Invalid URL! Make sure OBS has successfully started and your selected port (${port}) matches the one in OBS's settings.`,
+      );
+    }
+    return false;
   }
 };
 

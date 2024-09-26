@@ -81,11 +81,12 @@ export const setupIpcRoutes = () => {
   });
 
   ipcMain.on('save-config-file', async (event, message) => {
+    // TODO - FIND OUT WHY IS THIS ONLY SAVING THE THEME SETTING
+
     const datasPath = app.getPath('userData');
     const data = JSON.stringify(message, null, 2);
     const filePath = path.join(datasPath, 'config.json');
     fs.writeFileSync(filePath, data);
-    console.log(data);
   });
 
   ipcMain.on('retrieve-config-file', async (event, message) => {

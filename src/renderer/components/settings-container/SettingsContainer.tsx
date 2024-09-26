@@ -199,7 +199,7 @@ const SettingsContainer = (props: any) => {
           color="success"
           startIcon={<CheckCircleOutlineTwoToneIcon />}
           // onClick={saveChanges}
-          onClick={setInitialConfigs}
+          onClick={saveChanges}
         >
           Save Changes
         </Button>

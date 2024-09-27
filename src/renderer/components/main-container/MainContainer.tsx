@@ -26,8 +26,14 @@ export default function MainContainer(props: any) {
   useEffect(() => {
     const handleAlert = (message: any) => {
       if (message.status === 'error') {
+        // TODO - MAKE IT SO THE ERROR ALERT NEVER DISSAPEARS UNLESS CLOSED
         setIssueDisplayed(true);
       }
+      setAlertStatus(message.status);
+      setAlertMessage(
+        'Successfully connected to OBS! Please select a game and start recording your replays!',
+      );
+      setCloseAlert(false);
       console.log(message);
     };
 

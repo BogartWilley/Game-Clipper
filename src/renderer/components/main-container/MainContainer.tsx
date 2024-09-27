@@ -47,7 +47,7 @@ export default function MainContainer(props: any) {
   const toggleAlert = (status: AlertStatusType, message: string) => {
     if (status === 'error') {
       // TODO - MAKE IT SO THE ERROR ALERT NEVER DISSAPEARS UNLESS CLOSED
-      setAlertTimer(90000);
+      setAlertTimer(Infinity);
     } else {
       setAlertTimer(2000);
     }

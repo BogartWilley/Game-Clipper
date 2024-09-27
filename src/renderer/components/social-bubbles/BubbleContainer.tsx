@@ -1,5 +1,9 @@
 import './Bubble.css';
+import errorIcon from './bubble-icons/error-icon.png';
+import { useErrorContext } from '../../contexts/ErrorContext'; // Adjust the path as needed
 export default function BubbleContainer(props: any) {
+  const { errorPresent } = useErrorContext();
+
   return (
     <div
       id="bubbleContainer"
@@ -8,13 +12,23 @@ export default function BubbleContainer(props: any) {
         props.grayed
           ? {
               opacity: 0.5,
-              filter: 'brigthness(70%)',
+              filter: 'brightness(70%)',
             }
           : {}
       }
     >
-      {' '}
       {props.children}
+      {errorPresent && (
+        <div className="error-icon">
+          <img
+            width="22px"
+            src={errorIcon}
+            style={{
+              filter: 'drop-shadow(0px 0px 7px rgba(255, 0, 0, 1))',
+            }}
+          />
+        </div>
+      )}
     </div>
   );
 }

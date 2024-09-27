@@ -1,16 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+
+// Icon imports :
 import { Button } from '@mui/material';
-import { AlertStatusType, AlertUser } from '../alert/AlertUser';
+
+// Components imports :
 import Background from '../background/Background';
 import SideBar from '../sidebar/Sidebar';
-import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
-import { useGameContext } from '../../contexts/GameContext';
+import Bubble from '../social-bubbles/Bubble';
+import { AlertStatusType, AlertUser } from '../alert/AlertUser';
 import SettingsContainer from '../settings-container/SettingsContainer';
+
+// Context imports :
+import { useGameContext } from '../../contexts/GameContext';
+import { useErrorContext } from '../../contexts/ErrorContext';
+
+// Styles imports :
 import './main-container.css';
 
 export default function MainContainer(props: any) {
+  // States
   const [processRunning, setProcessRunning] = useState<boolean>(false);
   const [buttonsGrayed, setButtonGrayed] = useState<boolean>(false);
   const [keyCount, setKeyCount] = useState<number>(0);
@@ -20,11 +30,11 @@ export default function MainContainer(props: any) {
   const [closeAlert, setCloseAlert] = useState<boolean>(false);
   const [alertTimer, setAlertTimer] = useState<number>(2000);
   const [initialAlert, setInitialAlert] = useState<boolean>(false);
-
+  // Contexts
   const { currentGame } = useGameContext();
-  const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
+  const { errorPresent, setErrorPresent } = useErrorContext();
 
-  // Alert the user about the application's current state
+  // Effects
 
   useEffect(() => {
     const handleAlert = (message: any) => {
@@ -37,27 +47,6 @@ export default function MainContainer(props: any) {
     window.electron.ipcRenderer.on('display-alert', handleAlert);
   }, [initialAlert]);
 
-  // Function to toggle settings page visibility
-  const toggleSettings = () => {
-    setSettingsOpen(!settingsOpen);
-    setKeyCount(keyCount + 1);
-    setButtonGrayed(!buttonsGrayed);
-  };
-
-  // Function to trigger a new alert
-  const toggleAlert = (status: AlertStatusType, message: string) => {
-    if (status === 'error') {
-      // TODO - MAKE IT SO THE ERROR ALERT NEVER DISSAPEARS UNLESS CLOSED
-      setAlertTimer(9900000);
-    } else {
-      setAlertTimer(2000);
-    }
-    setAlertStatus(status);
-    setAlertMessage(message);
-    setCloseAlert(false); // Reset the closeAlert flag whenever a new alert is triggered
-    setInitialAlert(true);
-  };
-
   useEffect(() => {
     if (alertStatus && !closeAlert) {
       const timer = setTimeout(() => {
@@ -68,6 +57,37 @@ export default function MainContainer(props: any) {
     }
   }, [alertStatus, closeAlert, alertMessage]);
 
+  // Function to toggle settings page visibility
+  const toggleSettings = () => {
+    setSettingsOpen(!settingsOpen);
+    setKeyCount(keyCount + 1);
+    setButtonGrayed(!buttonsGrayed);
+  };
+
+  // Function to trigger a new alert
+  const toggleAlert = (status: AlertStatusType, message: string) => {
+    setAlertStatus(status);
+    setAlertMessage(message);
+    setCloseAlert(false); // Reset the closeAlert flag whenever a new alert is triggered
+    setInitialAlert(true);
+
+    if (status === 'error') {
+      setErrorPresent(true);
+      setAlertTimer(9900000); // TODO - CHANGE THIS TO INFINITY
+      return;
+    }
+
+    // Handle warning status
+    if (status === 'warning') {
+      setErrorPresent(true);
+      return;
+    }
+
+    setErrorPresent(false);
+    setAlertTimer(2000);
+  };
+
+  const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
   return (
     <div>
       <AnimatePresence>
@@ -101,7 +121,6 @@ export default function MainContainer(props: any) {
         )}
         style={{ backgroundColor: 'black' }}
       />
-
       <BubbleContainer grayed={buttonsGrayed}>
         {/* All social bubbles */}
         <Bubble
@@ -144,7 +163,6 @@ export default function MainContainer(props: any) {
           />
         </motion.div>
       </BubbleContainer>
-
       {!settingsOpen && (
         <center style={{ marginTop: '250px' }}>
           <Button
@@ -181,7 +199,6 @@ export default function MainContainer(props: any) {
           </Button>
         </center>
       )}
-
       {/* Render alert if status is set and alert is not closed */}
       {alertStatus && !closeAlert && (
         <AlertUser

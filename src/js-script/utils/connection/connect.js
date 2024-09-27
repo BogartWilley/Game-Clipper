@@ -35,8 +35,9 @@ const connectWs = async () => {
       };
     }
     if (error.code === -1) {
-      const message = `Invalid URL! Make sure OBS is running and your selected port (${port}) matches the one in OBS's settings.`;
-      console.error(message);
+      const message = `Failed to connect to OBS!　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　
+                       Ensure OBS is running and both the port (${port}) and your choosen password match their corrispondent settings inside Tools --> WebSocket Server Settings.`;
+      console.log(error);
       return {
         connected: false,
         status: 'error',

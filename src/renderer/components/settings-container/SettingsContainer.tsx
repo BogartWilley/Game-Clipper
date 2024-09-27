@@ -21,7 +21,6 @@ import { Scale, Visibility, VisibilityOff } from '@mui/icons-material';
 import { createTheme, duration, ThemeProvider } from '@mui/material/styles';
 import NightlightIcon from '@mui/icons-material/Nightlight';
 import LightModeIcon from '@mui/icons-material/LightMode';
-
 // Components imports :
 import UsernameSetting from './settings/UsernameSetting';
 import PortSetting from './settings/PortSetting';
@@ -90,7 +89,6 @@ const SettingsContainer = (props: any) => {
   const [replayDirectory, setReplayDirectory] = useState<string>(
     settings.REPLAY_DIRECTORY,
   );
-  const [formValid, setFormValid] = useState<boolean>(false);
 
   useEffect(() => {
     const validationResult = validateSettings(
@@ -99,6 +97,7 @@ const SettingsContainer = (props: any) => {
       replayDirectory,
       username,
     );
+    if (validationResult.status === 'success') console.log('success');
   }, []);
 
   // Save the changes made in the settings

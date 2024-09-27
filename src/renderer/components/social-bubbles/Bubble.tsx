@@ -1,4 +1,5 @@
 import './Bubble.css';
+
 export default function Bubble(props: any) {
   const image = props.imageSource;
   return (

@@ -116,9 +116,9 @@ const SettingsContainer = (props: any) => {
         USERNAME: username,
         DARK_MODE: settings.DARK_MODE,
       });
+      console.log(settings);
       window.electron.ipcRenderer.sendMessage('save-config-file', [settings]);
     }
-
     props.toggleAlert(validationResult.status, validationResult.message);
   };
 

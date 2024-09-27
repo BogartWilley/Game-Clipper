@@ -20,8 +20,6 @@ import { Notification } from 'electron';
 import { setupIpcRoutes } from './routes/ipcRoutes';
 import { MessageObject } from '../renderer/utils/displayAlert';
 
-const currentGame = process.env.CURRENT_GAME;
-
 class AppUpdater {
   constructor() {
     log.transports.file.level = 'info';
@@ -47,6 +45,11 @@ const attemptConnection = async () => {
   // Attempt to reconnect after 2 seconds
   if (startObsResult?.connected !== true) {
     console.log('\x1b[33m%s\x1b[0m', 'Reconnecting...');
+    console.log({
+      WS_PORT: process.env.WS_PORT,
+      WS_PASSWORD: process.env.WS_PASSWORD,
+      USERNAME: process.env.CURRENT_USERNAME,
+    });
     setTimeout(attemptConnection, 2000);
     return;
   } else {

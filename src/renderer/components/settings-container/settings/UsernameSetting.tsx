@@ -77,6 +77,7 @@ export default function UsernameSetting({
           color: 'text.primary',
           userSelect: 'none',
           mr: 2,
+          borderBottom: 'none',
         }}
       >
         Insert your username:
@@ -86,7 +87,7 @@ export default function UsernameSetting({
         <InputLabel
           htmlFor="standard-adornment-username"
           style={{
-            textDecoration: 'none',
+            userSelect: 'none',
             color: error && username ? 'red' : undefined,
           }}
         >

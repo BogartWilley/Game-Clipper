@@ -83,19 +83,34 @@ export const setupIpcRoutes = () => {
   ipcMain.on('save-config-file', async (event, settings) => {
     try {
       // NOTE : PASSWORDS ARE STORED IN PLAIN TEXT IN OBS AS WELL,THERE IS NO NEED TO HASH THEM
+      console.log('RECIEVED THIS SETTINGS FROMTHE FRONTED: ');
+      console.log(settings);
+
       const datasPath = app.getPath('userData');
       const data = JSON.stringify(settings, null, 2);
       const filePath = path.join(datasPath, 'config.json');
+      // TODO - FIX ISSUE THAT MAKES YOU NEED TO CLICK THE BUTTON TWICE BEFORE SAVING THE RESULT IN THE CONFIG.JSON FILE
       fs.writeFile(filePath, data, (err) => {
         if (err) console.log(err);
       });
       // Assigning env variables
-      process.env.WS_PORT = settings.WS_PORT;
-      process.env.WS_PASSWORD = settings.WS_PASSWORD;
-      // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
-      process.env.REPLAY_DIRECTORY = settings.REPLAY_DIRECTORY;
-      process.env.CURRENT_USERNAME = settings.USERNAME;
+      console.log(process.env.REPLAY_DIRECTORY);
+
+      if (settings.WS_PORT != undefined && settings.WS_PASSWORD != undefined) {
+        process.env.WS_PORT = settings.WS_PORT;
+        process.env.WS_PASSWORD = settings.WS_PASSWORD;
+        // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
+        process.env.REPLAY_DIRECTORY = settings.REPLAY_DIRECTORY;
+        process.env.CURRENT_USERNAME = settings.USERNAME;
+      }
       const response = await fetch('http://localhost:4609/change-directory');
+
+      if (!response.ok) {
+        console.log(`Error: ${response.status} - ${response.statusText}`);
+      } else {
+        const responseData = await response.text();
+        console.log('Response from server:', responseData);
+      }
     } catch (err) {
       console.log(err);
     }

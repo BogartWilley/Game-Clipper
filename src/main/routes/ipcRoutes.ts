@@ -107,6 +107,8 @@ export const setupIpcRoutes = () => {
       const filePath = path.join(datasPath, 'config.json');
       const configDataString = fs.readFileSync(filePath).toString();
       const settings = JSON.parse(configDataString);
+      console.log('I retrieved this settings : ');
+      console.log(settings);
       event.sender.send('retrieve-config-file-reply', settings);
       // TODO - VALIDATE THE CONFIGS BEFORE ASSIGNING ENV VARS
       process.env.WS_PORT = settings[0].WS_PORT;

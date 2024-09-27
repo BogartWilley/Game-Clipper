@@ -99,7 +99,6 @@ const SettingsContainer = (props: any) => {
       replayDirectory,
       username,
     );
-    if (validationResult.status === 'success') console.log('success');
   }, []);
 
   // Save the changes made in the settings

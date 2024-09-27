@@ -19,6 +19,8 @@ export default function MainContainer(props: any) {
   const [alertMessage, setAlertMessage] = useState<string>('');
   const [closeAlert, setCloseAlert] = useState<boolean>(false);
   const [alertTimer, setAlertTimer] = useState<number>(2000);
+  const [initialAlert, setInitialAlert] = useState<boolean>(false);
+
   const { currentGame } = useGameContext();
   const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
 
@@ -27,14 +29,13 @@ export default function MainContainer(props: any) {
   useEffect(() => {
     const handleAlert = (message: any) => {
       console.log(`the status is : ${message.status}`);
+      console.log(message);
       const successMessage =
         'Successfully connected to OBS! Please select a game and start recording your replays!';
       toggleAlert(message.status, message.message || successMessage);
-      console.log(message);
     };
-
     window.electron.ipcRenderer.on('display-alert', handleAlert);
-  }, []);
+  }, [initialAlert]);
 
   // Function to toggle settings page visibility
   const toggleSettings = () => {
@@ -47,13 +48,14 @@ export default function MainContainer(props: any) {
   const toggleAlert = (status: AlertStatusType, message: string) => {
     if (status === 'error') {
       // TODO - MAKE IT SO THE ERROR ALERT NEVER DISSAPEARS UNLESS CLOSED
-      setAlertTimer(Infinity);
+      setAlertTimer(9900000);
     } else {
       setAlertTimer(2000);
     }
     setAlertStatus(status);
     setAlertMessage(message);
     setCloseAlert(false); // Reset the closeAlert flag whenever a new alert is triggered
+    setInitialAlert(true);
   };
 
   useEffect(() => {

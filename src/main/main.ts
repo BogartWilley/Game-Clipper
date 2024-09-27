@@ -18,6 +18,7 @@ import { resolveHtmlPath } from './util';
 import { spawn } from 'child_process';
 import { Notification } from 'electron';
 import { setupIpcRoutes } from './routes/ipcRoutes';
+import { MessageObject } from '../renderer/utils/displayAlert';
 
 const currentGame = process.env.CURRENT_GAME;
 
@@ -36,8 +37,9 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
-let obsConnectionResult: object = {};
+let obsConnectionResult: MessageObject;
 let alertSent: boolean = false;
+
 const attemptConnection = async () => {
   const startObsResult = await startObs();
   obsConnectionResult = startObsResult;
@@ -46,15 +48,17 @@ const attemptConnection = async () => {
   if (startObsResult?.connected !== true) {
     console.log('\x1b[33m%s\x1b[0m', 'Reconnecting...');
     setTimeout(attemptConnection, 2000);
+    return;
   } else {
     console.log('Connection established!');
     new Notification({
       title: 'OBS process started!',
       body: 'Select a game and confirm to start!',
     }).show();
-    if (!alertSent) {
+    if (!alertSent && startObsResult.status !== undefined) {
       mainWindow?.webContents.send('display-alert', startObsResult);
       alertSent = true;
+      return;
     }
   }
 };
@@ -119,9 +123,14 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
-      setTimeout(() => {
-        console.log('obsConnectionResult');
-        mainWindow?.webContents.send('display-alert', obsConnectionResult);
+      const interval = setInterval(() => {
+        if (obsConnectionResult.status !== undefined) {
+          console.log(
+            'obsConnectionResult.status was not undefined and the alertSent was not false',
+          );
+          mainWindow?.webContents.send('display-alert', obsConnectionResult);
+          clearInterval(interval);
+        }
       }, 1000);
     }
   });

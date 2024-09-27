@@ -11,28 +11,30 @@ import SettingsContainer from '../settings-container/SettingsContainer';
 import './main-container.css';
 
 export default function MainContainer(props: any) {
-  const [processRunning, setProcessRunning] = useState(false);
-  const [buttonsGrayed, setButtonGrayed] = useState(false);
-  const [keyCount, setKeyCount] = useState(0);
-  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [processRunning, setProcessRunning] = useState<boolean>(false);
+  const [buttonsGrayed, setButtonGrayed] = useState<boolean>(false);
+  const [keyCount, setKeyCount] = useState<number>(0);
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
   const [alertStatus, setAlertStatus] = useState<AlertStatusType | null>(null);
   const [alertMessage, setAlertMessage] = useState<string>('');
+  const [closeAlert, setCloseAlert] = useState<boolean>(false);
+  const [issueDisplayed, setIssueDisplayed] = useState<boolean>(false);
   const { currentGame } = useGameContext();
   const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
-  const [closeAlert, setCloseAlert] = useState<boolean>(false);
+  // Alert the user about the application's current state
+
+  useEffect(() => {
+    const handleAlert = (message: any) => {
+      if (message.status === 'error') {
+        setIssueDisplayed(true);
+      }
+      console.log(message);
+    };
+
+    window.electron.ipcRenderer.on('display-alert', handleAlert);
+  }, []);
 
   // Function to toggle settings page visibility
-  interface MessageObject {
-    connected: boolean;
-    status: string;
-    message: string;
-  }
-
-  window.electron.ipcRenderer.on('display-alert', (message) => {
-    console.log('I will now display the alert object : ');
-    console.log(message);
-  });
-
   const toggleSettings = () => {
     setSettingsOpen(!settingsOpen);
     setKeyCount(keyCount + 1);

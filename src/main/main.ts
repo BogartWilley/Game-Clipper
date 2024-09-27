@@ -36,27 +36,32 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
+let obsConnectionResult: object = {};
+let alertSent: boolean = false;
 const attemptConnection = async () => {
   const startObsResult = await startObs();
-
+  obsConnectionResult = startObsResult;
   // Send the result to the main window and check the connection status
-  mainWindow?.webContents.send('display-alert', startObsResult);
-
-  // If not connected, attempt to reconnect after 2 seconds
+  // Attempt to reconnect after 2 seconds
   if (startObsResult?.connected !== true) {
-    console.log('Reconnecting...');
-    setTimeout(attemptConnection, 2000); // Retry after 2 seconds
+    console.log('\x1b[33m%s\x1b[0m', 'Reconnecting...');
+    setTimeout(attemptConnection, 2000);
   } else {
     console.log('Connection established!');
     new Notification({
       title: 'OBS process started!',
       body: 'Select a game and confirm to start!',
     }).show();
+    if (!alertSent) {
+      mainWindow?.webContents.send('display-alert', startObsResult);
+      alertSent = true;
+    }
   }
 };
 
-// Start the connection attempt after an initial delay
+// Start the connection attempts after an initial delay
 setTimeout(attemptConnection, 2000);
+
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
@@ -114,10 +119,15 @@ const createWindow = async () => {
       mainWindow.minimize();
     } else {
       mainWindow.show();
+      setTimeout(() => {
+        console.log('obsConnectionResult');
+        mainWindow?.webContents.send('display-alert', obsConnectionResult);
+      }, 1000);
     }
   });
 
   mainWindow.on('closed', () => {
+    // TODO - GRACEFULLY SHUT DOWN OBS
     mainWindow = null;
   });
 

@@ -18,22 +18,18 @@ export default function MainContainer(props: any) {
   const [alertStatus, setAlertStatus] = useState<AlertStatusType | null>(null);
   const [alertMessage, setAlertMessage] = useState<string>('');
   const [closeAlert, setCloseAlert] = useState<boolean>(false);
-  const [issueDisplayed, setIssueDisplayed] = useState<boolean>(false);
+  const [alertTimer, setAlertTimer] = useState<number>(2000);
   const { currentGame } = useGameContext();
   const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
+
   // Alert the user about the application's current state
 
   useEffect(() => {
     const handleAlert = (message: any) => {
-      if (message.status === 'error') {
-        // TODO - MAKE IT SO THE ERROR ALERT NEVER DISSAPEARS UNLESS CLOSED
-        setIssueDisplayed(true);
-      }
-      setAlertStatus(message.status);
-      setAlertMessage(
-        'Successfully connected to OBS! Please select a game and start recording your replays!',
-      );
-      setCloseAlert(false);
+      console.log(`the status is : ${message.status}`);
+      const successMessage =
+        'Successfully connected to OBS! Please select a game and start recording your replays!';
+      toggleAlert(message.status, message.message || successMessage);
       console.log(message);
     };
 
@@ -49,6 +45,12 @@ export default function MainContainer(props: any) {
 
   // Function to trigger a new alert
   const toggleAlert = (status: AlertStatusType, message: string) => {
+    if (status === 'error') {
+      // TODO - MAKE IT SO THE ERROR ALERT NEVER DISSAPEARS UNLESS CLOSED
+      setAlertTimer(90000);
+    } else {
+      setAlertTimer(2000);
+    }
     setAlertStatus(status);
     setAlertMessage(message);
     setCloseAlert(false); // Reset the closeAlert flag whenever a new alert is triggered
@@ -58,7 +60,7 @@ export default function MainContainer(props: any) {
     if (alertStatus && !closeAlert) {
       const timer = setTimeout(() => {
         setCloseAlert(true);
-      }, 2600);
+      }, alertTimer + 600); // This control when the alert component unmount
 
       return () => clearTimeout(timer);
     }
@@ -184,6 +186,7 @@ export default function MainContainer(props: any) {
           status={alertStatus}
           message={alertMessage}
           setCloseAlert={setCloseAlert}
+          alertTimer={alertTimer}
         />
       )}
     </div>

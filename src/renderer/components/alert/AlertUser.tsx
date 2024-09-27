@@ -8,12 +8,14 @@ interface AlertUserProps {
   status: AlertStatusType;
   message: string;
   setCloseAlert: (alert: boolean) => void;
+  alertTimer: number;
 }
 
 export const AlertUser: React.FC<AlertUserProps> = ({
   status,
   message,
   setCloseAlert,
+  alertTimer,
 }) => {
   const [isExiting, setIsExiting] = useState<boolean>(false);
   const exitTimer = useRef<NodeJS.Timeout | null>(null);
@@ -28,7 +30,7 @@ export const AlertUser: React.FC<AlertUserProps> = ({
     // Reset the exit timer
     exitTimer.current = setTimeout(() => {
       setIsExiting(true);
-    }, 2000);
+    }, alertTimer);
   };
 
   useEffect(() => {

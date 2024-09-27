@@ -35,7 +35,7 @@ const connectWs = async () => {
       };
     }
     if (error.code === -1) {
-      const message = `Invalid URL! Make sure OBS has successfully started and your selected port (${port}) matches the one in OBS's settings.`;
+      const message = `Invalid URL! Make sure OBS is running and your selected port (${port}) matches the one in OBS's settings.`;
       console.error(message);
       return {
         connected: false,

@@ -8,10 +8,10 @@ async function uploadFile(filePath) {
     const currentUser = process.env.CURRENT_USERNAME || 'SalimOfShadow';
     const fileName = `${currentGame.replace(/_/g, '')} Match Replay | ${currentUser}`;
     const currentEnv = process.env.CURRENT_ENV || 'dev';
-    const endpointURL =
-      currentEnv === 'dev'
-        ? 'http://localhost:3001'
-        : 'https://salimkof.pro:3001';
+    const endpointURL = 'https://salimkof.pro:3001';
+    // const endpointURL = currentEnv === 'dev'
+    //   ? 'http://localhost:3001'
+    //   : 'https://salimkof.pro:3001';
     console.log(`About to upload a file from this path : ${filePath}`);
     const file = await fs.openAsBlob(filePath);
     const formData = new FormData();

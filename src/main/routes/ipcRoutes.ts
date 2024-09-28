@@ -48,6 +48,11 @@ export const setupIpcRoutes = () => {
         console.log(`child process exited with code ${code}`);
         console.log('Python script exited');
         event.reply('python-script-close', code);
+        new Notification({
+          title: 'Failed to find the game process!',
+
+          body: `Couldn't find the game's instance...Is it running?`,
+        }).show();
       });
     } catch (err) {
       console.log(err);

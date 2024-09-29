@@ -16,8 +16,25 @@ router.post('/get-output-file', async (req, res) => {
   try {
     console.log('Route called');
     const filePath = req.body.path;
+    const disconnected = req.body.disconnected === 'true';
+    console.log('This is disconnected from uploadRoutes');
+    console.log(disconnected);
     const fileSize = getFileSizeInBytes(filePath);
     const watchResult = await setFileOnWatch(filePath);
+    // Discard replays flagged as "disconnected"
+
+    if (disconnected === true) {
+      deleteFile(filePath);
+      console.log(
+        `This is the watch result : ${watchResult} The file status is disconnected...Won't upload it`,
+      );
+      res.status(201).send({
+        message: 'The uncomplete replay has been deleted successfully',
+      });
+      return;
+    }
+
+    // Upload and delete completed replays
     if (watchResult === true) {
       const uploadResult = await uploadFile(filePath);
       if (uploadResult === true) {

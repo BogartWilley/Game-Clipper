@@ -45,6 +45,7 @@ setInterval(async () => {
     handleErrors(err);
   }
 }, 500);
+
 obs.on('RecordStateChanged', async (state) => {
   if (state.outputActive == false && state.outputPath != null) {
     console.log(state);
@@ -57,6 +58,7 @@ obs.on('RecordStateChanged', async (state) => {
       },
       body: JSON.stringify({
         path: state.outputPath,
+        disconnected: process.env.REPLAY_DISCONNECTED,
       }),
     });
     if (response.ok)
@@ -64,6 +66,7 @@ obs.on('RecordStateChanged', async (state) => {
     // Saved replay conversion initated, alert IPC
   }
 });
+
 obs.on('ReplayBufferSaved', (buff) => {
   console.log('This is the replay buffer : ');
   console.log(buff);

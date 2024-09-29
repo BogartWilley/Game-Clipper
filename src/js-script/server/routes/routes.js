@@ -17,6 +17,7 @@ const {
 const { audioSetup, videoSetup } = require('../../utils/scene-setup/capture');
 const { resizeWindow } = require('../../utils/actions/resizeWindow');
 const { changeDirectory } = require('../../utils/actions/changeDirectory');
+const { handleRecordStateChange } = require('../../obs-api/websocketApi');
 
 // Recording Actions
 router.get('/start-recording', async (req, res) => {
@@ -30,6 +31,8 @@ router.get('/start-recording', async (req, res) => {
 
 router.get('/stop-recording', async (req, res) => {
   try {
+    const disconnected = req.headers['disconnected'] === 'true';
+    process.env.REPLAY_DISCONNECTED = disconnected;
     await recordingAction('stop', stopRecording, res);
   } catch (err) {
     console.log('Failed to stop the recording');

@@ -5,6 +5,7 @@ import pygetwindow as gw
 import sys
 import os
 import psutil
+import requests
 from utils.send_action import send_action
 
 
@@ -59,7 +60,8 @@ games = {
         ]
     },
     "GUILTY GEAR STRIVE": {
-        "window_name": "Guilty Gear Strive",
+        "window_name": "Guilty Gear -Strive-",
+        "process_name": "GGST-Win64-Shipping.exe",
         "start_image": resource_path("images/GUILTY_GEAR_STRIVE/start-image.png"),
         "stop_images": [
             resource_path("images/GUILTY_GEAR_STRIVE/stop-image.png"),
@@ -142,6 +144,21 @@ def find_match(game, action):
             print("Match found at location", max_loc)
             print("This is the max val ", max_val)
             print(f"This was the image : {image}")
+            
+            # Check if the matched image is a disconnection or error image
+            if "disconnected" in image or "error" in image:
+                try:
+                    url = f"http://localhost:4609/stop-recording"
+                    headers = {
+                        "game": game,
+                        "disconnected": "true"
+                    }
+                    response = requests.get(url, headers=headers)
+                    return response 
+                except: print("Encountered an error while sending the request") 
+                print("Disconnection image found")
+                return True
+
             send_action(selected_game, action)
 
             w = img_test.shape[1]

@@ -43,7 +43,9 @@ export default function MainContainer(props: any) {
       const successMessage =
         'Successfully connected to OBS! Please select a game and start recording your replays!';
       toggleAlert(message.status, message.message || successMessage);
+      if (!message.message) setErrorPresent(false);
     };
+
     window.electron.ipcRenderer.on('display-alert', handleAlert);
   }, [initialAlert]);
 
@@ -83,7 +85,6 @@ export default function MainContainer(props: any) {
       return;
     }
 
-    setErrorPresent(false);
     setAlertTimer(2000);
   };
 

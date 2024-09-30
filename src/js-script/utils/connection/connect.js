@@ -3,13 +3,13 @@ const obs = new OBSWebSocket();
 
 const connectWs = async () => {
   // TODO - Use these in prod
-  const PORT = process.env.WS_PORT;
-  const PASSWORD = process.env.WS_PASSWORD;
   /* 
   const PORT = 4455;
   const PASSWORD = 'super-sekret'; */
 
   try {
+    const PORT = process.env.WS_PORT;
+    const PASSWORD = process.env.WS_PASSWORD;
     const { obsWebSocketVersion, negotiatedRpcVersion } = await obs.connect(
       `ws://127.0.0.1:${PORT}`,
       `${PASSWORD}`,

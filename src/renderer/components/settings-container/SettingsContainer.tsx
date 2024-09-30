@@ -90,6 +90,7 @@ const SettingsContainer = (props: any) => {
     settings.REPLAY_DIRECTORY,
   );
 
+  // Validates the settings upon app launch
   useEffect(() => {
     const validationResult = validateSettings(
       wsPort,
@@ -108,17 +109,23 @@ const SettingsContainer = (props: any) => {
       replayDirectory,
       username,
     );
+
     if (validationResult.status === 'success') {
-      setSettings({
+      const updatedSettings = {
         WS_PORT: wsPort,
         WS_PASSWORD: wsPassword,
         REPLAY_DIRECTORY: replayDirectory,
         USERNAME: username,
-        DARK_MODE: settings.DARK_MODE,
-      });
-      console.log(settings);
-      window.electron.ipcRenderer.sendMessage('save-config-file', [settings]);
+        DARK_MODE: settings.DARK_MODE, // Keeping the previous dark mode setting
+      };
+
+      setSettings(updatedSettings);
+
+      window.electron.ipcRenderer.sendMessage('save-config-file', [
+        updatedSettings,
+      ]);
     }
+
     props.toggleAlert(validationResult.status, validationResult.message);
   };
 

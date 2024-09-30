@@ -101,21 +101,27 @@ export const setupIpcRoutes = () => {
       // Assigning env variables
       console.log(process.env.REPLAY_DIRECTORY);
 
-      if (settings.WS_PORT != undefined && settings.WS_PASSWORD != undefined) {
-        process.env.WS_PORT = settings.WS_PORT;
-        process.env.WS_PASSWORD = settings.WS_PASSWORD;
+      if (settings[0].WS_PORT != '' && settings[0].WS_PASSWORD != '') {
+        console.log(
+          'SETTING ENV VARIABLES,CAUSE WSPORT AND WS PASSWORD WERE NOT UNDEFINED',
+        );
+        process.env.WS_PORT = settings[0].WS_PORT;
+        process.env.WS_PASSWORD = settings[0].WS_PASSWORD;
         // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
-        process.env.REPLAY_DIRECTORY = settings.REPLAY_DIRECTORY;
-        process.env.CURRENT_USERNAME = settings.USERNAME;
+        process.env.REPLAY_DIRECTORY = settings[0].REPLAY_DIRECTORY;
+        process.env.CURRENT_USERNAME = settings[0].USERNAME;
       }
-      const response = await fetch('http://localhost:4609/change-directory');
 
-      if (!response.ok) {
-        console.log(`Error: ${response.status} - ${response.statusText}`);
-      } else {
-        const responseData = await response.text();
-        console.log('Response from server:', responseData);
-      }
+      // Waiting for OBS to be runningbefore changing the replay directory
+      setTimeout(async () => {
+        const response = await fetch('http://localhost:4609/change-directory');
+        if (!response.ok) {
+          console.log(`Error: ${response.status} - ${response.statusText}`);
+        } else {
+          const responseData = await response.text();
+          console.log('Response from server:', responseData);
+        }
+      }, 3000);
     } catch (err) {
       console.log(err);
     }

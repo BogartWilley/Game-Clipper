@@ -44,8 +44,8 @@ games = {
         "stop_images": [
             resource_path("images/KOF_XIII/stop-image.png"),  
             resource_path("images/KOF_XIII/disconnected-screen.png"),  
-            resource_path("images/KOF_XIII/error-screen-1.png"),
-            resource_path("images/KOF_XIII/error-screen-2.png")
+            # resource_path("images/KOF_XIII/error-screen-1.png"),
+            # resource_path("images/KOF_XIII/error-screen-2.png")
         ]
     },
     "USF4": {

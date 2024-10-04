@@ -18,6 +18,7 @@ import { useErrorContext } from '../../contexts/ErrorContext';
 
 // Styles imports :
 import './main-container.css';
+import TimerDisplay from '../timer/TimerDisplay';
 
 export default function MainContainer(props: any) {
   // States
@@ -123,6 +124,7 @@ export default function MainContainer(props: any) {
         style={{ backgroundColor: 'black' }}
       />
       <BubbleContainer grayed={buttonsGrayed}>
+        <TimerDisplay />
         {/* All social bubbles */}
         <Bubble
           URL="https://obsproject.com/download"

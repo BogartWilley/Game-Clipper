@@ -34,6 +34,9 @@ export const setupIpcRoutes = () => {
       const py = spawn(exePath, {
         env: { ...process.env }, // Pass env variables to the Python script
       });
+
+      event.sender.send('start-timer');
+
       py.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
         event.reply('python-script-output', data.toString());
@@ -53,6 +56,7 @@ export const setupIpcRoutes = () => {
 
           body: `Couldn't find the game's instance...Is it running?`,
         }).show();
+        event.sender.send('stop-timer');
       });
     } catch (err) {
       console.log(err);

@@ -1,7 +1,6 @@
-const { BrowserWindow } = require('electron');
-
 const express = require('express');
 const router = express.Router();
+
 const {
   startRecording,
   pauseRecording,
@@ -25,10 +24,6 @@ const { handleRecordStateChange } = require('../../obs-api/websocketApi');
 router.get('/start-recording', async (req, res) => {
   try {
     await recordingAction('start', startRecording, res);
-    const mainWindow = BrowserWindow.getAllWindows()[0]; // Assuming there's only one window
-    if (mainWindow) {
-      mainWindow.webContents.send('start-timer'); // Send the message to the renderer process
-    }
   } catch (err) {
     console.log('Failed to start the recording');
     handleErrors(err);

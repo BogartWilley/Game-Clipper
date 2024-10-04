@@ -35,8 +35,6 @@ export const setupIpcRoutes = () => {
         env: { ...process.env }, // Pass env variables to the Python script
       });
 
-      event.sender.send('start-timer');
-
       py.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
         event.reply('python-script-output', data.toString());

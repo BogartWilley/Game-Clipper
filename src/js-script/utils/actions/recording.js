@@ -1,5 +1,14 @@
+const { BrowserWindow } = require('electron');
+
 const { obs } = require('../connection/connect');
 const handleErrors = require('./handleErrors');
+
+function handleTimer(state) {
+  const mainWindow = BrowserWindow.getAllWindows()[0]; // Assuming there's only one window
+  if (mainWindow) {
+    mainWindow.webContents.send(`${state}-timer`); // Send the message to the renderer process
+  }
+}
 
 async function recordingAction(action, cb, res) {
   try {
@@ -27,6 +36,7 @@ const startRecording = async () => {
     const status = await obs.call('GetRecordStatus');
     if (status.outputActive && status.outputDuration !== 0) {
       console.log('Recording has started');
+      handleTimer('start');
       return true;
     } else {
       return false;
@@ -62,6 +72,7 @@ const resumeRecording = async () => {
 const stopRecording = async () => {
   try {
     const stop = await obs.call('StopRecord');
+    handleTimer('stop');
     console.log('Stopped the recording');
     return true;
   } catch (err) {

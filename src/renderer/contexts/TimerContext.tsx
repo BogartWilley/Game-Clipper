@@ -28,6 +28,7 @@ export const TimerProvider = ({ children }: any) => {
   // IPC listener from main process to start timer
   useEffect(() => {
     window.electron.ipcRenderer.on('start-timer', () => {
+      setElapsedTime(0);
       setIsRunning(true);
     });
     window.electron.ipcRenderer.on('stop-timer', () => {

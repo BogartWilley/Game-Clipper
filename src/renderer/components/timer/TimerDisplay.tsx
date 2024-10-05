@@ -5,6 +5,7 @@ import PlayCircleFilledWhiteIcon from '@mui/icons-material/PlayCircleFilledWhite
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 import './timer.css';
+import { color } from 'framer-motion';
 
 export default function TimerDisplay() {
   const { elapsedTime, formatTime, isRunning, setIsRunning } = useTimer();
@@ -12,7 +13,18 @@ export default function TimerDisplay() {
   return (
     <div className="timer-container">
       <div className="timer-content">
-        <PlayCircleFilledWhiteIcon className="timer-icon" />{' '}
+        {isRunning ? (
+          <StopCircleIcon
+            sx={{ width: '35px', height: '35px' }}
+            className="timer-icon-stop"
+          />
+        ) : (
+          <PlayCircleFilledWhiteIcon
+            sx={{ width: '35px', height: '35px' }}
+            className="timer-icon-play"
+          />
+        )}
+
         <div className="timer-text">{formatTime(elapsedTime)}</div>
       </div>
     </div>

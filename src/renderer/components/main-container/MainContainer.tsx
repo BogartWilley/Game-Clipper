@@ -123,9 +123,8 @@ export default function MainContainer(props: any) {
         )}
         style={{ backgroundColor: 'black' }}
       />
+
       <BubbleContainer grayed={buttonsGrayed}>
-        <TimerDisplay />
-        {/* All social bubbles */}
         <Bubble
           URL="https://obsproject.com/download"
           imageSource={require('../social-bubbles/bubble-icons/obs-icon.png')}
@@ -167,7 +166,14 @@ export default function MainContainer(props: any) {
         </motion.div>
       </BubbleContainer>
       {!settingsOpen && (
-        <center style={{ marginTop: '250px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
           <Button
             variant="contained"
             color="primary"
@@ -200,7 +206,8 @@ export default function MainContainer(props: any) {
           >
             Change Replay Directory
           </Button>
-        </center>
+          <TimerDisplay />
+        </div>
       )}
       {/* Render alert if status is set and alert is not closed */}
       {alertStatus && !closeAlert && (

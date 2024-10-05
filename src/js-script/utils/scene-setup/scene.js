@@ -1,6 +1,7 @@
 const { obs } = require('../connection/connect.js');
 const handleErrors = require('../actions/handleErrors.js');
-const { updateSelectedGame } = require('../actions/selectGame.js');
+const { getSelectedGame } = require('../actions/selectGame.js');
+const { resizeWindow } = require('../actions/resizeWindow.js');
 
 const getSceneName = async () => {
   try {
@@ -14,11 +15,10 @@ const getSceneName = async () => {
 };
 const createNewScene = async () => {
   try {
-    const selectedGame = updateSelectedGame();
+    const selectedGame = await getSelectedGame();
     await obs.call('CreateScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
-    console.log('Scene created successfully, setting it as main :');
     await obs.call('SetCurrentProgramScene', {
       sceneName: `${selectedGame.fullName} Replay`,
     });
@@ -27,7 +27,19 @@ const createNewScene = async () => {
   }
 };
 
+const changeScene = async () => {
+  try {
+    const selectedGame = await getSelectedGame();
+    await obs.call('SetCurrentProgramScene', {
+      sceneName: `${selectedGame.fullName} Replay`,
+    });
+  } catch (err) {
+    handleErrors(err);
+  }
+};
+
 module.exports = {
   getSceneName,
   createNewScene,
+  changeScene,
 };

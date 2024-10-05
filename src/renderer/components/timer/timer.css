@@ -1,0 +1,39 @@
+.timer-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
+  height: 50px;
+  border-radius: 140px;
+  background-color: #4e4e4eb6;
+  position: fixed;
+  top: 100px;
+  right: 25px;
+  z-index: 1000;
+}
+
+.timer-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 140px;
+  height: 50px;
+}
+
+.timer-icon-play {
+  margin-right: 11px;
+  /* color: #2ce22c; */
+  color: #3cbb3cdc;
+}
+
+.timer-icon-stop {
+  margin-right: 11px;
+  color: hwb(120 28% 19% / 0.863);
+}
+
+.timer-text {
+  font-size: 24px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: rgb(228, 228, 228);
+  user-select: none;
+}

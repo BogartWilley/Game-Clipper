@@ -1,10 +1,21 @@
 .settings-container {
   position: absolute;
-  top: 50%; /* Move down 50% */
-  left: 50%; /* Move right 50% */
-  transform: translate(-50%, -50%); /* Adjust positioning to center */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.sekroapsé {
-  color: rgba(156, 156, 156, 0.719);
-  color: rgba(156, 156, 156, 0.719);
+.save-button {
+  position: relative;
+  bottom: 20px;
+  left: 50%;
+  top: 10%;
+  transform: translateX(-50%);
+}
+.options-container {
+  position: relative;
+  margin-top: 20px;
+  height: 98%;
+  border-style: dashed;
+  border-width: 1px;
+  border-color: black;
 }

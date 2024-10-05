@@ -1,10 +1,12 @@
 const { obs } = require('../connection/connect.js');
 const handleErrors = require('../actions/handleErrors.js');
-const { updateSelectedGame } = require('../actions/selectGame.js');
+const { getSelectedGame } = require('../actions/selectGame.js');
+const { muteInputs } = require('../actions/muteInputs.js');
+const { resizeWindow } = require('../actions/resizeWindow.js');
 
 const audioSetup = async () => {
   try {
-    const selectedGame = updateSelectedGame();
+    const selectedGame = getSelectedGame();
     const audio = await obs.call('CreateInput', {
       sceneName: `${selectedGame.fullName} Replay`,
       inputName: `${selectedGame.name} Audio Capture`,
@@ -14,14 +16,14 @@ const audioSetup = async () => {
       },
       sceneItemEnabled: true,
     });
-    console.log(audio);
+    muteInputs(selectedGame);
   } catch (err) {
     handleErrors(err);
   }
 };
 
 const videoSetup = async () => {
-  const selectedGame = updateSelectedGame();
+  const selectedGame = getSelectedGame();
   try {
     const video = await obs.call('CreateInput', {
       sceneName: `${selectedGame.fullName} Replay`,
@@ -36,7 +38,15 @@ const videoSetup = async () => {
       sceneItemEnabled: true,
     });
 
-    console.log(video);
+    const setVideoSettings = await obs.call('SetVideoSettings', {
+      baseHeight: 1080,
+      baseWidth: 1920,
+      fpsDenominator: 1,
+      fpsDenominator: 60,
+      outputHeight: 1080,
+      outputWidth: 1920,
+    });
+    setTimeout(resizeWindow, 500); // otherwise,the sceneItemTransform objects is going to be empty   -- TODO -- Fix this
   } catch (err) {
     handleErrors(err);
   }
@@ -45,22 +55,22 @@ const videoSetup = async () => {
 //  ---------- TESTING FUNCTIONS ----------
 const logSettings = async (type) => {
   try {
-    updateSelectedGame();
+    const selectedGame = getSelectedGame();
     if (type === 'video') {
       const video = await obs.call('GetInputSettings', {
-        inputName: `GUILTY GEAR STRIVE Video Capture`,
+        inputName: `${selectedGame.fullName} Video Capture`,
       });
       console.log(video);
       return;
     }
     if (type === 'audio') {
       const audio = await obs.call('GetInputSettings', {
-        inputName: `GUILTY GEAR STRIVE Audio Capture`,
+        inputName: `${selectedGame.fullName} Audio Capture`,
       });
       console.log(audio);
     }
   } catch (err) {
-    console.log(err);
+    handleErrors(err);
   }
 };
 
@@ -74,7 +84,7 @@ const isSourcePresent = async () => {
     });
     return true; // Both sources are present
   } catch (err) {
-    console.log(err.message);
+    handleErrors(err);
     return false;
   }
 };

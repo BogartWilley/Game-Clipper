@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+
 const {
   startRecording,
   pauseRecording,
@@ -9,42 +10,16 @@ const {
 } = require('../../utils/actions/recording');
 const handleErrors = require('../../utils/actions/handleErrors');
 const authenticate = require('../middlewares/authenticate');
-const { updateSelectedGame } = require('../../utils/actions/selectGame');
-const { createNewScene } = require('../../utils/scene-setup/scene');
+const { getSelectedGame } = require('../../utils/actions/selectGame');
+const {
+  createNewScene,
+  changeScene,
+} = require('../../utils/scene-setup/scene');
 const { audioSetup, videoSetup } = require('../../utils/scene-setup/capture');
-// Process Action
+const { resizeWindow } = require('../../utils/actions/resizeWindow');
+const { changeDirectory } = require('../../utils/actions/changeDirectory');
+const { handleRecordStateChange } = require('../../obs-api/websocketApi');
 
-router.get('/obs-ready', (req, res) => {
-  console.log('OBS is now ready!');
-  res.status(200).send({ message: 'OBS is now ready!' });
-});
-
-router.get('/process-kill', (req, res) => {
-  console.log('Process was killed,updating the state : ');
-  res.status(200).send({ message: 'Process was killed' });
-});
-
-router.get('/change-game', async (req, res) => {
-  try {
-    const selectedGame = updateSelectedGame();
-
-    // CHECK IF THERE'S ALREADY A SCENE, IF NOT THEN CREATE AND SETUP ONE
-
-    await createNewScene();
-    await audioSetup();
-    await videoSetup();
-
-    console.log(
-      `Current game changed successfully,it is now ${selectedGame.name}`,
-    );
-    res.status(200).send({
-      message: `Current game changed successfully,it is now ${selectedGame.name}`,
-    });
-  } catch (err) {
-    console.log('Failed to change the game');
-    handleErrors(err);
-  }
-});
 // Recording Actions
 router.get('/start-recording', async (req, res) => {
   try {
@@ -57,6 +32,8 @@ router.get('/start-recording', async (req, res) => {
 
 router.get('/stop-recording', async (req, res) => {
   try {
+    const disconnected = req.headers['disconnected'] === 'true';
+    process.env.REPLAY_DISCONNECTED = disconnected;
     await recordingAction('stop', stopRecording, res);
   } catch (err) {
     console.log('Failed to stop the recording');
@@ -78,6 +55,47 @@ router.get('/resume-recording', async (req, res) => {
   } catch (err) {
     console.log('Failed to resume the recording');
     handleErrors(err);
+  }
+});
+
+// Process Action
+
+router.get('/obs-ready', (req, res) => {
+  console.log('OBS is now ready!');
+  res.status(200).send({ message: 'OBS is now ready!' });
+});
+
+router.get('/process-kill', (req, res) => {
+  console.log('Process was killed,updating the state : ');
+  res.status(200).send({ message: 'Process was killed' });
+});
+
+router.get('/change-game', async (req, res) => {
+  try {
+    const selectedGame = await getSelectedGame();
+
+    // CHECK IF THERE'S ALREADY A SCENE, IF NOT THEN CREATE AND SETUP ONE
+
+    await createNewScene();
+    await audioSetup();
+    await videoSetup();
+    await changeScene();
+    res.status(200).send({
+      message: `Current game changed successfully,it is now ${selectedGame.name}`,
+    });
+  } catch (err) {
+    console.log('Failed to change the game');
+    handleErrors(err);
+  }
+});
+
+router.get('/change-directory', (req, res) => {
+  try {
+    changeDirectory();
+    res.send(200);
+  } catch (err) {
+    console.log(err);
+    res.send(500);
   }
 });
 

@@ -1,25 +1,64 @@
-import { ipcRenderer } from 'electron';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+
+// Icon imports :
+import { Button } from '@mui/material';
+
+// Components imports :
 import Background from '../background/Background';
 import SideBar from '../sidebar/Sidebar';
-import Bubble from '../social-bubbles/Bubble';
 import BubbleContainer from '../social-bubbles/BubbleContainer';
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import KOF_XIII_IMAGE from '../background/background-images/KOFXIII-Background.png';
-import USF4 from '../background/background-images/USF4-Background.jpg';
+import Bubble from '../social-bubbles/Bubble';
+import { AlertStatusType, AlertUser } from '../alert/AlertUser';
+import SettingsContainer from '../settings-container/SettingsContainer';
+
+// Context imports :
 import { useGameContext } from '../../contexts/GameContext';
-import SettingsContainer from '../settings-container/SettingsContainer'; // Assuming this is your settings component
+import { useErrorContext } from '../../contexts/ErrorContext';
+
+// Styles imports :
 import './main-container.css';
+import TimerDisplay from '../timer/TimerDisplay';
 
 export default function MainContainer(props: any) {
-  const [processRunning, setProcessRunning] = useState(false);
-  const [buttonsGrayed, setButtonGrayed] = useState(false);
-  const [keyCount, setKeyCount] = useState(0);
-  // State to track if settings page is open
-  const [settingsOpen, setSettingsOpen] = useState(false);
-
+  // States
+  const [processRunning, setProcessRunning] = useState<boolean>(false);
+  const [buttonsGrayed, setButtonGrayed] = useState<boolean>(false);
+  const [keyCount, setKeyCount] = useState<number>(0);
+  const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [alertStatus, setAlertStatus] = useState<AlertStatusType | null>(null);
+  const [alertMessage, setAlertMessage] = useState<string>('');
+  const [closeAlert, setCloseAlert] = useState<boolean>(false);
+  const [alertTimer, setAlertTimer] = useState<number>(2000);
+  const [initialAlert, setInitialAlert] = useState<boolean>(false);
+  // Contexts
   const { currentGame } = useGameContext();
-  const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
+  const { errorPresent, setErrorPresent } = useErrorContext();
+
+  // Effects
+
+  useEffect(() => {
+    const handleAlert = (message: any) => {
+      console.log(`the status is : ${message.status}`);
+      console.log(message);
+      const successMessage =
+        'Successfully connected to OBS! Please select a game and start recording your replays!';
+      toggleAlert(message.status, message.message || successMessage);
+      if (!message.message) setErrorPresent(false);
+    };
+
+    window.electron.ipcRenderer.on('display-alert', handleAlert);
+  }, [initialAlert]);
+
+  useEffect(() => {
+    if (alertStatus && !closeAlert) {
+      const timer = setTimeout(() => {
+        setCloseAlert(true);
+      }, alertTimer + 600); // This control when the alert component unmount
+
+      return () => clearTimeout(timer);
+    }
+  }, [alertStatus, closeAlert, alertMessage]);
 
   // Function to toggle settings page visibility
   const toggleSettings = () => {
@@ -28,9 +67,31 @@ export default function MainContainer(props: any) {
     setButtonGrayed(!buttonsGrayed);
   };
 
+  // Function to trigger a new alert
+  const toggleAlert = (status: AlertStatusType, message: string) => {
+    setAlertStatus(status);
+    setAlertMessage(message);
+    setCloseAlert(false); // Reset the closeAlert flag whenever a new alert is triggered
+    setInitialAlert(true);
+
+    if (status === 'error') {
+      setErrorPresent(true);
+      setAlertTimer(9900000); // TODO - CHANGE THIS TO INFINITY
+      return;
+    }
+
+    // Handle warning status
+    if (status === 'warning') {
+      setErrorPresent(true);
+      return;
+    }
+
+    setAlertTimer(2000);
+  };
+
+  const parsedCurrentGame = `${currentGame.replace(/_/g, '')}-Background.png`;
   return (
     <div>
-      {/* Conditionally render the SettingsPage */}
       <AnimatePresence>
         {settingsOpen && (
           <motion.div
@@ -40,14 +101,19 @@ export default function MainContainer(props: any) {
             key={keyCount}
             transition={{ duration: 0.2 }}
           >
-            <SettingsContainer />
+            <SettingsContainer
+              closeSettings={() => {
+                if (settingsOpen) toggleSettings();
+              }}
+              toggleAlert={toggleAlert}
+            />
           </motion.div>
         )}
       </AnimatePresence>
 
       <SideBar
         closeSettings={() => {
-          if (settingsOpen) setSettingsOpen(false);
+          if (settingsOpen) toggleSettings();
         }}
       />
 
@@ -59,7 +125,6 @@ export default function MainContainer(props: any) {
       />
 
       <BubbleContainer grayed={buttonsGrayed}>
-        {/* Other social bubbles */}
         <Bubble
           URL="https://obsproject.com/download"
           imageSource={require('../social-bubbles/bubble-icons/obs-icon.png')}
@@ -100,31 +165,59 @@ export default function MainContainer(props: any) {
           />
         </motion.div>
       </BubbleContainer>
-      <center style={{ marginTop: '250px' }}>
-        <button
-          style={{ width: '140px', height: '60px' }}
-          onClick={() => {
-            if (processRunning) {
-              const userConfirmed = window.confirm(
-                'The process is already running. Do you want to start it again?',
+      {!settingsOpen && (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+          }}
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            sx={{ mr: 2, width: 140, height: 60 }}
+            onClick={() => {
+              if (processRunning) {
+                const userConfirmed = window.confirm(
+                  'The process is already running. Do you want to start it again?',
+                );
+                if (!userConfirmed) return;
+              }
+              window.electron.ipcRenderer.sendMessage('run-python-script', []);
+              setProcessRunning(true);
+            }}
+          >
+            Start Recording
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            size="large"
+            sx={{ width: 140, height: 60, fontSize: 'small' }}
+            onClick={() => {
+              window.electron.ipcRenderer.sendMessage(
+                'select-download-directory',
+                [],
               );
-              if (!userConfirmed) return;
-            }
-            window.electron.ipcRenderer.sendMessage('run-python-script', []);
-            setProcessRunning(true);
-          }}
-        >
-          Start Recording
-        </button>
-        <button
-          style={{ width: '140px', height: '60px' }}
-          onClick={() => {
-            console.log(`This is the game context : ${currentGame}`);
-          }}
-        >
-          Change Game Variable
-        </button>
-      </center>
+            }}
+          >
+            Change Replay Directory
+          </Button>
+          <TimerDisplay />
+        </div>
+      )}
+      {/* Render alert if status is set and alert is not closed */}
+      {alertStatus && !closeAlert && (
+        <AlertUser
+          status={alertStatus}
+          message={alertMessage}
+          setCloseAlert={setCloseAlert}
+          alertTimer={alertTimer}
+        />
+      )}
     </div>
   );
 }

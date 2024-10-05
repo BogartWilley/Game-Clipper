@@ -21,15 +21,15 @@ node_modules
 release/app/dist
 release/build
 .erb/dll
-.github
+
 .idea
 npm-debug.log.*
 *.css.d.ts
 *.sass.d.ts
 *.scss.d.ts
-CHANGELOG.md
 
 # Project specific
+.github
 compiled-scripts/*.exe
 .env
 README.md
@@ -38,5 +38,5 @@ src/py-script/build
 src/py-script/dist
 src/py-script/Instructions.txt
 *.exe
-
+__pycache__/*
 

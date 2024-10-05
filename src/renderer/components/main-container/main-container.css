@@ -4,3 +4,9 @@
   max-width: 40px;
   max-height: 40px;
 }
+.alert-box {
+  position: fixed;
+  width: 60%;
+  right: 10px;
+  bottom: 10px;
+}

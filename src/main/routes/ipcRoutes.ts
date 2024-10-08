@@ -133,11 +133,32 @@ export const setupIpcRoutes = () => {
     try {
       const datasPath = app.getPath('userData');
       const filePath = path.join(datasPath, 'config.json');
+
+      // Check if the config file exists
+      if (!fs.existsSync(filePath)) {
+        // If not, create it with the default settings
+        const defaultConfig = [
+          {
+            WS_PORT: 0,
+            WS_PASSWORD: '',
+            REPLAY_DIRECTORY: '',
+            USERNAME: '',
+            DARK_MODE: true,
+          },
+        ];
+
+        // Write the default configuration to the file
+        fs.writeFileSync(filePath, JSON.stringify(defaultConfig, null, 2));
+        console.log('config.json file created with default settings.');
+      }
+
+      // Read the configuration file
       const configDataString = fs.readFileSync(filePath).toString();
       const settings = JSON.parse(configDataString);
-      console.log('I retrieved this settings : ');
-      console.log(settings);
+      console.log('I retrieved these settings: ', settings);
+
       event.sender.send('retrieve-config-file-reply', settings);
+
       // TODO - VALIDATE THE CONFIGS BEFORE ASSIGNING ENV VARS
       process.env.WS_PORT = settings[0].WS_PORT;
       process.env.WS_PASSWORD = settings[0].WS_PASSWORD;

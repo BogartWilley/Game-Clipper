@@ -44,6 +44,8 @@ export default function MainContainer(props: any) {
       const successMessage =
         'Successfully connected to OBS! Please select a game and start recording your replays!';
       toggleAlert(message.status, message.message || successMessage);
+
+      // TODO - ONLY SET THE ERROR PRESENT TO FALSE IF OBS IS CONNECTED,AND ALL THE FIELDS ARE VALID!
       if (!message.message) setErrorPresent(false);
     };
 

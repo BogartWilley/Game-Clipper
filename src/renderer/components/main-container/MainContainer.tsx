@@ -152,7 +152,6 @@ export default function MainContainer(props: any) {
           imageSource={require('../social-bubbles/bubble-icons/github-icon.png')}
           grayed={buttonsGrayed}
         />
-
         {/* Settings button */}
         <motion.div
           initial={{ x: 0, y: 0 }}

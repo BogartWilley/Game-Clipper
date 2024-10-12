@@ -76,6 +76,7 @@ export const AlertUser: React.FC<AlertUserProps> = ({
             severity={status}
             variant="filled"
             onClose={handleClose} // Use the updated handleClose function
+            icon={status !== 'success' ? <DizzyCharacter /> : null}
           >
             {message}
           </Alert>

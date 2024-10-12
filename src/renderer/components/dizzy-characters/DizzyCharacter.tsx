@@ -2,9 +2,21 @@ import React from 'react';
 import './dizzy-characters.css';
 
 // Images imports
-import dizzyKyoGif from './dizzy-characters-images/dizzy-kyo.gif';
+import dizzyAshGif from './dizzy-characters-images/dizzy-ash.gif';
+import dizzyAthenaGif from './dizzy-characters-images/dizzy-athena.gif';
+import dizzyBenimaruGif from './dizzy-characters-images/dizzy-benimaru.gif';
 import dizzyIoriGif from './dizzy-characters-images/dizzy-iori.gif';
-const imageList: Array<string> = [dizzyKyoGif, dizzyIoriGif];
+import dizzyKyoGif from './dizzy-characters-images/dizzy-kyo.gif';
+import dizzySaikiGif from './dizzy-characters-images/dizzy-saiki.gif';
+
+const imageList: Array<string> = [
+  dizzyAshGif,
+  dizzyAthenaGif,
+  dizzyBenimaruGif,
+  dizzyIoriGif,
+  dizzyKyoGif,
+  dizzySaikiGif,
+];
 
 export default function DizzyCharacter(props: any) {
   // Function to get a random image from the list

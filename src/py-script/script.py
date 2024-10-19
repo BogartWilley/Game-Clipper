@@ -40,7 +40,7 @@ games = {
     "KOF XIII": {
         "window_name": "The King Of Fighters XIII",
         "process_name": "kofxiii.exe",
-        "start_image": resource_path("images/KOF_XIII/start-image.png"),
+        "start_image": resource_path("images/KOF_XIII/start-image.png"), # TODO - Account for quick rematches
         "stop_images": [
             resource_path("images/KOF_XIII/stop-image.png"),  
             resource_path("images/KOF_XIII/disconnected-screen.png"),  

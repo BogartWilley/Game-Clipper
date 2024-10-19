@@ -30,6 +30,7 @@ const launchObs = () => {
     return startObs(mainPath);
   }
 
+  // TODO - prompt the user to select an installation folder
   for (const letter of drives) {
     const alternativePath = `${letter}:\\Program Files\\obs-studio\\bin\\64bit`;
     if (fs.existsSync(path.join(alternativePath, 'obs64.exe'))) {

@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const pathToVideo = 'C:\\Users\\salim\\Videos\\test.mp4';
+const pathToVideo = 'C:\\Users\\salim\\Videos\\trim.mkv';
 
 async function uploadFile(filePath) {
   try {

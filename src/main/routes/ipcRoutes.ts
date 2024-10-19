@@ -4,6 +4,10 @@ import path from 'path';
 import os from 'os';
 import fs from 'fs';
 import { spawn } from 'child_process';
+import {
+  recordingAction,
+  stopRecording,
+} from '../../js-script/utils/actions/recording';
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
@@ -45,13 +49,16 @@ export const setupIpcRoutes = () => {
         event.reply('python-script-error', data.toString());
       });
 
-      py.on('close', (code) => {
+      py.on('close', async (code) => {
         console.log(`child process exited with code ${code}`);
         console.log('Python script exited');
         event.reply('python-script-close', code);
+        // Stop the recording when the python script stops
+        process.env.REPLAY_DISCONNECTED = 'true';
+        await recordingAction('stop', stopRecording);
+
         new Notification({
           title: 'Failed to find the game process!',
-
           body: `Couldn't find the game's instance...Is it running?`,
         }).show();
         event.sender.send('stop-timer');

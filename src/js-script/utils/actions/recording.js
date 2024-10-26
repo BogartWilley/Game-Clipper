@@ -15,16 +15,19 @@ async function recordingAction(action, cb, res) {
     const status = await cb();
     if (!status) {
       console.log(`Failed to ${action} the recording.`);
-      res.status(500).send({ message: `Failed to ${action} the recording` });
+      if (res)
+        res.status(500).send({ message: `Failed to ${action} the recording` });
       return;
     }
     console.log(status);
-    res.status(200).send({
-      message: `OBS successfully was able to successfully ${action} the recording!`,
-    });
+    if (res)
+      res.status(200).send({
+        message: `OBS successfully was able to successfully ${action} the recording!`,
+      });
   } catch (err) {
     console.log(`Failed to ${action} the recording.`);
-    res.status(500).send({ message: `Failed to ${action} the recording` });
+    if (res)
+      res.status(500).send({ message: `Failed to ${action} the recording` });
   }
 }
 

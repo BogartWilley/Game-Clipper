@@ -165,7 +165,7 @@ def find_match(game, action):
             h = img_test.shape[0]
             return True
     else:
-        print("No match found", max_val)
+        # print("No match found", max_val)
         return False
 
 state = "start"

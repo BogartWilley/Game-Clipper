@@ -12,6 +12,22 @@ const { uploadFile } = require('../../utils/actions/uploadFile');
 const { deleteFile } = require('../../utils/actions/deleteFile');
 const { resizeWindow } = require('../../utils/actions/resizeWindow');
 
+router.post('/uploadtovps', async (req, res) => {
+  try {
+    const uploaded = await uploadFile('C:\\Users\\salim\\Videos\\trim.mkv');
+    if (!uploaded) {
+      res.sendStatus(501);
+    } else {
+      res.sendStatus(200);
+    }
+  } catch (err) {
+    handleErrors(err);
+    res.status(400).send({
+      message:
+        'Encountered an error while saving the replay,is the path correct?',
+    });
+  }
+});
 router.post('/get-output-file', async (req, res) => {
   try {
     console.log('Route called');

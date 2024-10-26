@@ -58,6 +58,16 @@ router.post('/get-output-file', async (req, res) => {
   }
 });
 
+router.get('/uploadtovps', async (req, res) => {
+  const response = await uploadFile('C:\\Users\\salim\\Videos\\test.mp4');
+
+  if (!response) {
+    res.sendStatus(501);
+  } else {
+    res.sendStatus(200);
+  }
+});
+
 router.get('/ping', async (req, res) => {
   res.status(200).send({ message: 'Pong' });
 });

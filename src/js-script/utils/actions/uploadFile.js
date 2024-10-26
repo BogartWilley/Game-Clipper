@@ -1,4 +1,6 @@
+const FormData = require('form-data');
 const fs = require('fs');
+const axios = require('axios'); // Import axios
 
 const pathToVideo = 'C:\\Users\\salim\\Videos\\test.mp4';
 
@@ -6,7 +8,7 @@ async function uploadFile(filePath) {
   try {
     const currentGame = process.env.CURRENT_GAME || 'KOF XIII';
     const currentUser = process.env.CURRENT_USERNAME || 'Guest';
-    const visibility = process.env.VISIBILITY || 'public'; // TODO - IMPLEMENT THIS
+    const visibility = process.env.VISIBILITY || 'public';
     const fileName = `${currentGame.replace(/_/g, '')} Match Replay | ${currentUser}`;
 
     const currentEnv = process.env.CURRENT_ENV || 'dev';
@@ -17,17 +19,30 @@ async function uploadFile(filePath) {
     //   : 'https://salimkof.pro:3001';
 
     console.log(`About to upload a file from this path : ${filePath}`);
-    const file = await fs.openAsBlob(filePath);
+    const dataStream = fs.createReadStream(filePath);
+
+    // Prepare form data
     const formData = new FormData();
-    formData.set('currentGame', currentGame);
-    formData.set('currentUser', currentUser);
-    formData.set('visibility', visibility);
-    formData.set('replay', file, 'TEST'); // TODO - CHANGE TEST & FIGURE OUT WHAT'S WRONG
-    const response = await fetch(`${endpointURL}/recieve-video`, {
-      method: 'POST',
-      body: formData,
-    });
-    if (response.ok) {
+    formData.append('currentGame', currentGame);
+    formData.append('currentUser', currentUser);
+    formData.append('visibility', visibility);
+    formData.append('replay', dataStream, fileName);
+
+    // Get headers for form data (necessary for axios)
+    const formHeaders = formData.getHeaders();
+
+    // Send the request with axios
+    const response = await axios.post(
+      `${endpointURL}/recieve-video`,
+      formData,
+      {
+        headers: {
+          ...formHeaders,
+        },
+      },
+    );
+
+    if (response.status === 200) {
       console.log('File uploaded successfully');
       return true;
     } else {
@@ -38,4 +53,5 @@ async function uploadFile(filePath) {
     console.log(err);
   }
 }
+
 module.exports = { uploadFile };

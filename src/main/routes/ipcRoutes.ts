@@ -22,11 +22,7 @@ export const setupIpcRoutes = () => {
     try {
       const exePath = path.join(
         __dirname,
-        '..',
-        '..',
-        // '..',
-        // '..',  Removes one path for running the app using pnpm dev
-
+        ...(isDebug ? ['..', '..'] : ['..', '..', '..']), // Paths are different when the app is compiled (https://www.electronjs.org/docs/latest/tutorial/asar-archives)
         'compiled-scripts',
         'py-script.exe',
       );

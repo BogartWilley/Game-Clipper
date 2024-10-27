@@ -1,8 +1,6 @@
 {
   "description": "A foundation for scalable desktop apps",
   "keywords": [
-    "electron",
-    "boilerplate",
     "game-clipper",
     "salimofshadow",
     "react",
@@ -184,8 +182,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Rekka",
+    "appId": "org.erb.Rekka",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

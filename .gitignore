@@ -36,7 +36,7 @@ README.md
 personal-notes/*
 src/py-script/build
 src/py-script/dist
-src/py-script/Instructions.txt
+*.txt
 src/py-script/*.spec
 *.exe
 __pycache__/*

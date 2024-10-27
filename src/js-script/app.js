@@ -16,6 +16,7 @@ app.use('/', uploadRoutes);
 app.all('*', (req, res) => {
   res.status(400).send({ message: 'Bad Request' });
 });
+
 // let isGameRunning = true;  TODO - Close OBS and the script on process kill
 
 // Starts OBS process
@@ -34,11 +35,18 @@ const startObs = async () => {
   };
 };
 
+let isServerRunning = false;
+
 obs.on('ConnectionOpened', async () => {
   try {
-    app.listen(PORT, () => {
-      console.log(`Server listening on port 4609`);
-    });
+    if (!isServerRunning) {
+      app.listen(PORT, () => {
+        console.log(`Server listening on port 4609`);
+      });
+      isServerRunning = true;
+    } else {
+      console.log('Server is already running...');
+    }
   } catch (err) {
     handleErrors(err);
   }

@@ -182,8 +182,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "Rekka",
-    "appId": "org.erb.Rekka",
+    "productName": "Recca",
+    "appId": "org.erb.Recca",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

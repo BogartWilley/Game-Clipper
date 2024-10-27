@@ -57,14 +57,14 @@ export default class MenuBuilder {
       label: 'Electron',
       submenu: [
         {
-          label: 'About Rekka',
+          label: 'About Recca',
           selector: 'orderFrontStandardAboutPanel:',
         },
         { type: 'separator' },
         { label: 'Services', submenu: [] },
         { type: 'separator' },
         {
-          label: 'Hide Rekka',
+          label: 'Hide Recca',
           accelerator: 'Command+H',
           selector: 'hide:',
         },

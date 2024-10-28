@@ -39,6 +39,7 @@ async function uploadFile(filePath) {
         headers: {
           ...formHeaders,
         },
+        timeout: 1000 * 60 * 7, // Times out the request after 7 minutes
       },
     );
 
@@ -46,6 +47,10 @@ async function uploadFile(filePath) {
       console.log('File uploaded successfully');
       return true;
     } else {
+      new Notification({
+        title: 'Failed to upload the replay.',
+        body: `Please ensure your connection is stable.`,
+      }).show();
       console.error('Upload failed with status:', response.status);
       return false;
     }

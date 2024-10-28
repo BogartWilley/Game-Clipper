@@ -62,7 +62,7 @@ router.post('/get-output-file', async (req, res) => {
     } else {
       // Handle the case where setFileOnWatch or uploadResult fails or returns false
       res.status(400).send({
-        message: 'Failed to set file on watch. Upload not started.',
+        message: 'Failed to upload the replay.',
       });
     }
   } catch (err) {

@@ -4,7 +4,7 @@ const { obs } = require('../connection/connect');
 const handleErrors = require('./handleErrors');
 
 function handleTimer(state) {
-  const mainWindow = BrowserWindow.getAllWindows()[0]; // Assuming there's only one window
+  const mainWindow = BrowserWindow.getAllWindows()[0];
   if (mainWindow) {
     mainWindow.webContents.send(`${state}-timer`); // Send the message to the renderer process
   }

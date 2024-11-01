@@ -6,6 +6,7 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 
 import './timer.css';
 import { color } from 'framer-motion';
+import PlatformToggle from '../platform-toggle/PlatformToggle';
 
 export default function TimerDisplay() {
   const { elapsedTime, formatTime, isRunning, setIsRunning } = useTimer();

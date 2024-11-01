@@ -19,6 +19,7 @@ import { useErrorContext } from '../../contexts/ErrorContext';
 // Styles imports :
 import './main-container.css';
 import TimerDisplay from '../timer/TimerDisplay';
+import PlatformToggle from '../platform-toggle/PlatformToggle';
 
 export default function MainContainer(props: any) {
   // States
@@ -207,7 +208,10 @@ export default function MainContainer(props: any) {
           >
             Change Replay Directory
           </Button>
-          <TimerDisplay />
+          <div className="recording-options-container">
+            <PlatformToggle />
+            <TimerDisplay />
+          </div>
         </div>
       )}
       {/* Render alert if status is set and alert is not closed */}

@@ -12,8 +12,8 @@ async function uploadFile(filePath) {
     const fileName = `${currentGame.replace(/_/g, '')} Match Replay | ${currentUser}`;
 
     const currentEnv = process.env.CURRENT_ENV || 'dev';
-    // const endpointURL = 'https://salimkof.pro:6001';
-    const endpointURL = 'http://localhost:6001';
+    const endpointURL = 'https://salimkof.pro:6001';
+    // const endpointURL = 'http://localhost:6001';
     // const endpointURL = currentEnv === 'dev'
     //   ? 'http://localhost:3001'
     //   : 'https://salimkof.pro:3001';
@@ -33,7 +33,7 @@ async function uploadFile(filePath) {
 
     // Send the request with axios
     const response = await axios.post(
-      `${endpointURL}/recieve-video`,
+      `${endpointURL}/api/recieve-video-youtube`,
       formData,
       {
         headers: {

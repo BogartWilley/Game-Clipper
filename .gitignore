@@ -41,3 +41,4 @@ src/py-script/*.spec
 *.exe
 __pycache__/*
 *.pyc
+src/py-script/utils/__pycache__

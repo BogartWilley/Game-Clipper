@@ -12,6 +12,7 @@ export default function PlatformToggle(props: any) {
 
   function handlePlatformToggle(platform: PossiblePlatform) {
     setSelectedPlatform(platform);
+    window.electron.ipcRenderer.sendMessage('change-platform', platform);
   }
 
   return (

@@ -64,7 +64,7 @@ export const setupIpcRoutes = () => {
     }
   });
 
-  ipcMain.on('display-notification', async (event, message) => {
+  ipcMain.on('display-notification', async (event, message: string) => {
     function showNotification() {
       new Notification({
         title: 'Error encountered!',
@@ -75,7 +75,7 @@ export const setupIpcRoutes = () => {
     showNotification();
   });
 
-  ipcMain.on('change-game', async (event, game) => {
+  ipcMain.on('change-game', async (event, game: string) => {
     try {
       process.env.CURRENT_GAME = game;
       const response = await fetch('http://localhost:4609/change-game');
@@ -186,5 +186,10 @@ export const setupIpcRoutes = () => {
     }
     console.log(result);
     os.homedir;
+  });
+
+  ipcMain.on('change-platform', async (event, platform: string) => {
+    process.env.CURRENT_PLATFORM = platform;
+    console.log(process.env.CURRENT_PLATFORM);
   });
 };

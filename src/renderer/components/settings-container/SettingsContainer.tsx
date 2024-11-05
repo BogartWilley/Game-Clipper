@@ -231,6 +231,10 @@ const SettingsContainer = (props: any) => {
         <DirectorySetting
           directory={replayDirectory}
           setDirectory={setReplayDirectory}
+        />{' '}
+        <DirectorySetting
+          directory={replayDirectory}
+          setDirectory={setReplayDirectory}
         />
         <Button
           className="save-button"

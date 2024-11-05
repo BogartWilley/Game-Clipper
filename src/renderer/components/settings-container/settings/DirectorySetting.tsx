@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import FolderIcon from '@mui/icons-material/Folder';
 import { useState, useEffect } from 'react';
-
+import '../setting-container.css';
 interface DirectorySettingProps {
   directory: string;
   setDirectory: (dir: string) => void;
@@ -52,8 +52,9 @@ export default function DirectorySetting({
 
   return (
     <Box
+      className={'options-container'}
       sx={{
-        mt: '30px',
+        mt: '25px',
         pt: '10px',
         pb: '10px',
         pr: '10px',

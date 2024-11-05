@@ -40,8 +40,9 @@ export default function PasswordSettings({
 
   return (
     <Box
+      className={'options-container'}
       sx={{
-        mt: '30px',
+        mt: '25px',
         pt: '10px',
         pb: '10px',
         pr: '10px',

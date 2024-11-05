@@ -53,8 +53,9 @@ export default function UsernameSetting({
 
   return (
     <Box
+      className={'options-container'}
       sx={{
-        mt: '30px',
+        mt: '15px',
         pt: '10px',
         pb: '10px',
         pr: '10px',

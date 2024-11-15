@@ -13,6 +13,7 @@ export interface SettingsOptions {
   REPLAY_DIRECTORY: string;
   USERNAME: string;
   DARK_MODE: boolean;
+  VISIBILITY: string;
 }
 
 interface SettingsContextType {
@@ -33,6 +34,7 @@ export const SettingsProvider: React.FC<{ children: ReactNode }> = ({
     REPLAY_DIRECTORY: '',
     USERNAME: '',
     DARK_MODE: true,
+    VISIBILITY: 'unlisted',
   });
 
   useEffect(() => {

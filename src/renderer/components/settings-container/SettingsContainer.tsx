@@ -37,6 +37,7 @@ import { validateSettings } from '../../utils/validateSettings';
 // Utils imports :
 import { retrieveConfigs } from '../../utils/retrieveSettings';
 import { AnimatePresence, motion } from 'framer-motion';
+import VisibilitySetting from './settings/VisibilitySetting';
 
 // Create themes
 const darkTheme = createTheme({
@@ -89,6 +90,7 @@ const SettingsContainer = (props: any) => {
   const [replayDirectory, setReplayDirectory] = useState<string>(
     settings.REPLAY_DIRECTORY,
   );
+  const [visibility, setVisibility] = useState<string>(settings.VISIBILITY);
 
   // Validates the settings upon app launch
   useEffect(() => {
@@ -117,6 +119,7 @@ const SettingsContainer = (props: any) => {
         REPLAY_DIRECTORY: replayDirectory,
         USERNAME: username,
         DARK_MODE: settings.DARK_MODE, // Keeping the previous dark mode setting
+        VISIBILITY: visibility,
       };
 
       setSettings(updatedSettings);
@@ -232,9 +235,9 @@ const SettingsContainer = (props: any) => {
           directory={replayDirectory}
           setDirectory={setReplayDirectory}
         />{' '}
-        <DirectorySetting
-          directory={replayDirectory}
-          setDirectory={setReplayDirectory}
+        <VisibilitySetting
+          visibility={visibility}
+          setVisibility={setVisibility}
         />
         <Button
           className="save-button"

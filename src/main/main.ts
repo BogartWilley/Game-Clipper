@@ -28,6 +28,11 @@ class AppUpdater {
   }
 }
 
+// Changes Notification Title
+if (process.platform === 'win32') {
+  app.setAppUserModelId('Recca');
+}
+
 let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {

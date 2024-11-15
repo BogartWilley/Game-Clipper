@@ -67,7 +67,7 @@ export default function PasswordSettings({
           mr: 2,
         }}
       >
-        Paste OBS's Websocket Password here:
+        Paste OBS's Websocket Password here
       </Typography>
 
       <FormControl sx={{ width: '25ch', pr: '25px' }} variant="standard">

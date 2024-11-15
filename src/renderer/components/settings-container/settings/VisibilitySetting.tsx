@@ -2,18 +2,9 @@ import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   Box,
   Typography,
-  TextField,
-  Switch,
-  FormControlLabel,
-  Button,
-  IconButton,
-  Grid2,
   FormControl,
   InputLabel,
-  Input,
-  InputAdornment,
-  MenuItem,
-  Select,
+  NativeSelect,
 } from '@mui/material';
 import { useState } from 'react';
 
@@ -62,19 +53,25 @@ export default function VisibilitySetting({
         Change video visibility (Youtube only)
       </Typography>
 
-      <FormControl fullWidth>
-        <InputLabel id="demo-simple-select-label">Visibility</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          id="demo-simple-select"
-          value={visibility}
-          label="Age"
+      <FormControl sx={{ width: '25ch', pr: '25px' }}>
+        {' '}
+        <InputLabel variant="standard" htmlFor="uncontrolled-native">
+          Visibility
+        </InputLabel>
+        <NativeSelect
+          defaultValue={
+            process.env.NODE_ENV === 'development' ? 'unlisted' : 'public'
+          }
+          inputProps={{
+            name: 'Visibility',
+            id: 'uncontrolled-native',
+          }}
           onChange={(event) => handleVisibilityChange(event.target.value)}
         >
-          <MenuItem value={'public'}>Public</MenuItem>
-          <MenuItem value={'unlisted'}>Unlisted</MenuItem>
-          <MenuItem value={'private'}>Private</MenuItem>
-        </Select>
+          <option value={'public'}>Public</option>
+          <option value={'unlisted'}>Unlisted</option>
+          <option value={'private'}>Private</option>
+        </NativeSelect>
       </FormControl>
     </Box>
   );

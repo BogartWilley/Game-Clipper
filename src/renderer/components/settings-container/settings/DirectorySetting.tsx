@@ -79,7 +79,7 @@ export default function DirectorySetting({
           mr: 2,
         }}
       >
-        Select the replay directory:
+        Select the replay directory
       </Typography>
 
       <FormControl

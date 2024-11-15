@@ -65,14 +65,10 @@ export const setupIpcRoutes = () => {
   });
 
   ipcMain.on('display-notification', async (event, message: string) => {
-    function showNotification() {
-      new Notification({
-        title: 'Error encountered!',
-        body: `${message}`,
-      }).show();
-    }
-
-    showNotification();
+    new Notification({
+      title: 'Error encourtered!',
+      body: `${message}`,
+    }).show();
   });
 
   ipcMain.on('change-game', async (event, game: string) => {

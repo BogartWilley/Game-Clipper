@@ -10,3 +10,13 @@
   right: 10px;
   bottom: 10px;
 }
+.recording-options-container {
+  width: 490px;
+  display: flex;
+  position: fixed;
+  align-items: center;
+  padding: 10px;
+  gap: 20px;
+  top: 70px;
+  right: 10px;
+}

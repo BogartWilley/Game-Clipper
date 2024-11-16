@@ -1,9 +1,8 @@
 import './Bubble.css';
 import errorIcon from './bubble-icons/error-icon.png';
-import { useErrorContext } from '../../contexts/ErrorContext'; // Adjust the path as needed
+import { useErrorContext } from '../../contexts/ErrorContext';
 export default function BubbleContainer(props: any) {
   const { errorPresent } = useErrorContext();
-
   return (
     <div
       id="bubbleContainer"

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Alert from '@mui/material/Alert';
 import { AnimatePresence, motion } from 'framer-motion';
+import DizzyCharacter from '../dizzy-characters/DizzyCharacter';
 
 export type AlertStatusType = 'success' | 'info' | 'warning' | 'error';
 
@@ -70,10 +71,12 @@ export const AlertUser: React.FC<AlertUserProps> = ({
           exit={{ opacity: 0, x: +950 }}
           transition={{ duration: 0.6, ease: 'easeInOut' }}
         >
+          <DizzyCharacter />
           <Alert
             severity={status}
             variant="filled"
             onClose={handleClose} // Use the updated handleClose function
+            icon={status !== 'success' ? <DizzyCharacter /> : null}
           >
             {message}
           </Alert>

@@ -23,6 +23,7 @@ const { handleRecordStateChange } = require('../../obs-api/websocketApi');
 // Recording Actions
 router.get('/start-recording', async (req, res) => {
   try {
+    resizeWindow();
     await recordingAction('start', startRecording, res);
   } catch (err) {
     console.log('Failed to start the recording');
@@ -92,6 +93,15 @@ router.get('/change-game', async (req, res) => {
 router.get('/change-directory', (req, res) => {
   try {
     changeDirectory();
+    res.send(200);
+  } catch (err) {
+    console.log(err);
+    res.send(500);
+  }
+});
+router.get('/resize-window', (req, res) => {
+  try {
+    resizeWindow();
     res.send(200);
   } catch (err) {
     console.log(err);

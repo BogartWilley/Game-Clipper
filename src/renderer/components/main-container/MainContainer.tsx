@@ -19,6 +19,7 @@ import { useErrorContext } from '../../contexts/ErrorContext';
 // Styles imports :
 import './main-container.css';
 import TimerDisplay from '../timer/TimerDisplay';
+import PlatformToggle from '../platform-toggle/PlatformToggle';
 
 export default function MainContainer(props: any) {
   // States
@@ -44,6 +45,8 @@ export default function MainContainer(props: any) {
       const successMessage =
         'Successfully connected to OBS! Please select a game and start recording your replays!';
       toggleAlert(message.status, message.message || successMessage);
+
+      // TODO - ONLY SET THE ERROR PRESENT TO FALSE IF OBS IS CONNECTED,AND ALL THE FIELDS ARE VALID!
       if (!message.message) setErrorPresent(false);
     };
 
@@ -150,7 +153,6 @@ export default function MainContainer(props: any) {
           imageSource={require('../social-bubbles/bubble-icons/github-icon.png')}
           grayed={buttonsGrayed}
         />
-
         {/* Settings button */}
         <motion.div
           initial={{ x: 0, y: 0 }}
@@ -206,7 +208,10 @@ export default function MainContainer(props: any) {
           >
             Change Replay Directory
           </Button>
-          <TimerDisplay />
+          <div className="recording-options-container">
+            <PlatformToggle />
+            <TimerDisplay />
+          </div>
         </div>
       )}
       {/* Render alert if status is set and alert is not closed */}

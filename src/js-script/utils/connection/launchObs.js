@@ -10,7 +10,7 @@ const launchObs = () => {
     try {
       const obsProcess = spawn(
         path.join(obsPath, 'obs64.exe'),
-        ['--minimize-to-tray'], // Starts OBS minimized
+        ['--minimize-to-tray', '--disable-shutdown-check'], // Starts OBS minimized
         {
           cwd: obsPath, // Set the current working directory to OBS directory
         },
@@ -30,6 +30,7 @@ const launchObs = () => {
     return startObs(mainPath);
   }
 
+  // TODO - prompt the user to select an installation folder
   for (const letter of drives) {
     const alternativePath = `${letter}:\\Program Files\\obs-studio\\bin\\64bit`;
     if (fs.existsSync(path.join(alternativePath, 'obs64.exe'))) {

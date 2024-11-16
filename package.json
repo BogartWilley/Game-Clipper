@@ -1,8 +1,6 @@
 {
   "description": "A foundation for scalable desktop apps",
   "keywords": [
-    "electron",
-    "boilerplate",
     "game-clipper",
     "salimofshadow",
     "react",
@@ -102,6 +100,7 @@
     "@mui/joy": "5.0.0-beta.48",
     "@mui/material": "^6.0.2",
     "@toolpad/core": "^0.5.2",
+    "axios": "^1.7.7",
     "dotenv": "^16.4.5",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.8",
@@ -183,8 +182,8 @@
     "webpack-merge": "^5.9.0"
   },
   "build": {
-    "productName": "ElectronReact",
-    "appId": "org.erb.ElectronReact",
+    "productName": "Recca",
+    "appId": "org.erb.Recca",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "files": [

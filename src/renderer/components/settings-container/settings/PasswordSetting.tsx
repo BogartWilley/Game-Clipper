@@ -40,8 +40,9 @@ export default function PasswordSettings({
 
   return (
     <Box
+      className={'options-container'}
       sx={{
-        mt: '30px',
+        mt: '25px',
         pt: '10px',
         pb: '10px',
         pr: '10px',
@@ -66,7 +67,7 @@ export default function PasswordSettings({
           mr: 2,
         }}
       >
-        Paste OBS's Websocket Password here:
+        Paste OBS's Websocket Password here
       </Typography>
 
       <FormControl sx={{ width: '25ch', pr: '25px' }} variant="standard">

@@ -42,8 +42,9 @@ export default function PortSetting({ port, setPort }: PortSettingProps) {
   };
   return (
     <Box
+      className={'options-container'}
       sx={{
-        mt: '30px',
+        mt: '25px',
         pt: '10px',
         pb: '10px',
         pr: '10px',
@@ -68,7 +69,7 @@ export default function PortSetting({ port, setPort }: PortSettingProps) {
           mr: 2,
         }}
       >
-        Paste OBS's Websocket port number here:
+        Paste OBS's Websocket port number here
       </Typography>
 
       <FormControl sx={{ width: '25ch', pr: '25px' }} variant="standard">

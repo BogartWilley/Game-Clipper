@@ -4,6 +4,10 @@ import path from 'path';
 import os from 'os';
 import fs from 'fs';
 import { spawn } from 'child_process';
+import {
+  recordingAction,
+  stopRecording,
+} from '../../js-script/utils/actions/recording';
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
@@ -18,11 +22,7 @@ export const setupIpcRoutes = () => {
     try {
       const exePath = path.join(
         __dirname,
-        '..',
-        '..',
-        // '..',
-        // '..',  Removes one path for running the app using pnpm dev
-
+        ...(isDebug ? ['..', '..'] : ['..', '..', '..']), // Paths are different when the app is compiled (https://www.electronjs.org/docs/latest/tutorial/asar-archives)
         'compiled-scripts',
         'py-script.exe',
       );
@@ -45,13 +45,16 @@ export const setupIpcRoutes = () => {
         event.reply('python-script-error', data.toString());
       });
 
-      py.on('close', (code) => {
+      py.on('close', async (code) => {
         console.log(`child process exited with code ${code}`);
         console.log('Python script exited');
         event.reply('python-script-close', code);
+        // Stop the recording when the python script stops
+        process.env.REPLAY_DISCONNECTED = 'true';
+        await recordingAction('stop', stopRecording);
+
         new Notification({
           title: 'Failed to find the game process!',
-
           body: `Couldn't find the game's instance...Is it running?`,
         }).show();
         event.sender.send('stop-timer');
@@ -61,18 +64,14 @@ export const setupIpcRoutes = () => {
     }
   });
 
-  ipcMain.on('display-notification', async (event, message) => {
-    function showNotification() {
-      new Notification({
-        title: 'Error encountered!',
-        body: `${message}`,
-      }).show();
-    }
-
-    showNotification();
+  ipcMain.on('display-notification', async (event, message: string) => {
+    new Notification({
+      title: 'Error encourtered!',
+      body: `${message}`,
+    }).show();
   });
 
-  ipcMain.on('change-game', async (event, game) => {
+  ipcMain.on('change-game', async (event, game: string) => {
     try {
       process.env.CURRENT_GAME = game;
       const response = await fetch('http://localhost:4609/change-game');
@@ -90,7 +89,7 @@ export const setupIpcRoutes = () => {
   ipcMain.on('save-config-file', async (event, settings) => {
     try {
       // NOTE : PASSWORDS ARE STORED IN PLAIN TEXT IN OBS AS WELL,THERE IS NO NEED TO HASH THEM
-      console.log('RECIEVED THIS SETTINGS FROMTHE FRONTED: ');
+      console.log('RECIEVED THIS SETTINGS FROM THE FRONTED: ');
       console.log(settings);
 
       const datasPath = app.getPath('userData');
@@ -107,11 +106,12 @@ export const setupIpcRoutes = () => {
         console.log(
           'SETTING ENV VARIABLES,CAUSE WSPORT AND WS PASSWORD WERE NOT UNDEFINED',
         );
+        process.env.CURRENT_USERNAME = settings[0].USERNAME;
         process.env.WS_PORT = settings[0].WS_PORT;
         process.env.WS_PASSWORD = settings[0].WS_PASSWORD;
         // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
         process.env.REPLAY_DIRECTORY = settings[0].REPLAY_DIRECTORY;
-        process.env.CURRENT_USERNAME = settings[0].USERNAME;
+        process.env.VISIBILITY = settings[0].VISIBILITY;
       }
 
       // Waiting for OBS to be runningbefore changing the replay directory
@@ -133,11 +133,32 @@ export const setupIpcRoutes = () => {
     try {
       const datasPath = app.getPath('userData');
       const filePath = path.join(datasPath, 'config.json');
+
+      // Check if the config file exists
+      if (!fs.existsSync(filePath)) {
+        // If not, create it with the default settings
+        const defaultConfig = [
+          {
+            WS_PORT: 0,
+            WS_PASSWORD: '',
+            REPLAY_DIRECTORY: '',
+            USERNAME: '',
+            DARK_MODE: true,
+          },
+        ];
+
+        // Write the default configuration to the file
+        fs.writeFileSync(filePath, JSON.stringify(defaultConfig, null, 2));
+        console.log('config.json file created with default settings.');
+      }
+
+      // Read the configuration file
       const configDataString = fs.readFileSync(filePath).toString();
       const settings = JSON.parse(configDataString);
-      console.log('I retrieved this settings : ');
-      console.log(settings);
+      console.log('I retrieved these settings: ', settings);
+
       event.sender.send('retrieve-config-file-reply', settings);
+
       // TODO - VALIDATE THE CONFIGS BEFORE ASSIGNING ENV VARS
       process.env.WS_PORT = settings[0].WS_PORT;
       process.env.WS_PASSWORD = settings[0].WS_PASSWORD;
@@ -162,5 +183,10 @@ export const setupIpcRoutes = () => {
     }
     console.log(result);
     os.homedir;
+  });
+
+  ipcMain.on('change-platform', async (event, platform: string) => {
+    process.env.CURRENT_PLATFORM = platform;
+    console.log(process.env.CURRENT_PLATFORM);
   });
 };

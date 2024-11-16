@@ -12,10 +12,8 @@
   transform: translateX(-50%);
 }
 .options-container {
-  position: relative;
-  margin-top: 20px;
-  height: 98%;
-  border-style: dashed;
-  border-width: 1px;
-  border-color: black;
+  height: 35px;
+}
+.directory-settings {
+  background-color: red;
 }

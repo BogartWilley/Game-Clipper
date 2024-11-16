@@ -59,9 +59,7 @@ export default function VisibilitySetting({
           Visibility
         </InputLabel>
         <NativeSelect
-          defaultValue={
-            process.env.NODE_ENV === 'development' ? 'unlisted' : 'public'
-          }
+          defaultValue={visibility || 'public'}
           inputProps={{
             name: 'Visibility',
             id: 'uncontrolled-native',

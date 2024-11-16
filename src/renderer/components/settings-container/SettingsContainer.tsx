@@ -119,7 +119,7 @@ const SettingsContainer = (props: any) => {
         REPLAY_DIRECTORY: replayDirectory,
         USERNAME: username,
         DARK_MODE: settings.DARK_MODE, // Keeping the previous dark mode setting
-        VISIBILITY: visibility,
+        VISIBILITY: visibility || 'unlisted',
       };
 
       setSettings(updatedSettings);

@@ -13,8 +13,8 @@ async function uploadFile(filePath) {
     const fileName = `${currentGame.replace(/_/g, '')} Match Replay | ${currentUser}`;
 
     const currentEnv = process.env.NODE_ENV;
-    const endpointURL = 'https://salimkof.pro:6001';
-    // const endpointURL = 'http://localhost:6001';
+    // const endpointURL = 'https://salimkof.pro:6001';
+    const endpointURL = 'http://localhost:6001';
     // const endpointURL = currentEnv === 'production'
     //   ? 'https://salimkof.pro:3001'
     //   : 'http://localhost:3001'

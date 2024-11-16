@@ -89,7 +89,7 @@ export const setupIpcRoutes = () => {
   ipcMain.on('save-config-file', async (event, settings) => {
     try {
       // NOTE : PASSWORDS ARE STORED IN PLAIN TEXT IN OBS AS WELL,THERE IS NO NEED TO HASH THEM
-      console.log('RECIEVED THIS SETTINGS FROMTHE FRONTED: ');
+      console.log('RECIEVED THIS SETTINGS FROM THE FRONTED: ');
       console.log(settings);
 
       const datasPath = app.getPath('userData');
@@ -106,11 +106,12 @@ export const setupIpcRoutes = () => {
         console.log(
           'SETTING ENV VARIABLES,CAUSE WSPORT AND WS PASSWORD WERE NOT UNDEFINED',
         );
+        process.env.CURRENT_USERNAME = settings[0].USERNAME;
         process.env.WS_PORT = settings[0].WS_PORT;
         process.env.WS_PASSWORD = settings[0].WS_PASSWORD;
         // TODO - CHANGE OBS'S REPLAY SAVING DIRECTORY WHEN THE USER UPDATES IT
         process.env.REPLAY_DIRECTORY = settings[0].REPLAY_DIRECTORY;
-        process.env.CURRENT_USERNAME = settings[0].USERNAME;
+        process.env.VISIBILITY = settings[0].VISIBILITY;
       }
 
       // Waiting for OBS to be runningbefore changing the replay directory

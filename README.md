@@ -30,7 +30,7 @@ Recca is designed specifically for gamers who enjoy fighting games and want to e
    
 3. *Detection*:<br> The app uses OpenCV's template matching feature to detect when a match starts and ends (either normally or through disconnections/errors).
    
-4. *Recording*:<br> After a match has been found on the game window, a recording with the following presets :
+4. *Recording*:<br> After a match has been found on the game window, the program will start a new recording with the following presets :
  ```json
    {
        "Resolution": "1920 x 1080",

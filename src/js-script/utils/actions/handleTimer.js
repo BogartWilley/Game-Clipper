@@ -2,13 +2,19 @@ const { BrowserWindow } = require('electron');
 const { obs } = require('../connection/connect');
 const { recordingAction, stopRecording } = require('./recording');
 const handleErrors = require('./handleErrors');
+
+let isTimerRunning = false;
+
+function checkTimer() {
+  return isTimerRunning;
+}
+
 async function handleTimer(state) {
+  const mainWindow = BrowserWindow.getAllWindows()[0];
+  mainWindow.webContents.send(`${state}-timer`); // Sets the timer component's state in React
   try {
-    const mainWindow = BrowserWindow.getAllWindows()[0];
-    if (mainWindow) {
-      mainWindow.webContents.send(`${state}-timer`); // Send the message to the renderer process
-    }
     if (state === 'start') {
+      isTimerRunning = true;
       const interval = setInterval(async () => {
         const status = await obs.call('GetRecordStatus');
         console.log('This is the current status');
@@ -16,13 +22,17 @@ async function handleTimer(state) {
         if (status.outputActive === false) {
           clearInterval(interval);
         }
-        // If it's longer than 6:59 mintues
+        // If the recording longer than 6:59 mintues
         if (status.outputDuration > 7 * 60 * 1000 - 1000) {
           process.env.REPLAY_DISCONNECTED = true;
           await obs.call('StopRecord');
+          mainWindow.webContents.send(`stop-timer`);
           handleTimer('stop');
+          // TODO - FIGURE OUT A WAY TO DISPLAY THE PROPER CLOSING MESSAGE UNTIL THE REPLAY HAS FINISHED PROCESSING
         }
       }, 60 * 1000);
+    } else {
+      isTimerRunning = false;
     }
   } catch (error) {
     clearInterval(interval);
@@ -30,4 +40,4 @@ async function handleTimer(state) {
   }
 }
 
-module.exports = { handleTimer };
+module.exports = { handleTimer, checkTimer };

@@ -3,10 +3,13 @@ const { obs } = require('../connection/connect');
 const { recordingAction, stopRecording } = require('./recording');
 const handleErrors = require('./handleErrors');
 
-let isTimerRunning = false;
+let isRecordingRunning = false;
 
-function checkTimer() {
-  return isTimerRunning;
+// Helper function to change recording running's state from outside
+function setRecoridngRunning(state) {
+  if (state !== undefined) isRecordingRunning = state;
+  console.log(`currently is recording is ${isRecordingRunning}`);
+  return isRecordingRunning;
 }
 
 async function handleTimer(state) {
@@ -14,7 +17,7 @@ async function handleTimer(state) {
   mainWindow.webContents.send(`${state}-timer`); // Sets the timer component's state in React
   try {
     if (state === 'start') {
-      isTimerRunning = true;
+      setRecoridngRunning(true);
       const interval = setInterval(async () => {
         const status = await obs.call('GetRecordStatus');
         console.log('This is the current status');
@@ -22,17 +25,14 @@ async function handleTimer(state) {
         if (status.outputActive === false) {
           clearInterval(interval);
         }
-        // If the recording longer than 6:59 mintues
+        // If the recording is longer than 6:59 mintues
         if (status.outputDuration > 7 * 60 * 1000 - 1000) {
           process.env.REPLAY_DISCONNECTED = true;
           await obs.call('StopRecord');
           mainWindow.webContents.send(`stop-timer`);
-          handleTimer('stop');
           // TODO - FIGURE OUT A WAY TO DISPLAY THE PROPER CLOSING MESSAGE UNTIL THE REPLAY HAS FINISHED PROCESSING
         }
       }, 60 * 1000);
-    } else {
-      isTimerRunning = false;
     }
   } catch (error) {
     clearInterval(interval);
@@ -40,4 +40,4 @@ async function handleTimer(state) {
   }
 }
 
-module.exports = { handleTimer, checkTimer };
+module.exports = { handleTimer, setRecoridngRunning };

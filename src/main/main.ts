@@ -19,7 +19,7 @@ import { spawn } from 'child_process';
 import { Notification } from 'electron';
 import { setupIpcRoutes } from './routes/ipcRoutes';
 import { MessageObject } from '../renderer/utils/displayAlert';
-import { checkTimer } from '../js-script/utils/actions/handleTimer';
+import { setRecoridngRunning } from '../js-script/utils/actions/handleTimer';
 
 class AppUpdater {
   constructor() {
@@ -160,9 +160,9 @@ const createWindow = async () => {
   });
 
   mainWindow.on('close', function (e) {
-    const timer = checkTimer();
+    const timer: boolean = setRecoridngRunning();
     const message: string = timer
-      ? 'A recording is currently running,if you close the application now,it might not be processed properly.'
+      ? 'A recording is currently running,by closing the application it might not be processed properly.'
       : 'Are you sure you want to quit?';
     const response = dialog.showMessageBoxSync(mainWindow!, {
       type: 'question',

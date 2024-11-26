@@ -11,34 +11,17 @@ const handleErrors = require('../../utils/actions/handleErrors');
 const { uploadFile } = require('../../utils/actions/uploadFile');
 const { deleteFile } = require('../../utils/actions/deleteFile');
 const { resizeWindow } = require('../../utils/actions/resizeWindow');
+const { setRecoridngRunning } = require('../../utils/actions/handleTimer');
 
-router.post('/uploadtovps', async (req, res) => {
-  try {
-    const uploaded = await uploadFile('C:\\Users\\salim\\Videos\\trim.mkv');
-    if (!uploaded) {
-      res.sendStatus(501);
-    } else {
-      res.sendStatus(200);
-    }
-  } catch (err) {
-    handleErrors(err);
-    res.status(400).send({
-      message:
-        'Encountered an error while saving the replay,is the path correct?',
-    });
-  }
-});
-router.post('/get-output-file', async (req, res) => {
+router.post('/parse-video', async (req, res) => {
   try {
     console.log('Route called');
     const filePath = req.body.path;
     const disconnected = req.body.disconnected === 'true';
-    console.log('This is disconnected from uploadRoutes');
-    console.log(disconnected);
     const fileSize = getFileSizeInBytes(filePath);
     const watchResult = await setFileOnWatch(filePath);
+    setRecoridngRunning(false);
     // Discard replays flagged as "disconnected"
-
     if (disconnected === true) {
       deleteFile(filePath);
       console.log(

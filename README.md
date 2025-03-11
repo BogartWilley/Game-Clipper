@@ -1,4 +1,4 @@
-# Recca (WIP) - by Salim Of Shadow
+# Recca - by Salim Of Shadow
 
 ## Overview
 

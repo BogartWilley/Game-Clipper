@@ -13,7 +13,8 @@ Recca is designed specifically for gamers who enjoy fighting games and want to e
 
 ## Result :
 
-[![IMAGE ALT TEXT HERE](https://i.postimg.cc/Xq6rmYtY/Untitled.png)](http://www.youtube.com/watch?v=TSDpWOoLQ2A)
+[![3qTKeEl.md.png](https://iili.io/3qTKeEl.md.png)](http://www.youtube.com/watch?v=TSDpWOoLQ2A)
+
 ### Features :
 
 - *Automatic OBS Setup/Integration: <br>Recca is programmed to automatically set up all the necessary OBS audio and video scenes, while ensuring that no other applications or windows are captured.<br> Recca connects to OBS using its provided WebSocket, and it can find the specific game's process and create an OBS scene from it. (NOTE*: It may resize non-traditional resolutions to 1080p.)

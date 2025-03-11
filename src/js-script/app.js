@@ -17,8 +17,6 @@ app.all('*', (req, res) => {
   res.status(400).send({ message: 'Bad Request' });
 });
 
-// let isGameRunning = true;  TODO - Close OBS and the script on process kill
-
 // Starts OBS process
 
 launchObs();

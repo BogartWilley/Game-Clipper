@@ -2,13 +2,7 @@ const { BrowserWindow } = require('electron');
 
 const { obs } = require('../connection/connect');
 const handleErrors = require('./handleErrors');
-
-function handleTimer(state) {
-  const mainWindow = BrowserWindow.getAllWindows()[0];
-  if (mainWindow) {
-    mainWindow.webContents.send(`${state}-timer`); // Send the message to the renderer process
-  }
-}
+const { handleTimer } = require('./handleTimer');
 
 async function recordingAction(action, cb, res) {
   try {
@@ -72,7 +66,7 @@ const resumeRecording = async () => {
     return false;
   }
 };
-const stopRecording = async () => {
+async function stopRecording() {
   try {
     const stop = await obs.call('StopRecord');
     handleTimer('stop');
@@ -83,7 +77,7 @@ const stopRecording = async () => {
     handleErrors(err);
     return false;
   }
-};
+}
 
 module.exports = {
   startRecording,

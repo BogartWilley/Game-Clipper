@@ -51,7 +51,7 @@ obs.on('RecordStateChanged', async (state) => {
     console.log(state);
     const outputState = await obs.call('GetRecordStatus');
     if (outputState) console.log(outputState);
-    const response = await fetch('http://localhost:4609/get-output-file', {
+    const response = await fetch('http://localhost:4609/parse-video', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

@@ -10,7 +10,7 @@
  */
 import path from 'path';
 import { startObs } from '../js-script/app';
-import { app, BrowserWindow, shell, ipcMain } from 'electron';
+import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
 import MenuBuilder from './menu';
@@ -19,6 +19,7 @@ import { spawn } from 'child_process';
 import { Notification } from 'electron';
 import { setupIpcRoutes } from './routes/ipcRoutes';
 import { MessageObject } from '../renderer/utils/displayAlert';
+import { setRecoridngRunning } from '../js-script/utils/actions/handleTimer';
 
 class AppUpdater {
   constructor() {
@@ -156,6 +157,23 @@ const createWindow = async () => {
     } catch (err) {
       console.log(err);
     }
+  });
+
+  mainWindow.on('close', function (e) {
+    const timer: boolean = setRecoridngRunning();
+    const message: string = timer
+      ? 'A recording is currently being finalized.\nDo you still want to exit?'
+      : 'Are you sure you want to quit?';
+    const response = dialog.showMessageBoxSync(mainWindow!, {
+      type: 'question',
+      buttons: ['Yes', 'No'],
+      title: 'Confirm',
+      textWidth: 6,
+      message: message,
+    });
+
+    if (response == 1) e.preventDefault();
+    if (response == 0) console.log(timer);
   });
 
   mainWindow.on('closed', () => {

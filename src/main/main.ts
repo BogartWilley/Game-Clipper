@@ -162,12 +162,13 @@ const createWindow = async () => {
   mainWindow.on('close', function (e) {
     const timer: boolean = setRecoridngRunning();
     const message: string = timer
-      ? 'A recording is currently running,by closing the application it might not be processed properly.'
+      ? 'A recording is currently being finalized.\nDo you still want to exit?'
       : 'Are you sure you want to quit?';
     const response = dialog.showMessageBoxSync(mainWindow!, {
       type: 'question',
       buttons: ['Yes', 'No'],
       title: 'Confirm',
+      textWidth: 6,
       message: message,
     });
 

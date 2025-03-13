@@ -15,7 +15,6 @@ const { setRecoridngRunning } = require('../../utils/actions/handleTimer');
 
 router.post('/parse-video', async (req, res) => {
   try {
-    console.log('Route called');
     const filePath = req.body.path;
     const disconnected = req.body.disconnected === 'true';
     const fileSize = getFileSizeInBytes(filePath);
@@ -24,9 +23,6 @@ router.post('/parse-video', async (req, res) => {
     // Discard replays flagged as "disconnected"
     if (disconnected === true) {
       deleteFile(filePath);
-      console.log(
-        `This is the watch result : ${watchResult} The file status is disconnected...Won't upload it`,
-      );
       res.status(201).send({
         message: 'The uncomplete replay has been deleted successfully',
       });
@@ -57,18 +53,19 @@ router.post('/parse-video', async (req, res) => {
   }
 });
 
-router.get('/uploadtovps', async (req, res) => {
-  const response = await uploadFile('C:\\Users\\salim\\Videos\\test.mp4');
+// TEST ROUTES
+// router.get('/uploadtovps', async (req, res) => {
+//   const response = await uploadFile('C:\\Users\\salim\\Videos\\test.mp4');
 
-  if (!response) {
-    res.sendStatus(501);
-  } else {
-    res.sendStatus(200);
-  }
-});
+//   if (!response) {
+//     res.sendStatus(501);
+//   } else {
+//     res.sendStatus(200);
+//   }
+// });
 
-router.get('/ping', async (req, res) => {
-  res.status(200).send({ message: 'Pong' });
-});
+// router.get('/ping', async (req, res) => {
+//   res.status(200).send({ message: 'Pong' });
+// });
 
 module.exports = router;

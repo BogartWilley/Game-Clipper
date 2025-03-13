@@ -67,9 +67,4 @@ obs.on('RecordStateChanged', async (state) => {
   }
 });
 
-obs.on('ReplayBufferSaved', (buff) => {
-  console.log('This is the replay buffer : ');
-  console.log(buff);
-});
-
 module.exports = { obs };

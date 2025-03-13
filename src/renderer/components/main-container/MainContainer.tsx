@@ -134,7 +134,7 @@ export default function MainContainer(props: any) {
           grayed={buttonsGrayed}
         />
         <Bubble
-          URL="https://www.youtube.com/@SalimOfShadow"
+          URL="https://www.youtube.com/@ReccaReplays"
           imageSource={require('../social-bubbles/bubble-icons/youtube-icon.png')}
           grayed={buttonsGrayed}
         />
@@ -176,38 +176,6 @@ export default function MainContainer(props: any) {
             height: '100vh',
           }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            sx={{ mr: 2, width: 140, height: 60 }}
-            onClick={() => {
-              if (processRunning) {
-                const userConfirmed = window.confirm(
-                  'The process is already running. Do you want to start it again?',
-                );
-                if (!userConfirmed) return;
-              }
-              window.electron.ipcRenderer.sendMessage('run-python-script', []);
-              setProcessRunning(true);
-            }}
-          >
-            Start Recording
-          </Button>
-          <Button
-            variant="contained"
-            color="secondary"
-            size="large"
-            sx={{ width: 140, height: 60, fontSize: 'small' }}
-            onClick={() => {
-              window.electron.ipcRenderer.sendMessage(
-                'select-download-directory',
-                [],
-              );
-            }}
-          >
-            Change Replay Directory
-          </Button>
           <div className="recording-options-container">
             <PlatformToggle />
             <TimerDisplay />

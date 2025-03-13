@@ -1,8 +1,8 @@
 const selectedGame = process.env.SELECTED_GAME;
-function handleErrors(err, cb) {
+export function handleErrors(err: any, cb?: () => Promise<void>) {
   // Adds colored error messages
   console.log(`\x1b[31m--- ERROR: \x1b[33m${err.code}\x1b[31m ---\x1b[0m`);
-  function printError(message) {
+  function printError(message: string) {
     console.log(`\x1b[1;31m${message}\x1b[0m`);
   }
   switch (err.code) {
@@ -32,7 +32,7 @@ function handleErrors(err, cb) {
       printError('An output is disabled and should not be.');
       break;
     case 505:
-      printeError('Studio mode is active and cannot be.');
+      printError('Studio mode is active and cannot be.');
       break;
     case 506:
       printError('Studio mode is not active and should be.');
@@ -44,6 +44,5 @@ function handleErrors(err, cb) {
       console.log(err);
   }
 }
-module.exports = handleErrors;
 
 // Refer to https://github.com/obsproject/obs-websocket/blob/master/docs/generated/protocol.json

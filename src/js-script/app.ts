@@ -1,29 +1,32 @@
-const express = require('express');
+import { Request, Response } from 'express';
+
+import express from 'express';
 const app = express();
-const { obs } = require('./obs-api/websocketApi.js');
-const { connectWs } = require('./utils/connection/connect.js');
-const launchObs = require('./utils/connection/launchObs.js');
+import { obs } from './obs-api/websocketApi';
+import { connectWs } from './utils/connection/connect';
+import { launchObs } from './utils/connection/launchObs';
 require('dotenv').config({ path: '../../.env' }); // Reads .env from root
 const PORT = process.env.PORT || 4609;
-const handleErrors = require('./utils/actions/handleErrors.js');
+import { handleErrors } from './utils/actions/handleErrors';
 
 app.use(express.json());
 
-const recordingRoutes = require('./server/routes/routes.js');
-const uploadRoutes = require('./server/routes/uploadRoutes.js');
+import recordingRoutes from './server/routes/routes';
+import uploadRoutes from './server/routes/uploadRoutes';
+import { MessageObject } from '../renderer/utils/displayAlert';
+
 app.use('/', recordingRoutes);
 app.use('/', uploadRoutes);
-app.all('*', (req, res) => {
+app.all('*', (req: Request, res: Response) => {
   res.status(400).send({ message: 'Bad Request' });
 });
 
 // Starts OBS process
-
 launchObs();
 
 // Launching the startScript app
 
-const startObs = async () => {
+export async function startObs(): Promise<MessageObject> {
   const isConnected = await connectWs();
 
   return {
@@ -31,7 +34,7 @@ const startObs = async () => {
     status: isConnected.status,
     message: isConnected.message,
   };
-};
+}
 
 let isServerRunning = false;
 
@@ -50,9 +53,9 @@ obs.on('ConnectionOpened', async () => {
   }
 });
 
-/* // Only use this when running the script using "node app.js"
+/* // Only use this when running the script using "node app"
 
-const waitKeyPress = require('./utils/actions/waitKeyPress.js');
+const waitKeyPress = require('./utils/actions/waitKeyPress');
 async function exit() {
   console.log("Press 'Q' to exit...");
   await waitKeyPress('q');
@@ -61,5 +64,3 @@ async function exit() {
 exit();
 
 startObs(); */
-
-module.exports = { obs, startObs };

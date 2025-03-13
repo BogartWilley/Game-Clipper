@@ -1,10 +1,9 @@
-const FormData = require('form-data');
-const fs = require('fs');
-const axios = require('axios'); // Import axios
+import FormData from 'form-data';
+import fs from 'fs';
+import axios from 'axios'; // Import axios
+import { Notification } from 'electron';
 
-const pathToVideo = 'C:\\Users\\salim\\Videos\\trim.mkv';
-
-async function uploadFile(filePath) {
+export async function uploadFile(filePath: string) {
   try {
     const currentPlatform = process.env.CURRENT_PLATFORM || 'youtube';
     const currentGame = process.env.CURRENT_GAME || 'KOF XIII';
@@ -61,5 +60,3 @@ async function uploadFile(filePath) {
     console.log(err);
   }
 }
-
-module.exports = { uploadFile };

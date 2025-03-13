@@ -1,12 +1,12 @@
-const { obs } = require('../connection/connect.js');
-const handleErrors = require('../actions/handleErrors.js');
-const { getSelectedGame } = require('../actions/selectGame.js');
-const { muteInputs } = require('../actions/muteInputs.js');
-const { resizeWindow } = require('../actions/resizeWindow.js');
+import { obs } from '../connection/connect';
+import { handleErrors } from '../actions/handleErrors';
+import { GameInfo, getSelectedGame } from '../actions/selectGame';
+import { muteInputs } from '../actions/muteInputs';
+import { resizeWindow } from '../actions/resizeWindow';
 
-const audioSetup = async () => {
+export const audioSetup = async () => {
   try {
-    const selectedGame = getSelectedGame();
+    const selectedGame: GameInfo = getSelectedGame();
     const audio = await obs.call('CreateInput', {
       sceneName: `${selectedGame.fullName} Replay`,
       inputName: `${selectedGame.name} Audio Capture`,
@@ -22,7 +22,7 @@ const audioSetup = async () => {
   }
 };
 
-const videoSetup = async () => {
+export const videoSetup = async () => {
   const selectedGame = getSelectedGame();
   try {
     const video = await obs.call('CreateInput', {
@@ -41,7 +41,6 @@ const videoSetup = async () => {
     const setVideoSettings = await obs.call('SetVideoSettings', {
       baseHeight: 1080,
       baseWidth: 1920,
-      fpsDenominator: 1,
       fpsDenominator: 60,
       outputHeight: 1080,
       outputWidth: 1920,
@@ -53,7 +52,7 @@ const videoSetup = async () => {
 };
 
 //  ---------- TESTING FUNCTIONS ----------
-const logSettings = async (type) => {
+const logSettings = async (type: string) => {
   try {
     const selectedGame = getSelectedGame();
     if (type === 'video') {
@@ -74,8 +73,9 @@ const logSettings = async (type) => {
   }
 };
 
-const isSourcePresent = async () => {
+export const isSourcePresent = async () => {
   try {
+    const selectedGame = getSelectedGame();
     await obs.call('GetInputSettings', {
       inputName: `${selectedGame.name} Video Capture`,
     });
@@ -87,11 +87,4 @@ const isSourcePresent = async () => {
     handleErrors(err);
     return false;
   }
-};
-
-module.exports = {
-  audioSetup,
-  videoSetup,
-  logSettings,
-  isSourcePresent,
 };

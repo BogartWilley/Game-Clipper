@@ -1,8 +1,8 @@
-const fs = require('fs');
-const path = require('path');
-const handleErrors = require('./handleErrors');
+import fs from 'fs';
+import path from 'path';
+import { handleErrors } from './handleErrors';
 
-function getFileSizeInBytes(filename) {
+export function getFileSizeInBytes(filename: string) {
   var stats = fs.statSync(filename);
   var fileSizeInBytes = stats.size;
   return fileSizeInBytes;
@@ -12,7 +12,7 @@ let previousTime = Date.now();
 let previousFileSize = 0;
 let watching = false;
 
-function setFileOnWatch(filepath) {
+export function setFileOnWatch(filepath: string) {
   try {
     console.log(filepath);
     return new Promise((resolve, reject) => {
@@ -41,4 +41,3 @@ function setFileOnWatch(filepath) {
     handleErrors(err);
   }
 }
-module.exports = { getFileSizeInBytes, setFileOnWatch };

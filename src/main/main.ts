@@ -19,7 +19,10 @@ import { spawn } from 'child_process';
 import { Notification } from 'electron';
 import { setupIpcRoutes } from './routes/ipcRoutes';
 import { MessageObject } from '../renderer/utils/displayAlert';
-import { setRecoridngRunning } from '../js-script/utils/actions/handleTimer';
+import {
+  getRecordingRunning,
+  setRecoridngRunning,
+} from '../js-script/utils/actions/handleTimer';
 
 class AppUpdater {
   constructor() {
@@ -46,11 +49,11 @@ let alertSent: boolean = false;
 
 const attemptConnection = async () => {
   try {
-    const startObsResult = await startObs();
+    const startObsResult: MessageObject = await startObs();
     obsConnectionResult = startObsResult;
     // Send the result to the main window and check the connection status
     // Attempt to reconnect after 2 seconds
-    if (startObsResult?.connected !== true) {
+    if (startObsResult.connected !== true) {
       console.log('\x1b[33m%s\x1b[0m', 'Reconnecting...');
       console.log({
         WS_PORT: process.env.WS_PORT,
@@ -65,7 +68,7 @@ const attemptConnection = async () => {
         title: 'OBS process started!',
         body: 'Select a game and confirm to start!',
       }).show();
-      if (!alertSent && startObsResult.status !== undefined) {
+      if (!alertSent && startObsResult.status.length !== 0) {
         mainWindow?.webContents.send('display-alert', startObsResult);
         alertSent = true;
         return;
@@ -160,10 +163,11 @@ const createWindow = async () => {
   });
 
   mainWindow.on('close', function (e) {
-    const timer: boolean = setRecoridngRunning();
-    const message: string = timer
-      ? 'A recording is currently being finalized.\nDo you still want to exit?'
-      : 'Are you sure you want to quit?';
+    const timer: string = getRecordingRunning();
+    const message: string =
+      timer.length !== 0
+        ? 'A recording is currently being finalized.\nDo you still want to exit?'
+        : 'Are you sure you want to quit?';
     const response = dialog.showMessageBoxSync(mainWindow!, {
       type: 'question',
       buttons: ['Yes', 'No'],

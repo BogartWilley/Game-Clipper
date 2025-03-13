@@ -1,4 +1,5 @@
 # Recca - by Salim Of Shadow
+[![3B19ekP.md.png](https://iili.io/3B19ekP.md.png)](https://freeimage.host/i/3B19ekP)
 
 ## Overview
 
@@ -10,7 +11,6 @@ Recca is designed specifically for gamers who enjoy fighting games and want to e
 - Delete the file
 
 ## Let Recca take care of all that and more for you!
-
 ## Result :
 
 [![3qTKeEl.md.png](https://iili.io/3qTKeEl.md.png)](http://www.youtube.com/watch?v=TSDpWOoLQ2A)
@@ -48,5 +48,4 @@ Recca is designed specifically for gamers who enjoy fighting games and want to e
 ## Possible Future Features
 
 - Upload your own image templates to adjust the replay detection and record whatever game you prefer.
-- Sign up on your own YouTube channel using OAuth, and manage your replays from there (currently limited by the API quota).
 - Detect players names and characters to create custom thumbnails.

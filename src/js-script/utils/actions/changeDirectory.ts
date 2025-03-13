@@ -1,6 +1,6 @@
-const { obs } = require('../connection/connect');
+import { obs } from '../connection/connect';
 
-async function changeDirectory() {
+export async function changeDirectory() {
   try {
     const newDirectoryPath = process.env.REPLAY_DIRECTORY;
     const currentDirectoryPath = await obs.call('GetProfileParameter', {
@@ -21,5 +21,3 @@ async function changeDirectory() {
     return false;
   }
 }
-
-module.exports = { changeDirectory };

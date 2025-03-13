@@ -3,7 +3,7 @@ import { spawn } from 'child_process';
 import fs from 'fs';
 import { Notification } from 'electron';
 
-const launchObs = () => {
+export const launchObs = () => {
   const driveLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const mainPath = 'C:\\Program Files\\obs-studio\\bin\\64bit';
 
@@ -45,5 +45,3 @@ const launchObs = () => {
   }).show();
   return null;
 };
-
-module.exports = launchObs;

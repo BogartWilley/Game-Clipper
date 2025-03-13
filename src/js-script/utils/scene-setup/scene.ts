@@ -1,6 +1,6 @@
-import { obs } from '../connection/connect.js';
-import handleErrors from '../actions/handleErrors.js';
-import { getSelectedGame } from '../actions/selectGame.js';
+import { obs } from '../connection/connect';
+import { handleErrors } from '../actions/handleErrors';
+import { getSelectedGame } from '../actions/selectGame';
 
 const getSceneName = async () => {
   try {
@@ -12,7 +12,7 @@ const getSceneName = async () => {
     handleErrors(err);
   }
 };
-const createNewScene = async () => {
+export const createNewScene = async () => {
   try {
     const selectedGame = await getSelectedGame();
     await obs.call('CreateScene', {
@@ -26,7 +26,7 @@ const createNewScene = async () => {
   }
 };
 
-const changeScene = async () => {
+export const changeScene = async () => {
   try {
     const selectedGame = await getSelectedGame();
     await obs.call('SetCurrentProgramScene', {
@@ -35,10 +35,4 @@ const changeScene = async () => {
   } catch (err) {
     handleErrors(err);
   }
-};
-
-module.exports = {
-  getSceneName,
-  createNewScene,
-  changeScene,
 };

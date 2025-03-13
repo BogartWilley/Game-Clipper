@@ -1,25 +1,23 @@
-const express = require('express');
-const router = express.Router();
-const fs = require('fs');
-const path = require('path');
-const { obs } = require('../../utils/connection/connect');
-const {
+import { Request, Response } from 'express';
+import { Router } from 'express';
+import {
   setFileOnWatch,
   getFileSizeInBytes,
-} = require('../../utils/actions/checkFileSize');
-const handleErrors = require('../../utils/actions/handleErrors');
-const { uploadFile } = require('../../utils/actions/uploadFile');
-const { deleteFile } = require('../../utils/actions/deleteFile');
-const { resizeWindow } = require('../../utils/actions/resizeWindow');
-const { setRecoridngRunning } = require('../../utils/actions/handleTimer');
+} from '../../utils/actions/checkFileSize';
+import { handleErrors } from '../../utils/actions/handleErrors';
+import { uploadFile } from '../../utils/actions/uploadFile';
+import { deleteFile } from '../../utils/actions/deleteFile';
+import { resizeWindow } from '../../utils/actions/resizeWindow';
+import { setRecoridngRunning } from '../../utils/actions/handleTimer';
 
-router.post('/parse-video', async (req, res) => {
+const router = Router();
+router.post('/parse-video', async (req: Request, res: Response) => {
   try {
     const filePath = req.body.path;
     const disconnected = req.body.disconnected === 'true';
     const fileSize = getFileSizeInBytes(filePath);
     const watchResult = await setFileOnWatch(filePath);
-    setRecoridngRunning(false);
+    setRecoridngRunning('stop'); // TODO - FIGURE THIS OUT
     // Discard replays flagged as "disconnected"
     if (disconnected === true) {
       deleteFile(filePath);
@@ -67,5 +65,4 @@ router.post('/parse-video', async (req, res) => {
 // router.get('/ping', async (req, res) => {
 //   res.status(200).send({ message: 'Pong' });
 // });
-
-module.exports = router;
+export default router;

@@ -1,10 +1,15 @@
-const { BrowserWindow } = require('electron');
+import { Response } from 'express';
+import { obs } from '../connection/connect';
+import { handleErrors } from './handleErrors';
+import { handleTimer } from './handleTimer';
 
-const { obs } = require('../connection/connect');
-const handleErrors = require('./handleErrors');
-const { handleTimer } = require('./handleTimer');
+export type RecordingState = 'start' | 'stop' | 'pause' | 'resume';
 
-async function recordingAction(action, cb, res) {
+export async function recordingAction(
+  action: RecordingState,
+  cb: () => Promise<boolean>,
+  res?: Response,
+) {
   try {
     const status = await cb();
     if (!status) {
@@ -25,7 +30,7 @@ async function recordingAction(action, cb, res) {
   }
 }
 
-const startRecording = async () => {
+export const startRecording = async () => {
   try {
     const start = await obs.call('StartRecord');
     // Wait 1 second to check if the recording started
@@ -44,7 +49,7 @@ const startRecording = async () => {
   }
 };
 
-const pauseRecording = async () => {
+export const pauseRecording = async () => {
   try {
     const pause = await obs.call('PauseRecord');
     console.log('Pause the recording');
@@ -55,7 +60,7 @@ const pauseRecording = async () => {
     return false;
   }
 };
-const resumeRecording = async () => {
+export const resumeRecording = async () => {
   try {
     const resume = await obs.call('ResumeRecord');
     console.log('Resume the recording');
@@ -66,7 +71,7 @@ const resumeRecording = async () => {
     return false;
   }
 };
-async function stopRecording() {
+export async function stopRecording() {
   try {
     const stop = await obs.call('StopRecord');
     handleTimer('stop');
@@ -78,11 +83,3 @@ async function stopRecording() {
     return false;
   }
 }
-
-module.exports = {
-  startRecording,
-  pauseRecording,
-  resumeRecording,
-  stopRecording,
-  recordingAction,
-};

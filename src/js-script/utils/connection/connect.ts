@@ -1,11 +1,9 @@
-const { default: OBSWebSocket } = require('obs-websocket-js');
-const obs = new OBSWebSocket();
+import { MessageObject } from '../../../renderer/utils/displayAlert';
 
-const connectWs = async () => {
-  // TODO - Use these in prod
-  /* 
-  const PORT = 4455;
-  const PASSWORD = 'super-sekret'; */
+import { default as OBSWebSocket } from 'obs-websocket-js';
+export const obs = new OBSWebSocket();
+
+export async function connectWs(): Promise<MessageObject> {
   const PORT = process.env.WS_PORT;
   const PASSWORD = process.env.WS_PASSWORD;
 
@@ -20,9 +18,8 @@ const connectWs = async () => {
     console.log(
       `Connected to server ${obsWebSocketVersion} (using RPC ${negotiatedRpcVersion})`,
     );
-    return { connected: true, status: 'success' }; // Connection successful
-    // TODO - NOTIFY THE FRONTEND
-  } catch (error) {
+    return { connected: true, status: 'success', message: '' };
+  } catch (error: any) {
     const port = error.message.substr(error.message.length - 4);
     if (error.code === 4009) {
       const message =
@@ -44,8 +41,6 @@ const connectWs = async () => {
         message,
       };
     }
-    return false;
+    return { connected: false, status: '', message: '' };
   }
-};
-
-module.exports = { connectWs, obs };
+}

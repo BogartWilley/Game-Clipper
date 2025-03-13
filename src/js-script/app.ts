@@ -1,3 +1,5 @@
+import { Request, Response } from 'express';
+
 const express = require('express');
 const app = express();
 const { obs } = require('./obs-api/websocketApi.js');
@@ -13,12 +15,15 @@ const recordingRoutes = require('./server/routes/routes.js');
 const uploadRoutes = require('./server/routes/uploadRoutes.js');
 app.use('/', recordingRoutes);
 app.use('/', uploadRoutes);
-app.all('*', (req, res) => {
+app.all('*', (req: Request, res: Response) => {
   res.status(400).send({ message: 'Bad Request' });
 });
 
 // Starts OBS process
 
+console.log(
+  '// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process// Starts OBS process',
+);
 launchObs();
 
 // Launching the startScript app

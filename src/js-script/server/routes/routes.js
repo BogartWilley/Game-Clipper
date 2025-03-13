@@ -87,18 +87,12 @@ router.get('/change-game', async (req, res) => {
   } catch (err) {
     console.log('Failed to change the game');
     handleErrors(err);
+    res.status(500).send({
+      message: `Failed to change the game`,
+    });
   }
 });
 
-router.get('/change-directory', (req, res) => {
-  try {
-    changeDirectory();
-    res.send(200);
-  } catch (err) {
-    console.log(err);
-    res.send(500);
-  }
-});
 router.get('/resize-window', (req, res) => {
   try {
     resizeWindow();

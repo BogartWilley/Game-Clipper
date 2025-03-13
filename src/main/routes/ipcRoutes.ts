@@ -8,6 +8,8 @@ import {
   recordingAction,
   stopRecording,
 } from '../../js-script/utils/actions/recording';
+import { changeDirectory } from '../../js-script/utils/actions/changeDirectory';
+import { SettingsOptions } from '../../renderer/contexts/SettingsContext';
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
@@ -75,7 +77,6 @@ export const setupIpcRoutes = () => {
     try {
       process.env.CURRENT_GAME = game;
       const response = await fetch('http://localhost:4609/change-game');
-
       if (!response.ok) {
         console.log('Failed to change the game');
       } else {
@@ -92,20 +93,15 @@ export const setupIpcRoutes = () => {
       console.log('RECIEVED THIS SETTINGS FROM THE FRONTED: ');
       console.log(settings);
 
-      const datasPath = app.getPath('userData');
+      const dataPath = app.getPath('userData');
       const data = JSON.stringify(settings, null, 2);
-      const filePath = path.join(datasPath, 'config.json');
+      const filePath = path.join(dataPath, 'config.json');
       // TODO - FIX ISSUE THAT MAKES YOU NEED TO CLICK THE BUTTON TWICE BEFORE SAVING THE RESULT IN THE CONFIG.JSON FILE
       fs.writeFile(filePath, data, (err) => {
         if (err) console.log(err);
       });
-      // Assigning env variables
-      console.log(process.env.REPLAY_DIRECTORY);
 
       if (settings[0].WS_PORT != '' && settings[0].WS_PASSWORD != '') {
-        console.log(
-          'SETTING ENV VARIABLES,CAUSE WSPORT AND WS PASSWORD WERE NOT UNDEFINED',
-        );
         process.env.CURRENT_USERNAME = settings[0].USERNAME;
         process.env.WS_PORT = settings[0].WS_PORT;
         process.env.WS_PASSWORD = settings[0].WS_PASSWORD;
@@ -114,15 +110,9 @@ export const setupIpcRoutes = () => {
         process.env.VISIBILITY = settings[0].VISIBILITY;
       }
 
-      // Waiting for OBS to be runningbefore changing the replay directory
+      // Waiting for OBS to be running before changing the replay directory
       setTimeout(async () => {
-        const response = await fetch('http://localhost:4609/change-directory');
-        if (!response.ok) {
-          console.log(`Error: ${response.status} - ${response.statusText}`);
-        } else {
-          const responseData = await response.text();
-          console.log('Response from server:', responseData);
-        }
+        await changeDirectory();
       }, 3000);
     } catch (err) {
       console.log(err);
@@ -137,13 +127,14 @@ export const setupIpcRoutes = () => {
       // Check if the config file exists
       if (!fs.existsSync(filePath)) {
         // If not, create it with the default settings
-        const defaultConfig = [
+        const defaultConfig: SettingsOptions[] = [
           {
             WS_PORT: 0,
             WS_PASSWORD: '',
             REPLAY_DIRECTORY: '',
             USERNAME: '',
             DARK_MODE: true,
+            VISIBILITY: 'unlisted',
           },
         ];
 

@@ -215,19 +215,13 @@ export default function Sidebar(props: any) {
             '& > div': { justifyContent: 'center' },
           }}
         >
-          <ListItemButton style={{ userSelect: 'none' }}>Studio</ListItemButton>
           <ListItemButton
-            style={{ userSelect: 'none' }}
-            color="success"
-            onClick={() => {
-              if (currentGame === 'USF4') {
-                alert('Please select a game before proceeding!');
-              }
-            }}
+            color="warning"
+            className="settings-button"
+            sx={{ marginTop: '80%' }}
           >
-            Contact
+            Settings
           </ListItemButton>
-          <ListItemButton className="settings-button">Settings</ListItemButton>
         </List>
       </Drawer>
     </React.Fragment>

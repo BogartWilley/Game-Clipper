@@ -1,8 +1,8 @@
-const { obs } = require('../connection/connect.js');
-const handleErrors = require('../actions/handleErrors.js');
-const { getSelectedGame } = require('../actions/selectGame.js');
-const { muteInputs } = require('../actions/muteInputs.js');
-const { resizeWindow } = require('../actions/resizeWindow.js');
+import { obs } from '../connection/connect.js';
+import handleErrors from '../actions/handleErrors.js';
+import { getSelectedGame } from '../actions/selectGame';
+import { muteInputs } from '../actions/muteInputs.js';
+import { resizeWindow } from '../actions/resizeWindow.js';
 
 const audioSetup = async () => {
   try {
@@ -41,7 +41,6 @@ const videoSetup = async () => {
     const setVideoSettings = await obs.call('SetVideoSettings', {
       baseHeight: 1080,
       baseWidth: 1920,
-      fpsDenominator: 1,
       fpsDenominator: 60,
       outputHeight: 1080,
       outputWidth: 1920,
@@ -53,7 +52,7 @@ const videoSetup = async () => {
 };
 
 //  ---------- TESTING FUNCTIONS ----------
-const logSettings = async (type) => {
+const logSettings = async (type: string) => {
   try {
     const selectedGame = getSelectedGame();
     if (type === 'video') {
@@ -76,6 +75,7 @@ const logSettings = async (type) => {
 
 const isSourcePresent = async () => {
   try {
+    const selectedGame = getSelectedGame();
     await obs.call('GetInputSettings', {
       inputName: `${selectedGame.name} Video Capture`,
     });

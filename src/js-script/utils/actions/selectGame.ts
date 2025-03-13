@@ -1,3 +1,9 @@
+interface GameInfo {
+  name: string;
+  fullName: string;
+  windowId: string;
+}
+
 const KOF_XIII = {
   name: 'KOF XIII',
   fullName: 'The King Of Fighters XIII',
@@ -25,13 +31,11 @@ const PLACEHOLDER_GAME = {
   windowId: 'Uninitialized',
 };
 
-const possibleGames = [KOF_XIII, USF4, GGS, TEKKEN_8];
+const possibleGames: GameInfo[] = [KOF_XIII, USF4, GGS, TEKKEN_8];
 
-function getSelectedGame() {
-  const selectedGame =
+export function getSelectedGame() {
+  const selectedGame: GameInfo =
     possibleGames.find((game) => game.name === process.env.CURRENT_GAME) ||
     PLACEHOLDER_GAME;
   return selectedGame;
 }
-
-module.exports = { getSelectedGame };

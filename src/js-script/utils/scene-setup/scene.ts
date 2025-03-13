@@ -1,7 +1,6 @@
 import { obs } from '../connection/connect.js';
 import handleErrors from '../actions/handleErrors.js';
 import { getSelectedGame } from '../actions/selectGame.js';
-import { resizeWindow } from '../actions/resizeWindow.js';
 
 const getSceneName = async () => {
   try {

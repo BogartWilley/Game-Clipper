@@ -1,12 +1,13 @@
-const path = require('path');
-const { spawn } = require('child_process');
-const fs = require('fs');
+import path from 'path';
+import { spawn } from 'child_process';
+import fs from 'fs';
+import { Notification } from 'electron';
 
 const launchObs = () => {
-  const drives = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  const driveLetters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
   const mainPath = 'C:\\Program Files\\obs-studio\\bin\\64bit';
 
-  const startObs = (obsPath) => {
+  const startObs = (obsPath: string) => {
     try {
       const obsProcess = spawn(
         path.join(obsPath, 'obs64.exe'),
@@ -31,15 +32,17 @@ const launchObs = () => {
   }
 
   // TODO - prompt the user to select an installation folder
-  for (const letter of drives) {
+  for (const letter of driveLetters) {
     const alternativePath = `${letter}:\\Program Files\\obs-studio\\bin\\64bit`;
     if (fs.existsSync(path.join(alternativePath, 'obs64.exe'))) {
-      console.log(`Found obs in ${alternativePath}`);
       return startObs(alternativePath);
     }
   }
 
-  console.log('No OBS installation found.');
+  new Notification({
+    title: 'Failed to find the OBS!',
+    body: `No OBS installation found... Is the program installed correctly?`,
+  }).show();
   return null;
 };
 

@@ -7,8 +7,8 @@ import { spawn } from 'child_process';
 import {
   recordingAction,
   stopRecording,
-} from '../../js-script/utils/actions/recording';
-import { changeDirectory } from '../../js-script/utils/actions/changeDirectory';
+} from '../../server/utils/actions/recording';
+import { changeDirectory } from '../../server/utils/actions/changeDirectory';
 import { SettingsOptions } from '../../renderer/contexts/SettingsContext';
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';

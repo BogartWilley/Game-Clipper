@@ -9,7 +9,7 @@
  * `./src/main.js` using webpack. This gives us some performance wins.
  */
 import path from 'path';
-import { startObs } from '../js-script/app';
+import { startObs } from '../server/app';
 import { app, BrowserWindow, shell, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import log from 'electron-log';
@@ -22,7 +22,7 @@ import { MessageObject } from '../renderer/utils/displayAlert';
 import {
   getRecordingRunning,
   setRecoridngRunning,
-} from '../js-script/utils/actions/handleTimer';
+} from '../server/utils/actions/handleTimer';
 
 class AppUpdater {
   constructor() {

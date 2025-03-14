@@ -1,5 +1,6 @@
+import { OBSResponseTypes } from 'obs-websocket-js';
 import { obs } from '../connection/connect';
-import handleErrors from './handleErrors';
+import { handleErrors } from './handleErrors';
 import { getSelectedGame } from './selectGame';
 
 export async function resizeWindow() {
@@ -10,11 +11,16 @@ export async function resizeWindow() {
       sourceName: `${selectedGame.name} Video Capture`,
       sceneName: `${selectedGame.fullName} Replay`,
     });
-    const sceneProperties = await obs.call('GetSceneItemTransform', {
-      sceneItemId: sceneId.sceneItemId,
-      sceneName: `${selectedGame.fullName} Replay`,
-    });
-    const scaleFactor = 1080 / sceneProperties.sceneItemTransform.sourceHeight; // TODO - TEST THIS WITH OTHER GAMES AND RESOLUTIONS AS WELL
+    const sceneProperties: OBSResponseTypes['GetSceneItemTransform'] =
+      await obs.call('GetSceneItemTransform', {
+        sceneItemId: sceneId.sceneItemId,
+        sceneName: `${selectedGame.fullName} Replay`,
+      });
+
+    const sourceHeight = sceneProperties.sceneItemTransform
+      .sourceHeight as number;
+
+    const scaleFactor = 1080 / sourceHeight; // TODO - TEST THIS WITH OTHER GAMES AND RESOLUTIONS AS WELL
 
     const scaleSourceTo1080 = await obs.call('SetSceneItemTransform', {
       sceneName: `${selectedGame.fullName} Replay`,

@@ -191,7 +191,7 @@
       "dist",
       "node_modules",
       "package.json",
-      "src/js-script/**/*"
+      "src/server/**/*"
     ],
     "mac": {
       "sign": ".erb/scripts/notarize.js",

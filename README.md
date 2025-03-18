@@ -1,7 +1,6 @@
 ![Electron](https://img.shields.io/badge/Electron-v31.3.0-blue)  ![TypeScript](https://img.shields.io/badge/TypeScript-v5.2.2-blue) ![Python](https://img.shields.io/badge/Python-3.11-blue)  ![OpenCV](https://img.shields.io/badge/OpenCV-4.8.0-green) ![GitHub last commit](https://img.shields.io/github/last-commit/SalimOfShadow/Recca) ![License](https://img.shields.io/github/license/salimofshadow/Recca)  ![Stars](https://img.shields.io/github/stars/SalimOfShadow/Recca?style=social)  
 # Recca - by Salim Of Shadow
-[![3B19ekP.md.png](https://iili.io/3B19ekP.md.png)](https://freeimage.host/i/3B19ekP)
-
+![3B19ekP.md.png](https://iili.io/3B19ekP.md.png)
 ## Overview
 
 Recca is designed specifically for gamers who enjoy fighting games and want to effortlessly capture their game replays without the hassle of having to:
